@@ -23,13 +23,6 @@ type SpawnAction struct {
 
 // Application action to create a project Scaffolding
 func (spawn SpawnAction) Application(application commands.Application) error {
-	gitRepo, err := spawn.Repo.CreateGitRepository(application.ProjectName, application.AccessToken)
-	if err != nil {
-		return err
-	}
-	println("Created gitlab respository with url: ", gitRepo.URL)
-	println("Creating heroku pipeline...")
-
 	url, err := spawn.Platform.Create(application.DeployToken, application.ProjectName)
 
 	if err != nil {
@@ -37,6 +30,15 @@ func (spawn SpawnAction) Application(application commands.Application) error {
 	}
 
 	println("Created heroku platform with url: ", url)
+
+	gitRepo, err := spawn.Repo.CreateGitRepository(application.ProjectName, application.AccessToken)
+	if err != nil {
+		return err
+	}
+
+	println("Created gitlab respository with url: ", gitRepo.URL)
+	println("Creating heroku pipeline...")
+
 	return nil
 }
 

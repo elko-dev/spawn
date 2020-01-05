@@ -3,6 +3,7 @@ package platform
 import (
 	"context"
 	"errors"
+	"strings"
 
 	heroku "github.com/heroku/heroku-go/v5"
 	"gitlab.com/shared-tool-chain/spawn/actions"
@@ -25,8 +26,10 @@ func (h HerokuPlatform) Create(accessToken string, applicationName string) (stri
 	region := "us"
 	stack := "heroku-18"
 	team := "elko-playground"
-
-	createOpts := heroku.TeamAppCreateOpts{Name: &applicationName, Region: &region, Stack: &stack, Team: &team}
+	herokuName := createHerokuName(applicationName)
+	println(herokuName)
+	println("test")
+	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &team}
 
 	app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
 
@@ -54,6 +57,12 @@ func (h HerokuPlatform) Create(accessToken string, applicationName string) (stri
 	}
 
 	return app.WebURL, nil
+}
+
+func createHerokuName(applicationName string) string {
+	// herokuName := applicationName + strconv.Itoa(rand.Intn(3000000))
+	herokuName := strings.ToLower(applicationName)
+	return herokuName
 }
 
 // NewHerokuPlatform init function

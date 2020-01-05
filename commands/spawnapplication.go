@@ -5,12 +5,7 @@ import (
 
 	"github.com/urfave/cli"
 	"gitlab.com/shared-tool-chain/spawn/flags"
-)
-
-const (
-	projectname = "projectname"
-	deploytoken = "deploytoken"
-	accesstoken = "accesstoken"
+	"gitlab.com/shared-tool-chain/spawn/prompt"
 )
 
 // SpawnAction describing the functionality to Create repositories
@@ -33,14 +28,40 @@ func Run(action SpawnAction) cli.Command {
 		Usage:   "Spawns application",
 		Flags:   flags.Repository(),
 		Action: func(c *cli.Context) error {
-			application := Application{
-				ProjectName: c.String(projectname),
-				AccessToken: c.String(accesstoken),
-				DeployToken: c.String(deploytoken),
+			application, err := promptUserForInput()
+			if err != nil {
+				os.Exit(1)
 			}
 			return executeAction(action, application)
 		},
 	}
+}
+
+func promptUserForInput() (Application, error) {
+	projectName, err := prompt.ProjectName()
+	if err != nil {
+		println("Invalid Project Name")
+		return Application{}, err
+	}
+
+	accessToken, err := prompt.GitlabAccessToken()
+	if err != nil {
+		println("Invalid AccessToken")
+		return Application{}, err
+	}
+
+	deployToken, err := prompt.DeployAccessToken()
+	if err != nil {
+		println("Invalid DeployToken")
+		return Application{}, err
+	}
+
+	application := Application{
+		ProjectName: projectName,
+		AccessToken: accessToken,
+		DeployToken: deployToken,
+	}
+	return application, nil
 }
 
 func executeAction(action SpawnAction, application Application) error {

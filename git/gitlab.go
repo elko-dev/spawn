@@ -6,6 +6,7 @@ import (
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/config"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
+	"gopkg.in/src-d/go-git.v4/storage/memory"
 )
 
 // GitlabRepository struct to leverage Gitlab
@@ -23,7 +24,11 @@ func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, access
 	repository, err := gitlab.HTTP.PostGitRepository(repositoryName, accessToken)
 	url := "https://gitlab.com/shared-tool-chain/react-native-template.git"
 
-	r, err := git.PlainClone(repositoryName, false, &git.CloneOptions{
+	if err != nil {
+		return api.GitRepository{}, err
+	}
+
+	r, err := git.Clone(memory.NewStorage(), nil, &git.CloneOptions{
 		URL:               url,
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 		Auth: &http.BasicAuth{

@@ -1,15 +1,21 @@
 package platform
 
 import (
+	"strconv"
+	"strings"
 	"testing"
 )
 
-func TestCreateReturnsError(t *testing.T) {
-	// heroku := HerokuPlatform{}
-	// expected := "Error"
-	// _, actual := heroku.Create("", "")
+func TestHerokuNameReturnsCorrectFormat(t *testing.T) {
 
-	// if actual.Error() != expected {
-	// 	t.Log("Incorrect name expected ", expected, " got ", actual)
-	// }
+	actual := createHerokuName("TESTAPP")
+	size := len(createHerokuName("TESTAPP"))
+
+	if size != 7 {
+		t.Log("expected size to be 8 but was " + strconv.Itoa(size))
+	}
+	println("actual " + actual)
+	if !strings.HasPrefix(actual, "testapp") {
+		t.Log("expected " + actual + " to start with testapp")
+	}
 }

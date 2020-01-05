@@ -46,6 +46,6 @@ Ex. `spawn init newproject --node --gitlab --heroku`
 
 ### Usage
 ``` bash
-export PATH=$GOPATH/bin:$PATH
+export GOPATH=$HOME/go && export PATH=$GOPATH/bin:$PATH
 ./spawn cr --projectname=test
 ```

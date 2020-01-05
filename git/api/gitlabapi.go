@@ -43,7 +43,6 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, accessToken stri
 
 	if resp.StatusCode == 201 {
 		parseGitlabResponse(resp, &response)
-		fmt.Printf("%+v\n", response)
 		return response, nil
 	}
 
