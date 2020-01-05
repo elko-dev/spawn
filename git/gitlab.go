@@ -3,15 +3,17 @@ package git
 import (
 	"gitlab.com/shared-tool-chain/spawn/actions"
 	"gitlab.com/shared-tool-chain/spawn/git/api"
-	"gopkg.in/src-d/go-git.v4"
-	"gopkg.in/src-d/go-git.v4/config"
-	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
-	"gopkg.in/src-d/go-git.v4/storage/memory"
 )
 
 // GitlabRepository struct to leverage Gitlab
 type GitlabRepository struct {
 	HTTP HTTP
+	Git  Git
+}
+
+// Git to interact with git
+type Git interface {
+	DuplicateRepo(url string, accessToken string, repository api.GitRepository) error
 }
 
 // HTTP describing the functionality to Create repositories
@@ -38,49 +40,9 @@ func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, access
 		return api.GitRepository{}, err
 	}
 
-	r, err := git.Clone(memory.NewStorage(), nil, &git.CloneOptions{
-		URL:               url,
-		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
-		Auth: &http.BasicAuth{
-			Username: "abc123", // yes, this can be anything except an empty string
-			Password: accessToken,
-		},
-	})
+	err = gitlab.Git.DuplicateRepo(url, accessToken, repository)
 
 	if err != nil {
-		println("Clone failed")
-		println(err.Error())
-		return api.GitRepository{}, err
-	}
-
-	err = r.DeleteRemote("origin")
-	if err != nil {
-		println("Delete failed")
-		println(err.Error())
-		return api.GitRepository{}, err
-	}
-
-	_, err = r.CreateRemote(&config.RemoteConfig{
-		Name: "origin",
-		URLs: []string{repository.URL},
-	})
-	if err != nil {
-		println("Create remote failed")
-		println(err.Error())
-		return api.GitRepository{}, err
-	}
-
-	err = r.Push(&git.PushOptions{
-		RemoteName: "origin",
-		Auth: &http.BasicAuth{
-			Username: "abc123", // yes, this can be anything except an empty string
-			Password: accessToken,
-		},
-	})
-
-	if err != nil {
-		println("Push failed")
-		println(err.Error())
 		return api.GitRepository{}, err
 	}
 
@@ -88,7 +50,7 @@ func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, access
 }
 
 // NewGitlabRepository init method
-func NewGitlabRepository() actions.GitRepository {
+func NewGitlabRepository(git Git) actions.GitRepository {
 	http := api.GitlabHTTP{}
-	return GitlabRepository{HTTP: http}
+	return GitlabRepository{HTTP: http, Git: git}
 }

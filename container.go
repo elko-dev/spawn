@@ -12,8 +12,15 @@ import (
 // CreateSpawnAction dependency
 func CreateSpawnAction() actions.SpawnAction {
 	panic(wire.Build(
-		git.NewGitlabRepository,
+		CreateGitlabRepistory,
 		platform.NewHerokuPlatform,
 		actions.NewSpawnAction,
+	))
+}
+
+func CreateGitlabRepistory() actions.GitRepository {
+	panic(wire.Build(
+		git.NewLocal,
+		git.NewGitlabRepository,
 	))
 }
