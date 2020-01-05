@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    branches:
+      only:
+        - master
+    working_directory: /go/src/github.com/elko-dev/spawn
+    docker:
+      - image: larse514/circleci-golang:latest
+    environment:
+      TEST_RESULTS: /tmp/test-results
+
+    steps:
+    - checkout
+    - run: mkdir -p $TEST_RESULTS
+
+    - restore_cache:
+        keys:
+          - v1-pkg-cache
+    - run: make -B
+    - run:
+        name: Release Binary
+        command: |
+          echo "export GIT_COMMIT_DESC=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> ~/.bashrc
+          echo $GIT_COMMIT_DESC
+          if  [[ $GIT_COMMIT_DESC == RELEASE* ]] ; then
+            make VERSION="${CIRCLE_BUILD_NUM}" publish-release
+          else 
+            echo no release on this commit
+          fi
+    - save_cache:
+        key: v1-pkg-cache
+        paths:
+          - "/go/pkg"
+
+    - store_artifacts:
+        path: /tmp/test-results
+        destination: raw-test-output
+
+    - store_test_results:
+        path: /tmp/test-results
+
+        #${CIRCLE_BUILD_NUM}
