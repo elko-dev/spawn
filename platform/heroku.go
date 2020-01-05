@@ -20,13 +20,13 @@ type HerokuPlatform struct {
 }
 
 // Create method to create heroku repository
-func (h HerokuPlatform) Create(accessToken string, applicationName string, teamName string) (string, error) {
+func (h HerokuPlatform) Create(accessToken string, applicationName string, teamName string, environmnet string) (string, error) {
 	heroku.DefaultTransport.BearerToken = accessToken
 
 	region := "us"
 	stack := "heroku-18"
 
-	herokuName := createHerokuName(applicationName)
+	herokuName := createHerokuName(applicationName, environmnet)
 	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
 
 	app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
@@ -57,9 +57,8 @@ func (h HerokuPlatform) Create(accessToken string, applicationName string, teamN
 	return app.WebURL, nil
 }
 
-func createHerokuName(applicationName string) string {
-	// herokuName := applicationName + strconv.Itoa(rand.Intn(3000000))
-	herokuName := strings.ToLower(applicationName)
+func createHerokuName(applicationName string, environment string) string {
+	herokuName := strings.ToLower(environment + "-" + applicationName)
 	return herokuName
 }
 

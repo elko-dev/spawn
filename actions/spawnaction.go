@@ -12,7 +12,7 @@ type GitRepository interface {
 
 // PlatformRepository repository that defines creation of Platform repo
 type PlatformRepository interface {
-	Create(accessToken string, applicationName string, teamName string) (string, error)
+	Create(accessToken string, applicationName string, teamName string, environment string) (string, error)
 }
 
 // SpawnAction struct to leverage Gitlab
@@ -25,13 +25,13 @@ type SpawnAction struct {
 func (spawn SpawnAction) Application(application commands.Application) error {
 	println("Creating heroku pipeline...")
 
-	url, err := spawn.Platform.Create(application.DeployToken, application.ProjectName, application.PlatformName)
-
-	if err != nil {
-		return err
+	for _, environment := range application.Environments {
+		url, err := spawn.Platform.Create(application.DeployToken, application.ProjectName, application.PlatformName, environment)
+		if err != nil {
+			return err
+		}
+		println("Created heroku platform for " + environment + " with url: " + url)
 	}
-
-	println("Created heroku platform with url: ", url)
 
 	gitRepo, err := spawn.Repo.CreateGitRepository(application.ProjectName, application.AccessToken, application.DeployToken)
 	if err != nil {

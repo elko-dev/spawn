@@ -16,7 +16,7 @@ const (
 type mockPlatform struct {
 }
 
-func (mockPlatform mockPlatform) Create(accessToken string, applicationName string, teamName string) (string, error) {
+func (mockPlatform mockPlatform) Create(accessToken string, applicationName string, teamName string, environment string) (string, error) {
 	if gitURL != gitURL {
 		return "", errors.New("INCORRECT URL PASSED TO CREATE")
 	}
@@ -42,8 +42,10 @@ func TestApplicationReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	mockPlatform := mockPlatform{}
 	spawn := SpawnAction{Repo: mockRepo, Platform: mockPlatform}
 	expected := "GITLAB_ERROR"
+	environments := []string{"dev"}
 
-	actual := spawn.Application(commands.Application{}).Error()
+	applications := commands.Application{Environments: environments}
+	actual := spawn.Application(applications).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -55,8 +57,10 @@ func TestApplicationReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *t
 	mockPlatform := mockPlatform{}
 	spawn := SpawnAction{Repo: mockRepo, Platform: mockPlatform}
 	expected := expectedPlatformError
+	environments := []string{"dev"}
 
-	actual := spawn.Application(commands.Application{}).Error()
+	applications := commands.Application{Environments: environments}
+	actual := spawn.Application(applications).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)

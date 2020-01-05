@@ -19,6 +19,7 @@ type Application struct {
 	DeployToken  string
 	AccessToken  string
 	PlatformName string
+	Environments []string
 }
 
 // Run is the method to run the CreateRepository command
@@ -62,12 +63,14 @@ func promptUserForInput() (Application, error) {
 		println("Invalid AccessToken")
 		return Application{}, err
 	}
+	environments := []string{"dev", "stage", "prod"}
 
 	application := Application{
 		ProjectName:  projectName,
 		AccessToken:  accessToken,
 		DeployToken:  deployToken,
 		PlatformName: platformTeamName,
+		Environments: environments,
 	}
 	return application, nil
 }
