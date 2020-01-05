@@ -63,7 +63,7 @@ func promptUserForInput() (Application, error) {
 		println("Invalid AccessToken")
 		return Application{}, err
 	}
-	environments := []string{"dev", "stage", "prod"}
+	environments := []string{"dev"}
 
 	application := Application{
 		ProjectName:  projectName,
