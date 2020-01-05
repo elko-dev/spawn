@@ -1,0 +1,22 @@
+GitLab
+
+https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html
+
+Spawn requires an access token:
+
+- gitlab.com > settings > access tokens
+- name > expires at > scopes (API)
+- Your New Personal Access Token
+- "Make sure you save it - you won't be able to access it again."
+
+Heroku
+
+https://devcenter.heroku.com/articles/authentication
+https://devcenter.heroku.com/articles/platform-api-quickstart#alternatives
+  heroku authorizations:create
+
+## Next Steps
+
+- `conf` check for `~/.config/spawn.json`
+- `conf` check for API key
+- `cli` interactive setup (API key, username, )
