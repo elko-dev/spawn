@@ -20,14 +20,14 @@ type HerokuPlatform struct {
 }
 
 // Create method to create heroku repository
-func (h HerokuPlatform) Create(accessToken string, applicationName string) (string, error) {
+func (h HerokuPlatform) Create(accessToken string, applicationName string, teamName string) (string, error) {
 	heroku.DefaultTransport.BearerToken = accessToken
 
 	region := "us"
 	stack := "heroku-18"
-	team := "elko-playground"
+
 	herokuName := createHerokuName(applicationName)
-	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &team}
+	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
 
 	app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
 

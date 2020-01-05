@@ -12,7 +12,7 @@ type GitRepository interface {
 
 // PlatformRepository repository that defines creation of Platform repo
 type PlatformRepository interface {
-	Create(accessToken string, applicationName string) (string, error)
+	Create(accessToken string, applicationName string, teamName string) (string, error)
 }
 
 // SpawnAction struct to leverage Gitlab
@@ -23,7 +23,7 @@ type SpawnAction struct {
 
 // Application action to create a project Scaffolding
 func (spawn SpawnAction) Application(application commands.Application) error {
-	url, err := spawn.Platform.Create(application.DeployToken, application.ProjectName)
+	url, err := spawn.Platform.Create(application.DeployToken, application.ProjectName, application.PlatformName)
 
 	if err != nil {
 		return err

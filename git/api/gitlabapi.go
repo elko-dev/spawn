@@ -41,7 +41,7 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, accessToken stri
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode == 201 {
+	if isSuccessStatusCode(resp.StatusCode) {
 		parseGitlabResponse(resp, &response)
 		return response, nil
 	}
@@ -54,6 +54,14 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, accessToken stri
 	println(resp.StatusCode)
 	//todo: parse my body
 	return response, errors.New("Error creating gitlab repo")
+}
+
+func isSuccessStatusCode(statusCode int) bool {
+	return statusCode == 201 || statusCode == 200
+}
+
+func isUnauthorized(statusCode int) bool {
+	return statusCode == 401
 }
 
 func parseGitlabResponse(response *http.Response, target interface{}) error {

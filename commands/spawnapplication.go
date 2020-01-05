@@ -15,9 +15,10 @@ type SpawnAction interface {
 
 // Application is a struct representing a full application
 type Application struct {
-	ProjectName string
-	DeployToken string
-	AccessToken string
+	ProjectName  string
+	DeployToken  string
+	AccessToken  string
+	PlatformName string
 }
 
 // Run is the method to run the CreateRepository command
@@ -44,9 +45,9 @@ func promptUserForInput() (Application, error) {
 		return Application{}, err
 	}
 
-	accessToken, err := prompt.GitlabAccessToken()
+	platformTeamName, err := prompt.HerokuTeamName()
 	if err != nil {
-		println("Invalid AccessToken")
+		println("Invalid Heroku Team Name")
 		return Application{}, err
 	}
 
@@ -56,10 +57,17 @@ func promptUserForInput() (Application, error) {
 		return Application{}, err
 	}
 
+	accessToken, err := prompt.GitlabAccessToken()
+	if err != nil {
+		println("Invalid AccessToken")
+		return Application{}, err
+	}
+
 	application := Application{
-		ProjectName: projectName,
-		AccessToken: accessToken,
-		DeployToken: deployToken,
+		ProjectName:  projectName,
+		AccessToken:  accessToken,
+		DeployToken:  deployToken,
+		PlatformName: platformTeamName,
 	}
 	return application, nil
 }

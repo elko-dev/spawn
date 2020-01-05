@@ -58,3 +58,20 @@ func ProjectName() (string, error) {
 
 	return projectPrompt.Run()
 }
+
+// HerokuTeamName prompts user for heroku team name
+func HerokuTeamName() (string, error) {
+	projectValidate :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	projectPrompt := promptui.Prompt{
+		Label:    "Heroku Team Name",
+		Validate: projectValidate,
+	}
+
+	return projectPrompt.Run()
+}

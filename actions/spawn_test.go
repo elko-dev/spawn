@@ -16,7 +16,7 @@ const (
 type mockPlatform struct {
 }
 
-func (mockPlatform mockPlatform) Create(accessToken string, applicationName string) (string, error) {
+func (mockPlatform mockPlatform) Create(accessToken string, applicationName string, teamName string) (string, error) {
 	if gitURL != gitURL {
 		return "", errors.New("INCORRECT URL PASSED TO CREATE")
 	}
