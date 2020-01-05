@@ -27,8 +27,6 @@ func (h HerokuPlatform) Create(accessToken string, applicationName string) (stri
 	stack := "heroku-18"
 	team := "elko-playground"
 	herokuName := createHerokuName(applicationName)
-	println(herokuName)
-	println("test")
 	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &team}
 
 	app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)

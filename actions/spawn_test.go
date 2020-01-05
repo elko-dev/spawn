@@ -38,8 +38,9 @@ func (mock MockGoodRepository) CreateGitRepository(repositoryName string, access
 }
 
 func TestApplicationReturnsErrorWhenGitlabReturnsError(t *testing.T) {
-	mock := MockRepository{}
-	spawn := SpawnAction{Repo: mock}
+	mockRepo := MockGoodRepository{}
+	mockPlatform := mockPlatform{}
+	spawn := SpawnAction{Repo: mockRepo, Platform: mockPlatform}
 	expected := "GITLAB_ERROR"
 
 	actual := spawn.Application(commands.Application{}).Error()
