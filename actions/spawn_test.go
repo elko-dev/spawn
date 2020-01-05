@@ -26,14 +26,14 @@ func (mockPlatform mockPlatform) Create(accessToken string, applicationName stri
 type MockRepository struct {
 }
 
-func (mock MockRepository) CreateGitRepository(repositoryName string, accessToken string) (api.GitRepository, error) {
+func (mock MockRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error) {
 	return api.GitRepository{}, errors.New("GITLAB_ERROR")
 }
 
 type MockGoodRepository struct {
 }
 
-func (mock MockGoodRepository) CreateGitRepository(repositoryName string, accessToken string) (api.GitRepository, error) {
+func (mock MockGoodRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error) {
 	return api.GitRepository{URL: gitURL}, nil
 }
 

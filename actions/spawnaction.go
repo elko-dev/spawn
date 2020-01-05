@@ -7,7 +7,7 @@ import (
 
 // GitRepository describing the functionality to Create repositories
 type GitRepository interface {
-	CreateGitRepository(repositoryName string, accessToken string) (api.GitRepository, error)
+	CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error)
 }
 
 // PlatformRepository repository that defines creation of Platform repo
@@ -23,6 +23,8 @@ type SpawnAction struct {
 
 // Application action to create a project Scaffolding
 func (spawn SpawnAction) Application(application commands.Application) error {
+	println("Creating heroku pipeline...")
+
 	url, err := spawn.Platform.Create(application.DeployToken, application.ProjectName, application.PlatformName)
 
 	if err != nil {
@@ -31,13 +33,12 @@ func (spawn SpawnAction) Application(application commands.Application) error {
 
 	println("Created heroku platform with url: ", url)
 
-	gitRepo, err := spawn.Repo.CreateGitRepository(application.ProjectName, application.AccessToken)
+	gitRepo, err := spawn.Repo.CreateGitRepository(application.ProjectName, application.AccessToken, application.DeployToken)
 	if err != nil {
 		return err
 	}
 
 	println("Created gitlab respository with url: ", gitRepo.URL)
-	println("Creating heroku pipeline...")
 
 	return nil
 }

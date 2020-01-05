@@ -17,11 +17,21 @@ type GitlabRepository struct {
 // HTTP describing the functionality to Create repositories
 type HTTP interface {
 	PostGitRepository(repositoryName string, accessToken string) (api.GitRepository, error)
+	AddEnvironmentVariables(deployToken string, projectID string, accessToken string) error
 }
 
 // CreateGitRepository action to create a Gitlab repo
-func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, accessToken string) (api.GitRepository, error) {
+func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error) {
 	repository, err := gitlab.HTTP.PostGitRepository(repositoryName, accessToken)
+
+	err = gitlab.HTTP.AddEnvironmentVariables(deployToken, repository.ID.String(), accessToken)
+	if err != nil {
+		println("Failed to add environment variables to Gitlab repo...")
+		return api.GitRepository{}, err
+	}
+
+	println("Added environment variables to Gitlab repo...")
+
 	url := "https://gitlab.com/shared-tool-chain/react-native-template.git"
 
 	if err != nil {
