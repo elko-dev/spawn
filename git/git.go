@@ -2,11 +2,14 @@ package git
 
 import (
 	"os"
+	"strings"
+	"time"
 
 	"gitlab.com/shared-tool-chain/spawn/file"
 	"gitlab.com/shared-tool-chain/spawn/git/api"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/config"
+	"gopkg.in/src-d/go-git.v4/plumbing/object"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
 )
 
@@ -36,7 +39,7 @@ func (local Local) DuplicateRepo(url string, accessToken string, repository api.
 		return err
 	}
 
-	template := file.TemplateFile{Name: repository.Name}
+	template := file.TemplateFile{Name: strings.ToLower(repository.Name)}
 	err = template.Replace()
 	if err != nil {
 		println("Template replacement failed")
@@ -60,6 +63,23 @@ func (local Local) DuplicateRepo(url string, accessToken string, repository api.
 		println(err.Error())
 		return err
 	}
+
+	// Adds the new file to the staging area.
+	w, err := r.Worktree()
+	_, err = w.Add(".")
+	if err != nil {
+		println("Add failed")
+		println(err.Error())
+		return err
+	}
+
+	_, err = w.Commit(repository.Name+" configuration", &git.CommitOptions{
+		Author: &object.Signature{
+			Name:  "Spawn",
+			Email: "spawn@elko.dev",
+			When:  time.Now(),
+		},
+	})
 
 	err = r.Push(&git.PushOptions{
 		RemoteName: "origin",
