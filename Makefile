@@ -15,6 +15,7 @@ clean:
 
 dependencies:
 	#global install
+	go get github.com/google/wire/cmd/wire
 	go get -u gopkg.in/src-d/go-git.v4
 	wire
 	$(GOGET)
