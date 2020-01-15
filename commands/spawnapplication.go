@@ -44,12 +44,6 @@ func promptUserForInput() (applications.Application, error) {
 		return applications.Application{}, err
 	}
 
-	platformTeamName, err := prompt.HerokuTeamName()
-	if err != nil {
-		println("Invalid Heroku Team Name")
-		return applications.Application{}, err
-	}
-
 	deployToken, err := prompt.DeployAccessToken()
 	if err != nil {
 		println("Invalid DeployToken")
@@ -67,7 +61,6 @@ func promptUserForInput() (applications.Application, error) {
 		ProjectName:     projectName,
 		AccessToken:     accessToken,
 		DeployToken:     deployToken,
-		PlatformName:    platformTeamName,
 		Environments:    environments,
 		ApplicationType: applicationType,
 	}

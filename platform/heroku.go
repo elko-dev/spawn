@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/elko-dev/spawn/herokus"
+	"github.com/elko-dev/spawn/prompt"
 	heroku "github.com/heroku/heroku-go/v5"
 )
 
@@ -21,11 +22,6 @@ type HerokuPlatform struct {
 
 // HerokuApp struct representing the values of a Heroku Application
 type HerokuApp struct {
-	AccessToken     string
-	ApplicationName string
-	TeamName        string
-	Environment     string
-	Buildpack       string
 }
 
 // Create method to create heroku repository
@@ -34,15 +30,19 @@ func (h HerokuPlatform) Create(application herokus.Application) (string, error) 
 
 	region := "us"
 	stack := "heroku-18"
-
+	teamName, err := prompt.HerokuTeamName()
+	if err != nil {
+		println(err.Error())
+		return "", errors.New("Error Retrieving Heroku Team Name")
+	}
 	herokuName := createHerokuName(application.ApplicationName, application.Environment)
-	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &application.TeamName}
+	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
 
 	app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
 
 	if err != nil {
 		println(err.Error())
-		return "", errors.New("Error")
+		return "", errors.New("Error Creating App")
 	}
 
 	buildPackOps := heroku.BuildpackInstallationUpdateOpts{

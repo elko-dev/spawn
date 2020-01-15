@@ -11,7 +11,7 @@ type mockHerokuPlatform struct {
 }
 
 func (mockHerokuPlatform mockHerokuPlatform) Create(application herokus.Application) (string, error) {
-	if application.Buildpack != "nodejs" {
+	if application.Buildpack != "mars/create-react-app" {
 		return "", errors.New("Invalid buildpack")
 	}
 	return "URL", nil
