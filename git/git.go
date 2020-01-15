@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"gitlab.com/shared-tool-chain/spawn/file"
-	"gitlab.com/shared-tool-chain/spawn/git/api"
+	"github.com/elko-dev/spawn/file"
+	"github.com/elko-dev/spawn/git/api"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/config"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"

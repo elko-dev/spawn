@@ -3,66 +3,23 @@ package actions
 import (
 	"errors"
 	"testing"
-
-	"gitlab.com/shared-tool-chain/spawn/commands"
-	"gitlab.com/shared-tool-chain/spawn/git/api"
 )
 
-const (
-	gitURL                = "SOMEURL"
-	expectedPlatformError = "EXPECTED ERROR"
-)
-
-type mockPlatform struct {
+type mockNodeJs struct {
 }
 
-func (mockPlatform mockPlatform) Create(accessToken string, applicationName string, teamName string, environment string) (string, error) {
-	if gitURL != gitURL {
-		return "", errors.New("INCORRECT URL PASSED TO CREATE")
-	}
-	return "", errors.New(expectedPlatformError)
+func (nodeJs mockNodeJs) Create(environment string) error {
+	return errors.New("GITLAB_ERROR")
 }
-
-type MockRepository struct {
-}
-
-func (mock MockRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error) {
-	return api.GitRepository{}, errors.New("GITLAB_ERROR")
-}
-
-type MockGoodRepository struct {
-}
-
-func (mock MockGoodRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error) {
-	return api.GitRepository{URL: gitURL}, nil
-}
-
-func TestApplicationReturnsErrorWhenGitlabReturnsError(t *testing.T) {
-	mockRepo := MockGoodRepository{}
-	mockPlatform := mockPlatform{}
-	spawn := SpawnAction{Repo: mockRepo, Platform: mockPlatform}
+func TestApplicationReturnsErrorWhenNodeJsReturnsError(t *testing.T) {
+	mockNodeJs := mockNodeJs{}
+	spawn := SpawnAction{}
 	expected := "GITLAB_ERROR"
 	environments := []string{"dev"}
-
-	applications := commands.Application{Environments: environments}
-	actual := spawn.Application(applications).Error()
+	actual := spawn.Application(mockNodeJs, environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
-	}
-}
-
-func TestApplicationReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *testing.T) {
-	mockRepo := MockGoodRepository{}
-	mockPlatform := mockPlatform{}
-	spawn := SpawnAction{Repo: mockRepo, Platform: mockPlatform}
-	expected := expectedPlatformError
-	environments := []string{"dev"}
-
-	applications := commands.Application{Environments: environments}
-	actual := spawn.Application(applications).Error()
-
-	if actual != expected {
-		t.Log("Incorrect error, expected ", expected, " got ", actual)
+		t.Fail()
 	}
 }

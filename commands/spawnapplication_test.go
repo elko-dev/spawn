@@ -5,19 +5,21 @@ import (
 	"os"
 	"os/exec"
 	"testing"
+
+	"github.com/elko-dev/spawn/applications"
 )
 
 type mockSpawnAction struct {
 }
 
 // SpawnAction describing the functionality to Create repositories
-func (mock mockSpawnAction) Application(application Application) error {
+func (mock mockSpawnAction) Application(app applications.App, environments []string) error {
 	return errors.New("RUNTIME_ERROR")
 }
 
 func TestRunEncountersErrorProcessExitWithCode1(t *testing.T) {
 	spawnAction := mockSpawnAction{}
-	application := Application{}
+	application := applications.Application{}
 	if os.Getenv("BE_CRASHER") == "1" {
 		executeAction(spawnAction, application)
 		return

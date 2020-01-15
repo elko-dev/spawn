@@ -3,23 +3,16 @@ package commands
 import (
 	"os"
 
+	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/flags"
+	"github.com/elko-dev/spawn/prompt"
+	"github.com/elko-dev/spawn/selections"
 	"github.com/urfave/cli"
-	"gitlab.com/shared-tool-chain/spawn/flags"
-	"gitlab.com/shared-tool-chain/spawn/prompt"
 )
 
 // SpawnAction describing the functionality to Create repositories
 type SpawnAction interface {
-	Application(application Application) error
-}
-
-// Application is a struct representing a full application
-type Application struct {
-	ProjectName  string
-	DeployToken  string
-	AccessToken  string
-	PlatformName string
-	Environments []string
+	Application(app applications.App, environments []string) error
 }
 
 // Run is the method to run the CreateRepository command
@@ -39,44 +32,55 @@ func Run(action SpawnAction) cli.Command {
 	}
 }
 
-func promptUserForInput() (Application, error) {
+func promptUserForInput() (applications.Application, error) {
+	_, applicationType, err := selections.ApplicationType()
+	if err != nil {
+		println("Error selecting application type")
+		return applications.Application{}, err
+	}
 	projectName, err := prompt.ProjectName()
 	if err != nil {
 		println("Invalid Project Name")
-		return Application{}, err
+		return applications.Application{}, err
 	}
 
 	platformTeamName, err := prompt.HerokuTeamName()
 	if err != nil {
 		println("Invalid Heroku Team Name")
-		return Application{}, err
+		return applications.Application{}, err
 	}
 
 	deployToken, err := prompt.DeployAccessToken()
 	if err != nil {
 		println("Invalid DeployToken")
-		return Application{}, err
+		return applications.Application{}, err
 	}
 
 	accessToken, err := prompt.GitlabAccessToken()
 	if err != nil {
 		println("Invalid AccessToken")
-		return Application{}, err
+		return applications.Application{}, err
 	}
 	environments := []string{"dev"}
 
-	application := Application{
-		ProjectName:  projectName,
-		AccessToken:  accessToken,
-		DeployToken:  deployToken,
-		PlatformName: platformTeamName,
-		Environments: environments,
+	application := applications.Application{
+		ProjectName:     projectName,
+		AccessToken:     accessToken,
+		DeployToken:     deployToken,
+		PlatformName:    platformTeamName,
+		Environments:    environments,
+		ApplicationType: applicationType,
 	}
 	return application, nil
 }
 
-func executeAction(action SpawnAction, application Application) error {
-	err := action.Application(application)
+func executeAction(action SpawnAction, application applications.Application) error {
+	app, err := applications.CreateApp(application)
+	if err != nil {
+		println("Error creating application.  Please verify your parameters are correct or submit an issue to Github")
+		os.Exit(1)
+	}
+	err = action.Application(app, application.Environments)
 	if err != nil {
 		println("Some number of operations failed, exiting...")
 		os.Exit(1)

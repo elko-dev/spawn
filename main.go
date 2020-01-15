@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	"gitlab.com/shared-tool-chain/spawn/clip"
+	"github.com/elko-dev/spawn/clip"
 )
 
 func main() {

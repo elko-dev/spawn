@@ -3,8 +3,8 @@ package clip
 
 import (
 	"github.com/urfave/cli"
-	"gitlab.com/shared-tool-chain/spawn/actions"
-	"gitlab.com/shared-tool-chain/spawn/commands"
+	"github.com/elko-dev/spawn/actions"
+	"github.com/elko-dev/spawn/commands"
 )
 
 // Command is an interface defining structure for CLI commands

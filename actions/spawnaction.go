@@ -1,49 +1,29 @@
 package actions
 
-import (
-	"gitlab.com/shared-tool-chain/spawn/commands"
-	"gitlab.com/shared-tool-chain/spawn/git/api"
+import "github.com/elko-dev/spawn/applications"
+
+const (
+	// NodeGraphQLApplicationType is a nodejs application
+	NodeGraphQLApplicationType = "NodeJs"
+	// ReactApplicationType is a React application
+	ReactApplicationType = "React"
 )
-
-// GitRepository describing the functionality to Create repositories
-type GitRepository interface {
-	CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error)
-}
-
-// PlatformRepository repository that defines creation of Platform repo
-type PlatformRepository interface {
-	Create(accessToken string, applicationName string, teamName string, environment string) (string, error)
-}
 
 // SpawnAction struct to leverage Gitlab
 type SpawnAction struct {
-	Repo     GitRepository
-	Platform PlatformRepository
 }
 
 // Application action to create a project Scaffolding
-func (spawn SpawnAction) Application(application commands.Application) error {
-	println("Creating heroku pipeline...")
+func (spawn SpawnAction) Application(app applications.App, environments []string) error {
 
-	for _, environment := range application.Environments {
-		url, err := spawn.Platform.Create(application.DeployToken, application.ProjectName, application.PlatformName, environment)
-		if err != nil {
-			return err
-		}
-		println("Created heroku platform for " + environment + " with url: " + url)
+	for _, environment := range environments {
+		return app.Create(environment)
 	}
-
-	gitRepo, err := spawn.Repo.CreateGitRepository(application.ProjectName, application.AccessToken, application.DeployToken)
-	if err != nil {
-		return err
-	}
-
-	println("Created gitlab respository with url: ", gitRepo.URL)
 
 	return nil
 }
 
 // NewSpawnAction init function
-func NewSpawnAction(gitRepository GitRepository, platform PlatformRepository) SpawnAction {
-	return SpawnAction{gitRepository, platform}
+func NewSpawnAction() SpawnAction {
+	return SpawnAction{}
 }

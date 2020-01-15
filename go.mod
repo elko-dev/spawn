@@ -1,4 +1,4 @@
-module gitlab.com/shared-tool-chain/spawn
+module github.com/elko-dev/spawn
 
 go 1.13.4
 
@@ -10,8 +10,8 @@ require (
 	github.com/manifoldco/promptui v0.6.0
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/urfave/cli v1.22.1
-	golang.org/x/crypto v0.0.0-20200109152110-61a87790db17 // indirect
-	golang.org/x/net v0.0.0-20191209160850-c0dbc17a3553 // indirect
-	golang.org/x/sys v0.0.0-20200107162124-548cf772de50 // indirect
+	golang.org/x/crypto v0.0.0-20200115085410-6d4e4cb37c7d // indirect
+	golang.org/x/net v0.0.0-20200114155413-6afb5195e5aa // indirect
+	golang.org/x/sys v0.0.0-20200113162924-86b910548bc1 // indirect
 	gopkg.in/src-d/go-git.v4 v4.13.1
 )

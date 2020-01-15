@@ -5,8 +5,8 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/elko-dev/spawn/herokus"
 	heroku "github.com/heroku/heroku-go/v5"
-	"gitlab.com/shared-tool-chain/spawn/actions"
 )
 
 // HerokuAPI describing the functionality to interact with Heroku
@@ -19,15 +19,24 @@ type HerokuPlatform struct {
 	Service *heroku.Service
 }
 
+// HerokuApp struct representing the values of a Heroku Application
+type HerokuApp struct {
+	AccessToken     string
+	ApplicationName string
+	TeamName        string
+	Environment     string
+	Buildpack       string
+}
+
 // Create method to create heroku repository
-func (h HerokuPlatform) Create(accessToken string, applicationName string, teamName string, environmnet string) (string, error) {
-	heroku.DefaultTransport.BearerToken = accessToken
+func (h HerokuPlatform) Create(application herokus.Application) (string, error) {
+	heroku.DefaultTransport.BearerToken = application.AccessToken
 
 	region := "us"
 	stack := "heroku-18"
 
-	herokuName := createHerokuName(applicationName, environmnet)
-	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
+	herokuName := createHerokuName(application.ApplicationName, application.Environment)
+	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &application.TeamName}
 
 	app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
 
@@ -44,7 +53,7 @@ func (h HerokuPlatform) Create(accessToken string, applicationName string, teamN
 	buildPackOps.Updates = append(buildPackOps.Updates, struct {
 		Buildpack string `json:"buildpack" url:"buildpack,key"`
 	}{
-		Buildpack: "mars/create-react-app",
+		Buildpack: application.Buildpack,
 	})
 
 	_, err = h.Service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
@@ -63,7 +72,7 @@ func createHerokuName(applicationName string, environment string) string {
 }
 
 // NewHerokuPlatform init function
-func NewHerokuPlatform() actions.PlatformRepository {
+func NewHerokuPlatform() HerokuPlatform {
 	s := heroku.NewService(heroku.DefaultClient)
 	return HerokuPlatform{Service: s}
 }

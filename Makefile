@@ -4,7 +4,7 @@ GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 
-default: make_start clean dependencies test build make_stop
+default: make_start test build make_stop
 
 make_start:
 	@echo "make START"

@@ -13,9 +13,11 @@ func TestHerokuNameReturnsCorrectFormat(t *testing.T) {
 
 	if size != 11 {
 		t.Log("expected size to be 11 but was " + strconv.Itoa(size))
+		t.Fail()
 	}
 	println("actual " + actual)
 	if !strings.HasPrefix(actual, "dev-testapp") {
 		t.Log("expected " + actual + " to start with testapp")
+		t.Fail()
 	}
 }

@@ -1,8 +1,7 @@
 package git
 
 import (
-	"gitlab.com/shared-tool-chain/spawn/actions"
-	"gitlab.com/shared-tool-chain/spawn/git/api"
+	"github.com/elko-dev/spawn/git/api"
 )
 
 // GitlabRepository struct to leverage Gitlab
@@ -23,7 +22,7 @@ type HTTP interface {
 }
 
 // CreateGitRepository action to create a Gitlab repo
-func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string) (api.GitRepository, error) {
+func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string, url string) (api.GitRepository, error) {
 	repository, err := gitlab.HTTP.PostGitRepository(repositoryName, accessToken)
 
 	err = gitlab.HTTP.AddEnvironmentVariables(deployToken, repository.ID.String(), accessToken)
@@ -33,8 +32,6 @@ func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, access
 	}
 
 	println("Added environment variables to Gitlab repo...")
-
-	url := "https://gitlab.com/shared-tool-chain/react-native-template.git"
 
 	if err != nil {
 		return api.GitRepository{}, err
@@ -50,7 +47,7 @@ func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, access
 }
 
 // NewGitlabRepository init method
-func NewGitlabRepository(git Git) actions.GitRepository {
+func NewGitlabRepository(git Git) GitlabRepository {
 	http := api.GitlabHTTP{}
 	return GitlabRepository{HTTP: http, Git: git}
 }

@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/urfave/cli"
-	"gitlab.com/shared-tool-chain/spawn/actions"
+	"github.com/elko-dev/spawn/actions"
 )
 
 func ExpectedNameIsSpawn(t *testing.T) {
