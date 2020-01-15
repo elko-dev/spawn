@@ -13,10 +13,10 @@ const (
 	expectedPlatformError = "EXPECTED ERROR"
 )
 
-type mockPlatform struct {
+type mockBadPlatform struct {
 }
 
-func (mockPlatform mockPlatform) Create(application herokus.Application) (string, error) {
+func (mockBadPlatform mockBadPlatform) Create(application herokus.Application) (string, error) {
 	if gitURL != gitURL {
 		return "", errors.New("INCORRECT URL PASSED TO CREATE")
 	}
@@ -26,7 +26,7 @@ func (mockPlatform mockPlatform) Create(application herokus.Application) (string
 type mockGoodPlatform struct {
 }
 
-func (mockPlatform mockGoodPlatform) Create(application herokus.Application) (string, error) {
+func (mockGoodPlatform mockGoodPlatform) Create(application herokus.Application) (string, error) {
 	return "URL", nil
 }
 
@@ -37,17 +37,17 @@ func (mock mockBadRepository) CreateGitRepository(repositoryName string, accessT
 	return api.GitRepository{}, errors.New("GITLAB_ERROR")
 }
 
-type MockGoodRepository struct {
+type mockGoodRepository struct {
 }
 
-func (mock MockGoodRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string, url string) (api.GitRepository, error) {
+func (mock mockGoodRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string, url string) (api.GitRepository, error) {
 	return api.GitRepository{URL: gitURL}, nil
 }
 
 func TestNodeJsCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	mockRepo := mockBadRepository{}
-	mockPlatform := mockGoodPlatform{}
-	nodeJs := NodeJs{Repo: mockRepo, Platform: mockPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
+	mockBadPlatform := mockGoodPlatform{}
+	nodeJs := NodeJs{Repo: mockRepo, Platform: mockBadPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
 	expected := "GITLAB_ERROR"
 	environments := []string{"dev"}
 
@@ -61,9 +61,9 @@ func TestNodeJsCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 }
 
 func TestNodeJsCreateReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *testing.T) {
-	mockRepo := MockGoodRepository{}
-	mockPlatform := mockPlatform{}
-	nodeJs := NodeJs{Repo: mockRepo, Platform: mockPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
+	mockRepo := mockGoodRepository{}
+	mockBadPlatform := mockBadPlatform{}
+	nodeJs := NodeJs{Repo: mockRepo, Platform: mockBadPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
 	expected := expectedPlatformError
 	environments := []string{"dev"}
 

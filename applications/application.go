@@ -41,7 +41,7 @@ func CreateApp(application Application) (App, error) {
 		return nodeJsApp, nil
 	}
 	if application.ApplicationType == "React" {
-		reactApp := NewReact(git.NewGitlabRepository(git.NewLocal()), platform.NewHerokuPlatform())
+		reactApp := NewReact(git.NewGitlabRepository(git.NewLocal()), platform.NewHerokuPlatform(), application)
 		return reactApp, nil
 	}
 	return nil, errors.New("Invalid Application Type")
