@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/elko-dev/spawn/prompt"
 	"io/ioutil"
 	"net/http"
 )
@@ -61,7 +62,12 @@ func (rest GitlabHTTP) AddEnvironmentVariables(deployToken string, projectID str
 
 // PostGitRepository Creates Git Repository
 func (rest GitlabHTTP) PostGitRepository(repositoryName string, accessToken string) (GitRepository, error) {
-	var projectRequest = []byte(`{"name":"` + repositoryName + `"}`)
+	group, err := prompt.GitlabGroupID()
+	if err != nil {
+		println("Error retrieving Gitlab Group name")
+		return GitRepository{}, err
+	}
+	var projectRequest = createProjectRequest(repositoryName, group)
 	req, err := createPostRequest(accessToken, gitlabProjectURL, projectRequest)
 
 	client := &http.Client{}
@@ -87,6 +93,10 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, accessToken stri
 	println("Failed to create gitlab repository")
 	println(resp.StatusCode)
 	return response, errors.New("Error creating gitlab repo")
+}
+
+func createProjectRequest(respositoryName string, group string) []byte {
+	return []byte(`{"path":"` + respositoryName + `", "namespace_id": ` + group + `}`)
 }
 
 func createPostRequest(accessToken string, url string, request []byte) (*http.Request, error) {

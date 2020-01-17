@@ -1,4 +1,5 @@
 # spawn
+[![CircleCI](https://circleci.com/gh/elko-dev/spawn.svg?style=svg)](https://circleci.com/gh/elko-dev/spawn) [![Go Report Card](https://goreportcard.com/badge/github.com/elko-dev/spawn)](https://goreportcard.com/report/github.com/elko-dev/spawn)
 
 Spawn is a project scaffolding tool.  It is designed to take an opinion on how to build web and mobile application front and backends.  It relies on a number of open source tools and frameworks to help bootstrap you applications. 
 
@@ -19,8 +20,12 @@ Spawn relies on tokens from the various supported platforms to create resources 
 The supported languages are based off of a set of curated template applications.  They have been designed and built for the purpose of the [Elko](elko.dev).  However, Spawn allows you to bring your own template as well!  Simply override the Elko template and provide your own git repository and let Spawn do the rest!
 
 ### Usage
+Spawn is an interactive CLI application.  Spawn will guide you through the process of selecting what type of application you want to build, the platforms that will host it, and any additional configuration required.
+
+In order to "spawn" an app, simple use the *application* command and let spawn walk you through the setup process:
 ``` bash
 ./spawn application
 ```
+![Alt Text](docs/seets/spawn-demo.gif)
 
 ### Installation

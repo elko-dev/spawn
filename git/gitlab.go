@@ -25,13 +25,13 @@ type HTTP interface {
 func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string, url string) (api.GitRepository, error) {
 	repository, err := gitlab.HTTP.PostGitRepository(repositoryName, accessToken)
 
-	err = gitlab.HTTP.AddEnvironmentVariables(deployToken, repository.ID.String(), accessToken)
 	if err != nil {
-		println("Failed to add environment variables to Gitlab repo...")
 		return api.GitRepository{}, err
 	}
 
+	err = gitlab.HTTP.AddEnvironmentVariables(deployToken, repository.ID.String(), accessToken)
 	if err != nil {
+		println("Failed to add environment variables to Gitlab repo...")
 		return api.GitRepository{}, err
 	}
 
