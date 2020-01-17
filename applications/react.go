@@ -17,16 +17,13 @@ const (
 )
 
 // Create is a function to generate a react application
-func (react React) Create(environment string) error {
-	herokuApplication := herokus.Application{Buildpack: "mars/create-react-app", AccessToken: react.DeployToken, TeamName: react.TeamName, ApplicationName: react.Name, Environment: environment}
+func (react React) Create(environments []string) error {
+	herokuApplication := herokus.Application{Buildpack: "mars/create-react-app", AccessToken: react.DeployToken, TeamName: react.TeamName, ApplicationName: react.Name}
 
-	url, err := react.Platform.Create(herokuApplication)
+	err := createApp(react.Platform, environments, herokuApplication)
 	if err != nil {
 		return err
 	}
-
-	println("Created NodeJS Application for " + environment + " with url: " + url)
-
 	gitRepo, err := react.Repo.CreateGitRepository(react.Name, react.AccessToken, react.DeployToken, reactTemplateURL)
 	if err != nil {
 		return err

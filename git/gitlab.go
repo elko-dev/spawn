@@ -31,8 +31,6 @@ func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, access
 		return api.GitRepository{}, err
 	}
 
-	println("Added environment variables to Gitlab repo...")
-
 	if err != nil {
 		return api.GitRepository{}, err
 	}

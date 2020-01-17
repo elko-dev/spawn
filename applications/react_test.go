@@ -10,11 +10,11 @@ import (
 type mockHerokuPlatform struct {
 }
 
-func (mockHerokuPlatform mockHerokuPlatform) Create(application herokus.Application) (string, error) {
+func (mockHerokuPlatform mockHerokuPlatform) Create(application herokus.Application, environments []string) error {
 	if application.Buildpack != "mars/create-react-app" {
-		return "", errors.New("Invalid buildpack")
+		return errors.New("Invalid buildpack")
 	}
-	return "URL", nil
+	return nil
 }
 
 func TestReactCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
@@ -24,7 +24,7 @@ func TestReactCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	expected := "GITLAB_ERROR"
 	environments := []string{"dev"}
 
-	actual := react.Create(environments[0]).Error()
+	actual := react.Create(environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -40,7 +40,7 @@ func TestReactCreateReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *t
 	expected := expectedPlatformError
 	environments := []string{"dev"}
 
-	actual := react.Create(environments[0]).Error()
+	actual := react.Create(environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -56,7 +56,7 @@ func TestHerokuIsProvidedCorrectBuildPack(t *testing.T) {
 	react := React{Repo: mockRepo, Platform: mockHerokuPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
 	environments := []string{"dev"}
 
-	error := react.Create(environments[0])
+	error := react.Create(environments)
 
 	if error != nil {
 		t.Log("no error expected")

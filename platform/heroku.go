@@ -25,45 +25,50 @@ type HerokuApp struct {
 }
 
 // Create method to create heroku repository
-func (h HerokuPlatform) Create(application herokus.Application) (string, error) {
+func (h HerokuPlatform) Create(application herokus.Application, environments []string) error {
 	heroku.DefaultTransport.BearerToken = application.AccessToken
 
 	region := "us"
 	stack := "heroku-18"
 	teamName, err := prompt.HerokuTeamName()
-	if err != nil {
-		println(err.Error())
-		return "", errors.New("Error Retrieving Heroku Team Name")
-	}
-	herokuName := createHerokuName(application.ApplicationName, application.Environment)
-	createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
-
-	app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
 
 	if err != nil {
 		println(err.Error())
-		return "", errors.New("Error Creating App")
+		return errors.New("Error Retrieving Heroku Team Name")
 	}
 
-	buildPackOps := heroku.BuildpackInstallationUpdateOpts{
-		Updates: []struct {
+	for _, environment := range environments {
+		herokuName := createHerokuName(application.ApplicationName, environment)
+		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
+
+		app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
+
+		if err != nil {
+			println(err.Error())
+			return errors.New("Error Creating App")
+		}
+
+		buildPackOps := heroku.BuildpackInstallationUpdateOpts{
+			Updates: []struct {
+				Buildpack string `json:"buildpack" url:"buildpack,key"`
+			}{}}
+
+		buildPackOps.Updates = append(buildPackOps.Updates, struct {
 			Buildpack string `json:"buildpack" url:"buildpack,key"`
-		}{}}
+		}{
+			Buildpack: application.Buildpack,
+		})
 
-	buildPackOps.Updates = append(buildPackOps.Updates, struct {
-		Buildpack string `json:"buildpack" url:"buildpack,key"`
-	}{
-		Buildpack: application.Buildpack,
-	})
+		_, err = h.Service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
 
-	_, err = h.Service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
-
-	if err != nil {
-		println(err.Error())
-		return "", errors.New("Error")
+		if err != nil {
+			println(err.Error())
+			return errors.New("Error")
+		}
+		println("Created Application for " + environment + " at url " + app.WebURL)
 	}
 
-	return app.WebURL, nil
+	return nil
 }
 
 func createHerokuName(applicationName string, environment string) string {

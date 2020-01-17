@@ -21,7 +21,7 @@ type Application struct {
 
 // App interface representing interface to create an app
 type App interface {
-	Create(environment string) error
+	Create(environments []string) error
 }
 
 // GitRepository describing the functionality to Create repositories
@@ -31,7 +31,7 @@ type GitRepository interface {
 
 // PlatformRepository repository that defines creation of Platform repo
 type PlatformRepository interface {
-	Create(application herokus.Application) (string, error)
+	Create(application herokus.Application, environments []string) error
 }
 
 // CreateApp returns an app
@@ -45,4 +45,13 @@ func CreateApp(application Application) (App, error) {
 		return reactApp, nil
 	}
 	return nil, errors.New("Invalid Application Type")
+}
+
+func createApp(platform PlatformRepository, environments []string, application herokus.Application) error {
+	err := platform.Create(application, environments)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

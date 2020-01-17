@@ -15,12 +15,7 @@ type SpawnAction struct {
 
 // Application action to create a project Scaffolding
 func (spawn SpawnAction) Application(app applications.App, environments []string) error {
-
-	for _, environment := range environments {
-		return app.Create(environment)
-	}
-
-	return nil
+	return app.Create(environments)
 }
 
 // NewSpawnAction init function

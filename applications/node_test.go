@@ -16,18 +16,18 @@ const (
 type mockBadPlatform struct {
 }
 
-func (mockBadPlatform mockBadPlatform) Create(application herokus.Application) (string, error) {
+func (mockBadPlatform mockBadPlatform) Create(application herokus.Application, environments []string) error {
 	if gitURL != gitURL {
-		return "", errors.New("INCORRECT URL PASSED TO CREATE")
+		return errors.New("INCORRECT URL PASSED TO CREATE")
 	}
-	return "", errors.New(expectedPlatformError)
+	return errors.New(expectedPlatformError)
 }
 
 type mockGoodPlatform struct {
 }
 
-func (mockGoodPlatform mockGoodPlatform) Create(application herokus.Application) (string, error) {
-	return "URL", nil
+func (mockGoodPlatform mockGoodPlatform) Create(application herokus.Application, environments []string) error {
+	return nil
 }
 
 type mockBadRepository struct {
@@ -51,7 +51,7 @@ func TestNodeJsCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	expected := "GITLAB_ERROR"
 	environments := []string{"dev"}
 
-	actual := nodeJs.Create(environments[0]).Error()
+	actual := nodeJs.Create(environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -60,14 +60,14 @@ func TestNodeJsCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	}
 }
 
-func TestNodeJsCreateReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *testing.T) {
+func TestNodeJsCreateReturnsErrorWhenHerokuFails(t *testing.T) {
 	mockRepo := mockGoodRepository{}
 	mockBadPlatform := mockBadPlatform{}
 	nodeJs := NodeJs{Repo: mockRepo, Platform: mockBadPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
 	expected := expectedPlatformError
 	environments := []string{"dev"}
 
-	actual := nodeJs.Create(environments[0]).Error()
+	actual := nodeJs.Create(environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)

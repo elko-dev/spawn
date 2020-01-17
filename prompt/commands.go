@@ -75,3 +75,20 @@ func HerokuTeamName() (string, error) {
 
 	return projectPrompt.Run()
 }
+
+//GitlabGroupName prompts user for Gitlab group name to add repo
+func GitlabGroupName() (string, error) {
+	gitlabGroupValidate :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	projectPrompt := promptui.Prompt{
+		Label:    "Gitlab Group Name",
+		Validate: gitlabGroupValidate,
+	}
+
+	return projectPrompt.Run()
+}
