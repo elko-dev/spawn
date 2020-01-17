@@ -26,6 +26,6 @@ In order to "spawn" an app, simple use the *application* command and let spawn w
 ``` bash
 ./spawn application
 ```
-![Alt Text](docs/seets/spawn-demo.gif)
+![](docs/assets/spawn-demo.gif)
 
 ### Installation
