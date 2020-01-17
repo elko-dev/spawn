@@ -32,7 +32,7 @@ build:
 
 publish-release:
 	@go get github.com/aktau/github-release
-	cd release && ./release.sh "v$(MAJOR_VERSION).$(MINOR_VERSION).$(VERSION)" $(APP_NAME) $(USER)
+	cd scripts && ./release.sh "v$(MAJOR_VERSION).$(MINOR_VERSION).$(VERSION)" $(APP_NAME) $(USER)
 
 make_stop:
 	@echo "make STOP"
