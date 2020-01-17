@@ -6,7 +6,7 @@ GOGET=$(GOCMD) get
 
 APP_NAME=spawn
 MAJOR_VERSION=0
-MINOR_VERSION=0
+MINOR_VERSION=1
 
 default: make_start clean dependencies test build make_stop
 
