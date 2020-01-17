@@ -24,7 +24,7 @@ jobs:
           echo "export GIT_COMMIT_DESC=\"$(git log --format=oneline -n 1 $CIRCLE_SHA1)\"" >> ~/.bashrc
           echo $GIT_COMMIT_DESC
           if  [[ $GIT_COMMIT_DESC == RELEASE* ]] ; then
-            make VERSION="${CIRCLE_BUILD_NUM}" publish-release
+            make VERSION="${CIRCLE_BUILD_NUM}" USER="${USER}" publish-release
           else 
             echo no release on this commit
           fi
