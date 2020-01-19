@@ -28,10 +28,6 @@ func (local Local) DuplicateRepo(url string, accessToken string, repository api.
 	r, err := git.PlainClone(repository.Name, false, &git.CloneOptions{
 		URL:               url,
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
-		Auth: &http.BasicAuth{
-			Username: "abc123", // yes, this can be anything except an empty string
-			Password: accessToken,
-		},
 	})
 	if err != nil {
 		println("Clone failed")

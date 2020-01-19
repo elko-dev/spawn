@@ -12,7 +12,6 @@ func GitlabAccessToken() (string, error) {
 		func(input string) error {
 			return validation.Validate(input,
 				validation.Required, // not empty
-				is.Alphanumeric,
 			)
 		}
 
