@@ -46,9 +46,7 @@ The above gif shows the configuration required to create our apps.  In it we pro
 
 Don't worry, the Heroku and Gitlab tokens have been rotated ;)
 
-Now let's take a look at what was created.  
-
-Our application was uploaded to Gitlab with our project specific configuration, including the required deployment configuration
+Now let's take a look at what was created. Our application was uploaded to Gitlab with our project specific configuration, including the required deployment configuration
 
 **Gitlab Repo**
 ![](docs/assets/gitlab_repo.png)
