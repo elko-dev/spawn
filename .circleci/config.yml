@@ -21,13 +21,7 @@ jobs:
     - run:
         name: Release Binary
         command: |
-          GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
-          echo $GIT_COMMIT_DESC
-          if  [[ $GIT_COMMIT_DESC == RELEASE* ]] ; then
-            make VERSION="${CIRCLE_BUILD_NUM}" USER="${USER}" publish-release
-          else 
-            echo no release on this commit
-          fi
+          make publish-release
     - save_cache:
         key: v1-pkg-cache
         paths:
