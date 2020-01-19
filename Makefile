@@ -1,11 +1,18 @@
+# Commands
+GOFILES = $(shell find . -name '*.go' -not -path './vendor/*')
 GOCMD=go
 GOBUILD=$(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 
+# Configuration Values
+SRC_LOCATION=.
+BIN_OUTPUT=release
 APP_NAME=spawn
+REPO=elko-dev
 MAJOR_VERSION=0
+PATCH_VERSION=8
 MINOR_VERSION=1
 
 default: make_start clean dependencies test build make_stop
@@ -27,12 +34,17 @@ dependencies:
 test: 
 	$(GOTEST) -v ./...
 
-build: 
-	$(GOBUILD) 
+build: spawn
+
+spawn: $(GOFILES)	
+	./scripts/build.sh $(APP_NAME) $(SRC_LOCATION) $(BIN_OUTPUT)
+
+# build: 
+# 	$(GOBUILD) 
 
 publish-release:
 	@go get github.com/aktau/github-release
-	cd scripts && ./release.sh "v$(MAJOR_VERSION).$(MINOR_VERSION).$(VERSION)" $(APP_NAME) $(USER)
+	cd scripts && ./release.sh "v$(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)" $(USER) $(APP_NAME) $(REPO)
 
 make_stop:
 	@echo "make STOP"

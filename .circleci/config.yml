@@ -20,9 +20,8 @@ jobs:
     - run: make -B
     - run:
         name: Release Binary
-        environment:
-          GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
         command: |
+          GIT_COMMIT_DESC: git log --format=oneline -n 1 $CIRCLE_SHA1
           echo $GIT_COMMIT_DESC
           if  [[ $GIT_COMMIT_DESC == RELEASE* ]] ; then
             make VERSION="${CIRCLE_BUILD_NUM}" USER="${USER}" publish-release
