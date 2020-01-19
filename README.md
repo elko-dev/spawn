@@ -1,7 +1,10 @@
 # spawn
 [![CircleCI](https://circleci.com/gh/elko-dev/spawn.svg?style=svg)](https://circleci.com/gh/elko-dev/spawn) [![Go Report Card](https://goreportcard.com/badge/github.com/elko-dev/spawn)](https://goreportcard.com/report/github.com/elko-dev/spawn)
 
-Spawn is a project scaffolding tool.  It is designed to take an opinion on how to build web and mobile application front and backends.  It relies on a number of open source tools and frameworks to help bootstrap you applications. 
+Spawn is a project scaffolding tool. It is designed to take an opinion on how to build web and mobile application front and backends.  It relies on a number of open source tools and frameworks to help bootstrap you applications, enforce best practices, and save time! 
+
+**Spawn's origins** </br>
+[Elko](https://elko.dev) is a Software Development firm that specializes in product based application and cloud development.  We strive to build the best products for our customers, and for the best price!  We are always looking for ways to make our processes more efficient, particularly from an engineering perspective.  One thing our engineers noticed is that we spent time at the start of each project doing the same things.  Creating our initial applications, standing up CI pipelines, deployment platforms, integrating with user management services like [Firebase](https://firebase.com/), creating our initial Web/Mobile integrations with our GraphQL apis, etc.  We realized that we could save time (and thus save our clients money!) if we began to automate these processes.  We can also ensure consistancy across our projects, enforce best practices, and gain additional development speed through these efficiencies
 
 ## Supported Platforms
 1. Heroku
