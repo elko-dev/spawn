@@ -47,16 +47,16 @@ The above gif shows the configuration required to create our apps.  In it we pro
 
 Now let's take a look at what was created. Our application was uploaded to Gitlab with our project specific configuration, including the required deployment configuration
 
-**Gitlab Repo**
+## Gitlab Repo
 ![](docs/assets/gitlab_repo.png)
-**Gitlab Configuration**
+## Gitlab Configuration
 ![](docs/assets/gitlab_configuration.png)
 
 And our app was deployed successfully to Heroku.  *Note - Spawn currently supports dev, stage, and production environments*
 
-**Gitlab CI**
+## Gitlab CI
 ![](docs/assets/gitlab_ci.png)
-**Heroku Apps**
+## Heroku Apps
 ![](docs/assets/heroku_apps.png)
 
 ### Bring you own templates
