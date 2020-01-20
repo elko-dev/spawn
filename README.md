@@ -21,12 +21,6 @@ Spawn relies on tokens from the various supported platforms to create resources 
 
 The supported languages are based off of a set of curated template applications.  They have been designed and built for the purpose of the [Elko](elko.dev).  However, Spawn allows you to bring your own template as well!  Simply override the Elko template and provide your own git repository and let Spawn do the rest!
 
-### Bring you own templates
-
-Spawn also gives you the option to use your own template when creating applications.  Simply follow the prompts and provide your own .git url
-
-![](docs/assets/custom_template.png)
-
 ### Usage
 Spawn is an interactive CLI application.  Spawn will guide you through the process of selecting what type of application you want to build, the platforms that will host it, and any additional configuration required.
 
@@ -64,5 +58,11 @@ And our app was deployed successfully to Heroku.  *Note - Spawn currently suppor
 ![](docs/assets/gitlab_ci.png)
 **Heroku Apps**
 ![](docs/assets/heroku_apps.png)
+
+### Bring you own templates
+
+Spawn also gives you the option to use your own template when creating applications.  Simply follow the prompts and provide your own .git url
+
+![](docs/assets/custom_template.png)
 
 ### Installation
