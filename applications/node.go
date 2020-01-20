@@ -20,7 +20,7 @@ type NodeJs struct {
 
 // Create is a function to generate a NodeJS application
 func (nodeJs NodeJs) Create(environments []string) error {
-	herokuApplication := herokus.Application{Buildpack: "nodejs", AccessToken: nodeJs.AccessToken, TeamName: nodeJs.TeamName, ApplicationName: nodeJs.Name}
+	herokuApplication := herokus.Application{Buildpack: "heroku/nodejs", AccessToken: nodeJs.DeployToken, TeamName: nodeJs.TeamName, ApplicationName: nodeJs.Name}
 
 	err := createApp(nodeJs.Platform, environments, herokuApplication)
 	if err != nil {

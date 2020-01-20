@@ -39,9 +39,6 @@ build: spawn
 spawn: $(GOFILES)	
 	./scripts/build.sh $(APP_NAME) $(SRC_LOCATION) $(BIN_OUTPUT)
 
-# build: 
-# 	$(GOBUILD) 
-
 publish-release:
 	@go get github.com/aktau/github-release
 	cd scripts && ./release.sh "v$(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)" $(USER) $(APP_NAME) $(REPO)
