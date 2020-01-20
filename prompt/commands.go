@@ -1,6 +1,7 @@
 package prompt
 
 import (
+	"github.com/elko-dev/spawn/prompt/validations"
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/manifoldco/promptui"
@@ -93,4 +94,16 @@ func GitlabGroupID() (string, error) {
 	}
 
 	return projectPrompt.Run()
+}
+
+// UseCustomTemplate returns whether to use a custom template
+func UseCustomTemplate() (string, error) {
+
+	prompt := promptui.Prompt{
+		Label:     "Use Custom Template",
+		IsConfirm: true,
+		Validate:  validations.YOrNValidation,
+	}
+
+	return prompt.Run()
 }
