@@ -15,7 +15,6 @@ Spawn relies on tokens from the various supported platforms to create resources 
 1. [GitLab](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
 2. [Heroku](https://help.heroku.com/PBGP6IDE/how-should-i-generate-an-api-key-that-allows-me-to-use-the-heroku-platform-api)
 
-
 ## Supported Languages
 1. React
 2. NodeJs
@@ -23,6 +22,10 @@ Spawn relies on tokens from the various supported platforms to create resources 
 The supported languages are based off of a set of curated template applications.  They have been designed and built for the purpose of the [Elko](elko.dev).  However, Spawn allows you to bring your own template as well!  Simply override the Elko template and provide your own git repository and let Spawn do the rest!
 
 ### Bring you own templates
+
+Spawn also gives you the option to use your own template when creating applications.  Simply follow the prompts and provide your own .git url
+
+![](docs/assets/custom_template.png)
 
 ### Usage
 Spawn is an interactive CLI application.  Spawn will guide you through the process of selecting what type of application you want to build, the platforms that will host it, and any additional configuration required.
@@ -41,6 +44,8 @@ The above gif shows the configuration required to create our apps.  In it we pro
 |---------------------|----------------|---------------------------------------------------------------------------------------|
 | Application Type    | React / NodeJS | Type of application to create.  Currently supported options are React and NodeJS      |
 | Project Name        | string         | Name of project to generate.  Currently only support lowercase string values          |
+| Use Custom Template | y/n            | Specify whether to use a custom application template or the spawn defaults            |
+| Template URL        | string         | Git repository containing base template for application                               |
 | Heroku Access Token | string         | Token for Spawn to use to create required Heroku deployments                          |
 | Heroku Team Name    | string         | Name of Heroku team to create Heroku deployments into                                 |
 | Gitlab Access token | string         | Token for Spawn to use to create Gitlab repository                                    |

@@ -118,7 +118,7 @@ func TemplateURL() (string, error) {
 		}
 
 	projectPrompt := promptui.Prompt{
-		Label:    "Application Template URL",
+		Label:    "Template URL",
 		Validate: templateURLValidate,
 	}
 
