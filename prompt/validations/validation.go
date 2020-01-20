@@ -13,3 +13,12 @@ func YOrNValidation(input string) error {
 	}
 	return nil
 }
+
+// GitValidation validates whether url is a .git url
+func GitValidation(input string) error {
+	if !strings.HasSuffix(input, ".git") {
+		return errors.New("template must be a .git url")
+	}
+
+	return nil
+}

@@ -57,3 +57,43 @@ func TestYOrNValidation(t *testing.T) {
 		})
 	}
 }
+
+func TestGitValidation(t *testing.T) {
+	type args struct {
+		input string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "Ends in .git",
+			args: args{
+				input: "https://github.com/spawn.git",
+			},
+			wantErr: false,
+		},
+		{
+			name: "Does not End in .git",
+			args: args{
+				input: "https://github.com/spawn",
+			},
+			wantErr: true,
+		},
+		{
+			name: "Empty string returns error",
+			args: args{
+				input: "",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := GitValidation(tt.args.input); (err != nil) != tt.wantErr {
+				t.Errorf("GitValidation() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
