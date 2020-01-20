@@ -66,3 +66,10 @@ Spawn also gives you the option to use your own template when creating applicati
 ![](docs/assets/custom_template.png)
 
 ### Installation
+Spawn uses Github Release to version and manage releases.  In order to download the latest release, simply check which version you want to install in [spawn's releases](https://github.com/elko-dev/spawn/releases) section and find which OS version you need.  Spawn is copiled for darwin-386, darwin-amd64, linux-386, linux-amd64, windows-386, and windows-amd64.
+
+Once you find the version you need, you download the version of spawn you need.  Here is a one liner using wget:
+
+```bash
+wget https://github.com/elko-dev/spawn/releases/download/<VERSION>/<SPAWN_OS_NAME> -O spawn
+```
