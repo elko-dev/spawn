@@ -4,7 +4,7 @@
 Spawn is a project scaffolding CLI tool. It is designed to take an opinion on how to build web and mobile application front and backends.  It relies on a number of open source tools and frameworks to help bootstrap your applications, enforce best practices, and save time! 
 
 ### Spawn's origins
-[Elko](https://elko.dev) is a Software Development firm that specializes in product based application and cloud development.  We strive to build the best products for our customers, and for the best price!  We are always looking for ways to make our processes more efficient, particularly from an engineering perspective.  Our engineers noticed is that we always spent time at the start of each project doing the same things.  Creating our initial front end and back end repositories, standing up CI pipelines, deployment platforms, integrating with user management services like [Firebase](https://firebase.com/), creating our initial Web/Mobile integrations with our GraphQL apis, etc.  We realized that we could save time (and thus save our clients money!) if we began to automate these processes. We can also ensure consistancy across our projects, enforce best practices, and gain additional development speed through these efficiencies. And thus Spawn was born!
+[Elko](https://elko.dev) is a Software Development firm that specializes in product based application and cloud development.  We strive to build the best products for our customers, and for the best price!  We are always looking for ways to make our processes more efficient, particularly from an engineering perspective.  Our engineers noticed that we always spent time at the start of each project doing the same things.  Creating our initial front end and back end repositories, standing up CI pipelines, deployment platforms, integrating with user management services like [Firebase](https://firebase.com/), creating our initial Web/Mobile integrations with our GraphQL apis, etc.  We realized that we could save time (and thus save our clients money!) if we began to automate these processes. We can also ensure consistancy across our projects, enforce best practices, and gain additional development speed through these efficiencies. And thus Spawn was born!
 
 ## Supported Platforms
 1. Heroku
@@ -24,7 +24,7 @@ The supported languages are based off of a set of curated template applications.
 ### Usage
 Spawn is an interactive CLI application.  Spawn will guide you through the process of selecting what type of application you want to build, the platforms that will host it, and any additional configuration required.
 
-In order to "spawn" an app, simple use the *application* command and let spawn walk you through the setup process:
+In order to "spawn" an app, simply use the *application* command and let spawn walk you through the setup process:
 ``` bash
 ./spawn application
 ```
@@ -68,7 +68,7 @@ Spawn also gives you the option to use your own template when creating applicati
 ### Installation
 Spawn uses Github Release to version and manage releases.  In order to download the latest release, simply check which version you want to install in [spawn's releases](https://github.com/elko-dev/spawn/releases) section and find which OS version you need.  Spawn is copiled for darwin-386, darwin-amd64, linux-386, linux-amd64, windows-386, and windows-amd64.
 
-Once you find the version you need, you download the version of spawn you need.  Here is a one liner using wget:
+Once you find the correct version, you can download the version of spawn you need.  Here is a one liner using wget:
 
 ```bash
 wget https://github.com/elko-dev/spawn/releases/download/<VERSION>/<SPAWN_OS_NAME> -O spawn
