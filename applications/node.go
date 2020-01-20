@@ -14,6 +14,7 @@ type NodeJs struct {
 	AccessToken string
 	DeployToken string
 	TeamName    string
+	TemplateURL string
 	Repo        GitRepository
 	Platform    PlatformRepository
 }
@@ -42,5 +43,10 @@ func NewNodeJs(gitRepository GitRepository, platform PlatformRepository, applica
 	nodeJs.AccessToken = application.AccessToken
 	nodeJs.DeployToken = application.DeployToken
 	nodeJs.TeamName = application.PlatformName
+	if application.TemplateURL == "" {
+		nodeJs.TemplateURL = nodeTemplateURL
+	} else {
+		nodeJs.TemplateURL = application.TemplateURL
+	}
 	return nodeJs
 }

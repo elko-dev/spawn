@@ -12,7 +12,7 @@ Spawn is a project scaffolding tool. It is designed to take an opinion on how to
 3. Gitlab CI
 
 Spawn relies on tokens from the various supported platforms to create resources on your behalf.  The following documentation can help to get setup on the supported platforms
-1. [GitLab](#https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
+1. [GitLab](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html)
 2. [Heroku](https://help.heroku.com/PBGP6IDE/how-should-i-generate-an-api-key-that-allows-me-to-use-the-heroku-platform-api)
 
 

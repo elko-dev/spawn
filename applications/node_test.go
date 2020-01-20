@@ -75,3 +75,29 @@ func TestNodeJsCreateReturnsErrorWhenHerokuFails(t *testing.T) {
 
 	}
 }
+
+func TestNewNodeJsSetsTemplateUrlWhenNoneProvided(t *testing.T) {
+	mockRepo := mockGoodRepository{}
+	mockBadPlatform := mockBadPlatform{}
+	expected := nodeTemplateURL
+	nodeJs := NewNodeJs(mockRepo, mockBadPlatform, Application{})
+	actual := nodeJs.TemplateURL
+	if actual != expected {
+		t.Log("Incorrect error, expected ", expected, " got ", actual)
+		t.Fail()
+
+	}
+}
+
+func TestNewNodeJsSetsTemplateUrlToProvidedUrl(t *testing.T) {
+	mockRepo := mockGoodRepository{}
+	mockBadPlatform := mockBadPlatform{}
+	expected := "testUrl"
+	nodeJs := NewNodeJs(mockRepo, mockBadPlatform, Application{TemplateURL: expected})
+	actual := nodeJs.TemplateURL
+	if actual != expected {
+		t.Log("Incorrect error, expected ", expected, " got ", actual)
+		t.Fail()
+
+	}
+}

@@ -17,6 +17,7 @@ type Application struct {
 	PlatformName    string
 	ApplicationType string
 	Environments    []string
+	TemplateURL     string
 }
 
 // App interface representing interface to create an app

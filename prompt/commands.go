@@ -107,3 +107,20 @@ func UseCustomTemplate() (string, error) {
 
 	return prompt.Run()
 }
+
+// TemplateURL prompts user for app template url
+func TemplateURL() (string, error) {
+	templateURLValidate :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	projectPrompt := promptui.Prompt{
+		Label:    "Application Template URL",
+		Validate: templateURLValidate,
+	}
+
+	return projectPrompt.Run()
+}

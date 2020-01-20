@@ -2,6 +2,7 @@ package commands
 
 import (
 	"os"
+	"strings"
 
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/flags"
@@ -33,15 +34,37 @@ func Run(action SpawnAction) cli.Command {
 }
 
 func promptUserForInput() (applications.Application, error) {
+	//TODO: Consider refactoring to builder
+	application := applications.Application{}
+
 	_, applicationType, err := selections.ApplicationType()
+	application.ApplicationType = applicationType
+
 	if err != nil {
 		println("Error selecting application type")
 		return applications.Application{}, err
 	}
+
 	projectName, err := prompt.ProjectName()
 	if err != nil {
 		println("Invalid Project Name")
 		return applications.Application{}, err
+	}
+	application.ProjectName = projectName
+
+	useCustomTemplate, err := prompt.UseCustomTemplate()
+	if err != nil {
+		println("Use Custom Template Failed")
+		return applications.Application{}, err
+	}
+
+	if strings.ToLower(useCustomTemplate) == "y" {
+		templateURL, err := prompt.TemplateURL()
+		if err != nil {
+			println("Template URL Failed")
+			return applications.Application{}, err
+		}
+		application.TemplateURL = templateURL
 	}
 
 	deployToken, err := prompt.DeployAccessToken()
@@ -49,21 +72,18 @@ func promptUserForInput() (applications.Application, error) {
 		println("Invalid DeployToken")
 		return applications.Application{}, err
 	}
+	application.DeployToken = deployToken
 
 	accessToken, err := prompt.GitlabAccessToken()
 	if err != nil {
 		println("Invalid AccessToken")
 		return applications.Application{}, err
 	}
-	environments := []string{"dev", "stage", "prod"}
+	application.AccessToken = accessToken
 
-	application := applications.Application{
-		ProjectName:     projectName,
-		AccessToken:     accessToken,
-		DeployToken:     deployToken,
-		Environments:    environments,
-		ApplicationType: applicationType,
-	}
+	environments := []string{"dev", "stage", "prod"}
+	application.Environments = environments
+
 	return application, nil
 }
 
