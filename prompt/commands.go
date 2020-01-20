@@ -18,6 +18,7 @@ func GitlabAccessToken() (string, error) {
 	accessTokenPrompt := promptui.Prompt{
 		Label:    "Gitlab Access Token",
 		Validate: accessTokenValidate,
+		Mask:     '*',
 	}
 
 	return accessTokenPrompt.Run()
@@ -35,6 +36,7 @@ func DeployAccessToken() (string, error) {
 	deployTokenPrompt := promptui.Prompt{
 		Label:    "Heroku Access Token",
 		Validate: deployTokenValidate,
+		Mask:     '*',
 	}
 
 	return deployTokenPrompt.Run()

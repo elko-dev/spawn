@@ -22,6 +22,8 @@ Spawn relies on tokens from the various supported platforms to create resources 
 
 The supported languages are based off of a set of curated template applications.  They have been designed and built for the purpose of the [Elko](elko.dev).  However, Spawn allows you to bring your own template as well!  Simply override the Elko template and provide your own git repository and let Spawn do the rest!
 
+### Bring you own templates
+
 ### Usage
 Spawn is an interactive CLI application.  Spawn will guide you through the process of selecting what type of application you want to build, the platforms that will host it, and any additional configuration required.
 
@@ -43,8 +45,6 @@ The above gif shows the configuration required to create our apps.  In it we pro
 | Heroku Team Name    | string         | Name of Heroku team to create Heroku deployments into                                 |
 | Gitlab Access token | string         | Token for Spawn to use to create Gitlab repository                                    |
 | Gitlab Group Id     | string         | Id of Gitlab Group to create repository in, if left blank will create in your account |
-
-Don't worry, the Heroku and Gitlab tokens have been rotated ;)
 
 Now let's take a look at what was created. Our application was uploaded to Gitlab with our project specific configuration, including the required deployment configuration
 
