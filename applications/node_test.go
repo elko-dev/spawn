@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/elko-dev/spawn/git/api"
-	"github.com/elko-dev/spawn/herokus"
+	"github.com/elko-dev/spawn/platform"
 )
 
 const (
@@ -16,7 +16,7 @@ const (
 type mockBadPlatform struct {
 }
 
-func (mockBadPlatform mockBadPlatform) Create(application herokus.Application, environments []string) error {
+func (mockBadPlatform mockBadPlatform) Create(application platform.Application, environments []string) error {
 	if gitURL != gitURL {
 		return errors.New("INCORRECT URL PASSED TO CREATE")
 	}
@@ -26,7 +26,7 @@ func (mockBadPlatform mockBadPlatform) Create(application herokus.Application, e
 type mockGoodPlatform struct {
 }
 
-func (mockGoodPlatform mockGoodPlatform) Create(application herokus.Application, environments []string) error {
+func (mockGoodPlatform mockGoodPlatform) Create(application platform.Application, environments []string) error {
 	return nil
 }
 
@@ -47,11 +47,11 @@ func (mock mockGoodRepository) CreateGitRepository(repositoryName string, access
 func TestNodeJsCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	mockRepo := mockBadRepository{}
 	mockBadPlatform := mockGoodPlatform{}
-	nodeJs := NodeJs{Repo: mockRepo, Platform: mockBadPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
+	nodeJs := NodeJs{Repo: mockRepo, Platform: mockBadPlatform}
 	expected := "GITLAB_ERROR"
 	environments := []string{"dev"}
 
-	actual := nodeJs.Create(environments).Error()
+	actual := nodeJs.Create(platform.Application{}, environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -63,11 +63,11 @@ func TestNodeJsCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 func TestNodeJsCreateReturnsErrorWhenHerokuFails(t *testing.T) {
 	mockRepo := mockGoodRepository{}
 	mockBadPlatform := mockBadPlatform{}
-	nodeJs := NodeJs{Repo: mockRepo, Platform: mockBadPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
+	nodeJs := NodeJs{Repo: mockRepo, Platform: mockBadPlatform}
 	expected := expectedPlatformError
 	environments := []string{"dev"}
 
-	actual := nodeJs.Create(environments).Error()
+	actual := nodeJs.Create(platform.Application{}, environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -77,11 +77,8 @@ func TestNodeJsCreateReturnsErrorWhenHerokuFails(t *testing.T) {
 }
 
 func TestNewNodeJsSetsTemplateUrlWhenNoneProvided(t *testing.T) {
-	mockRepo := mockGoodRepository{}
-	mockBadPlatform := mockBadPlatform{}
 	expected := nodeTemplateURL
-	nodeJs := NewNodeJs(mockRepo, mockBadPlatform, Application{})
-	actual := nodeJs.TemplateURL
+	actual := getNodeTemplateURL(nodeTemplateURL)
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
 		t.Fail()
@@ -90,11 +87,9 @@ func TestNewNodeJsSetsTemplateUrlWhenNoneProvided(t *testing.T) {
 }
 
 func TestNewNodeJsSetsTemplateUrlToProvidedUrl(t *testing.T) {
-	mockRepo := mockGoodRepository{}
-	mockBadPlatform := mockBadPlatform{}
-	expected := "testUrl"
-	nodeJs := NewNodeJs(mockRepo, mockBadPlatform, Application{TemplateURL: expected})
-	actual := nodeJs.TemplateURL
+	expected := nodeTemplateURL
+	actual := getNodeTemplateURL("")
+
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
 		t.Fail()

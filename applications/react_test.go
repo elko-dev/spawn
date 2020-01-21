@@ -1,30 +1,26 @@
 package applications
 
 import (
-	"errors"
 	"testing"
 
-	"github.com/elko-dev/spawn/herokus"
+	"github.com/elko-dev/spawn/platform"
 )
 
 type mockHerokuPlatform struct {
 }
 
-func (mockHerokuPlatform mockHerokuPlatform) Create(application herokus.Application, environments []string) error {
-	if application.Buildpack != "mars/create-react-app" {
-		return errors.New("Invalid buildpack")
-	}
+func (mockHerokuPlatform mockHerokuPlatform) Create(application platform.Application, environments []string) error {
 	return nil
 }
 
 func TestReactCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	mockRepo := mockBadRepository{}
 	mockPlatform := mockGoodPlatform{}
-	react := React{Repo: mockRepo, Platform: mockPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
+	react := React{Repo: mockRepo, Platform: mockPlatform}
 	expected := "GITLAB_ERROR"
 	environments := []string{"dev"}
 
-	actual := react.Create(environments).Error()
+	actual := react.Create(platform.Application{}, environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -36,11 +32,11 @@ func TestReactCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 func TestReactCreateReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *testing.T) {
 	mockRepo := mockGoodRepository{}
 	mockBadPlatform := mockBadPlatform{}
-	react := React{Repo: mockRepo, Platform: mockBadPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
+	react := React{Repo: mockRepo, Platform: mockBadPlatform}
 	expected := expectedPlatformError
 	environments := []string{"dev"}
 
-	actual := react.Create(environments).Error()
+	actual := react.Create(platform.Application{}, environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -53,10 +49,10 @@ func TestReactCreateReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *t
 func TestHerokuIsProvidedCorrectBuildPack(t *testing.T) {
 	mockRepo := mockGoodRepository{}
 	mockHerokuPlatform := mockHerokuPlatform{}
-	react := React{Repo: mockRepo, Platform: mockHerokuPlatform, Name: "", TeamName: "", AccessToken: "", DeployToken: ""}
+	react := React{Repo: mockRepo, Platform: mockHerokuPlatform}
 	environments := []string{"dev"}
 
-	error := react.Create(environments)
+	error := react.Create(platform.Application{}, environments)
 
 	if error != nil {
 		t.Log("no error expected")

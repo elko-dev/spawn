@@ -2,6 +2,7 @@ package actions
 
 import (
 	"errors"
+	"github.com/elko-dev/spawn/platform"
 	"testing"
 )
 
@@ -14,7 +15,7 @@ const (
 type someApp struct {
 }
 
-func (someApp someApp) Create(environments []string) error {
+func (someApp someApp) Create(application platform.Application, environments []string) error {
 	return errors.New("GITLAB_ERROR")
 }
 func TestApplicationReturnsErrorWhenNodeJsReturnsError(t *testing.T) {
@@ -22,7 +23,8 @@ func TestApplicationReturnsErrorWhenNodeJsReturnsError(t *testing.T) {
 	spawn := SpawnAction{}
 	expected := "GITLAB_ERROR"
 	environments := []string{firstEnvironment}
-	actual := spawn.Application(someApp, environments).Error()
+	application := platform.Application{}
+	actual := spawn.Application(someApp, application, environments).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)

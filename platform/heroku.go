@@ -5,14 +5,23 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/elko-dev/spawn/herokus"
 	"github.com/elko-dev/spawn/prompt"
 	heroku "github.com/heroku/heroku-go/v5"
 )
 
-// HerokuAPI describing the functionality to interact with Heroku
-type HerokuAPI interface {
-	CreateApp(name string, region string, stack string)
+const (
+	nodeBuildPack  = ""
+	reactBuildPack = ""
+)
+
+// Application is a struct representing a full application
+type Application struct {
+	ProjectName     string
+	DeployToken     string
+	AccessToken     string
+	ApplicationType string
+	Environments    []string
+	TemplateURL     string
 }
 
 // HerokuPlatform struct for heroku operations implementation
@@ -25,7 +34,7 @@ type HerokuApp struct {
 }
 
 // Create method to create heroku repository
-func (h HerokuPlatform) Create(application herokus.Application, environments []string) error {
+func (h HerokuPlatform) Create(application Application, environments []string) error {
 	heroku.DefaultTransport.BearerToken = application.AccessToken
 
 	region := "us"
@@ -38,7 +47,7 @@ func (h HerokuPlatform) Create(application herokus.Application, environments []s
 	}
 
 	for _, environment := range environments {
-		herokuName := createHerokuName(application.ApplicationName, environment)
+		herokuName := createHerokuName(application.ProjectName, environment)
 		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
 
 		app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
@@ -48,27 +57,52 @@ func (h HerokuPlatform) Create(application herokus.Application, environments []s
 			return errors.New("Error Creating App")
 		}
 
-		buildPackOps := heroku.BuildpackInstallationUpdateOpts{
-			Updates: []struct {
-				Buildpack string `json:"buildpack" url:"buildpack,key"`
-			}{}}
+		buildPackOps, err := createBuildpack(application)
 
-		buildPackOps.Updates = append(buildPackOps.Updates, struct {
-			Buildpack string `json:"buildpack" url:"buildpack,key"`
-		}{
-			Buildpack: application.Buildpack,
-		})
-
+		if err != nil {
+			return err
+		}
 		_, err = h.Service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
 
 		if err != nil {
-			println(err.Error())
-			return errors.New("Error")
+			return err
 		}
 		println("Created Application for " + environment + " at url " + app.WebURL)
 	}
 
 	return nil
+}
+
+func createBuildpack(application Application) (heroku.BuildpackInstallationUpdateOpts, error) {
+	buildPackName, err := getApplicationBuildpack(application.ApplicationType)
+
+	if err != nil {
+		return heroku.BuildpackInstallationUpdateOpts{}, err
+	}
+	buildPackOps := heroku.BuildpackInstallationUpdateOpts{
+		Updates: []struct {
+			Buildpack string `json:"buildpack" url:"buildpack,key"`
+		}{}}
+
+	buildPackOps.Updates = append(buildPackOps.Updates, struct {
+		Buildpack string `json:"buildpack" url:"buildpack,key"`
+	}{
+		Buildpack: buildPackName,
+	})
+
+	return buildPackOps, nil
+}
+func getApplicationBuildpack(applicationType string) (string, error) {
+	if applicationType == "NodeJs" {
+		return nodeBuildPack, nil
+	}
+
+	if applicationType == "React" {
+		return reactBuildPack, nil
+	}
+
+	return "", errors.New("Invalid Application Type")
+
 }
 
 func createHerokuName(applicationName string, environment string) string {

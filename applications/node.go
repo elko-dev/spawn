@@ -1,8 +1,6 @@
 package applications
 
-import (
-	"github.com/elko-dev/spawn/herokus"
-)
+import "github.com/elko-dev/spawn/platform"
 
 const (
 	nodeTemplateURL = "https://github.com/elko-dev/nodejs-graphql-typescript-template.git"
@@ -10,24 +8,20 @@ const (
 
 // NodeJs struct to create Node aplication
 type NodeJs struct {
-	Name        string
-	AccessToken string
-	DeployToken string
-	TeamName    string
-	TemplateURL string
-	Repo        GitRepository
-	Platform    PlatformRepository
+	Repo     GitRepository
+	Platform PlatformRepository
 }
 
 // Create is a function to generate a NodeJS application
-func (nodeJs NodeJs) Create(environments []string) error {
-	herokuApplication := herokus.Application{Buildpack: "heroku/nodejs", AccessToken: nodeJs.DeployToken, TeamName: nodeJs.TeamName, ApplicationName: nodeJs.Name}
+func (nodeJs NodeJs) Create(application platform.Application, environments []string) error {
 
-	err := createApp(nodeJs.Platform, environments, herokuApplication)
+	err := createApp(nodeJs.Platform, environments, application)
 	if err != nil {
 		return err
 	}
-	gitRepo, err := nodeJs.Repo.CreateGitRepository(nodeJs.Name, nodeJs.AccessToken, nodeJs.DeployToken, nodeTemplateURL)
+
+	templateURL := getNodeTemplateURL(application.TemplateURL)
+	gitRepo, err := nodeJs.Repo.CreateGitRepository(application.ProjectName, application.AccessToken, application.DeployToken, templateURL)
 	if err != nil {
 		return err
 	}
@@ -36,17 +30,16 @@ func (nodeJs NodeJs) Create(environments []string) error {
 	return nil
 }
 
-// NewNodeJs init function
-func NewNodeJs(gitRepository GitRepository, platform PlatformRepository, application Application) NodeJs {
-	nodeJs := NodeJs{Repo: gitRepository, Platform: platform}
-	nodeJs.Name = application.ProjectName
-	nodeJs.AccessToken = application.AccessToken
-	nodeJs.DeployToken = application.DeployToken
-	nodeJs.TeamName = application.PlatformName
-	if application.TemplateURL == "" {
-		nodeJs.TemplateURL = nodeTemplateURL
-	} else {
-		nodeJs.TemplateURL = application.TemplateURL
+func getNodeTemplateURL(templateURL string) string {
+	if templateURL == "" {
+		return nodeTemplateURL
 	}
+
+	return templateURL
+}
+
+// NewNodeJs init function
+func NewNodeJs(gitRepository GitRepository, platform PlatformRepository) NodeJs {
+	nodeJs := NodeJs{Repo: gitRepository, Platform: platform}
 	return nodeJs
 }

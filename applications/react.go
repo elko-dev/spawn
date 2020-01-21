@@ -1,13 +1,12 @@
 package applications
 
-import "github.com/elko-dev/spawn/herokus"
+import "github.com/elko-dev/spawn/platform"
 
 // React struct to create Node aplication
 type React struct {
 	Name        string
 	AccessToken string
 	DeployToken string
-	TeamName    string
 	Repo        GitRepository
 	Platform    PlatformRepository
 }
@@ -17,10 +16,9 @@ const (
 )
 
 // Create is a function to generate a react application
-func (react React) Create(environments []string) error {
-	herokuApplication := herokus.Application{Buildpack: "mars/create-react-app", AccessToken: react.DeployToken, TeamName: react.TeamName, ApplicationName: react.Name}
+func (react React) Create(application platform.Application, environments []string) error {
 
-	err := createApp(react.Platform, environments, herokuApplication)
+	err := createApp(react.Platform, environments, application)
 	if err != nil {
 		return err
 	}
@@ -34,11 +32,7 @@ func (react React) Create(environments []string) error {
 }
 
 // NewReact init function
-func NewReact(gitRepository GitRepository, platform PlatformRepository, application Application) React {
+func NewReact(gitRepository GitRepository, platform PlatformRepository) React {
 	react := React{Repo: gitRepository, Platform: platform}
-	react.Name = application.ProjectName
-	react.AccessToken = application.AccessToken
-	react.DeployToken = application.DeployToken
-	react.TeamName = application.PlatformName
 	return react
 }

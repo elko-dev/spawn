@@ -3,10 +3,12 @@ package applications
 import (
 	"reflect"
 	"testing"
+
+	"github.com/elko-dev/spawn/platform"
 )
 
 func TestCreateAppCreateNodeAppWhenGivenNodeParam(t *testing.T) {
-	application := Application{ApplicationType: "NodeJs"}
+	application := platform.Application{ApplicationType: "NodeJs"}
 	nodeJsApp, err := CreateApp(application)
 
 	if err != nil {
@@ -21,7 +23,7 @@ func TestCreateAppCreateNodeAppWhenGivenNodeParam(t *testing.T) {
 }
 
 func TestCreateAppCreateReactAppWhenGivenReactParam(t *testing.T) {
-	application := Application{ApplicationType: "React"}
+	application := platform.Application{ApplicationType: "React"}
 	reactApp, err := CreateApp(application)
 
 	if err != nil {
@@ -36,7 +38,7 @@ func TestCreateAppCreateReactAppWhenGivenReactParam(t *testing.T) {
 }
 
 func TestCreateAppReturnsErrorWhenInvalidApplicationTypeProvided(t *testing.T) {
-	application := Application{ApplicationType: "Does Not exist"}
+	application := platform.Application{ApplicationType: "Does Not exist"}
 	_, err := CreateApp(application)
 
 	if err == nil {
