@@ -14,7 +14,7 @@ type mockSpawnAction struct {
 }
 
 // SpawnAction describing the functionality to Create repositories
-func (mock mockSpawnAction) Application(app applications.App, application platform.Application, environments []string) error {
+func (mock mockSpawnAction) Application(app applications.App, application platform.Application) error {
 	return errors.New("RUNTIME_ERROR")
 }
 

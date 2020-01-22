@@ -10,17 +10,17 @@ import (
 
 // App interface representing interface to create an app
 type App interface {
-	Create(application platform.Application, environments []string) error
+	Create(application platform.Application) error
 }
 
 // GitRepository describing the functionality to Create repositories
 type GitRepository interface {
-	CreateGitRepository(repositoryName string, accessToken string, deployToken string, url string) (api.GitRepository, error)
+	CreateGitRepository(repositoryName string, gitToken string, platformToken string, url string) (api.GitRepository, error)
 }
 
 // PlatformRepository repository that defines creation of Platform repo
 type PlatformRepository interface {
-	Create(application platform.Application, environments []string) error
+	Create(application platform.Application) error
 }
 
 // CreateApp returns an app
@@ -36,8 +36,8 @@ func CreateApp(application platform.Application) (App, error) {
 	return nil, errors.New("Invalid Application Type")
 }
 
-func createApp(platform PlatformRepository, environments []string, application platform.Application) error {
-	err := platform.Create(application, environments)
+func createApp(platform PlatformRepository, application platform.Application) error {
+	err := platform.Create(application)
 	if err != nil {
 		return err
 	}

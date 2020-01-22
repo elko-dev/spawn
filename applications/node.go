@@ -13,15 +13,15 @@ type NodeJs struct {
 }
 
 // Create is a function to generate a NodeJS application
-func (nodeJs NodeJs) Create(application platform.Application, environments []string) error {
+func (nodeJs NodeJs) Create(application platform.Application) error {
 
-	err := createApp(nodeJs.Platform, environments, application)
+	err := createApp(nodeJs.Platform, application)
 	if err != nil {
 		return err
 	}
 
 	templateURL := getNodeTemplateURL(application.TemplateURL)
-	gitRepo, err := nodeJs.Repo.CreateGitRepository(application.ProjectName, application.AccessToken, application.DeployToken, templateURL)
+	gitRepo, err := nodeJs.Repo.CreateGitRepository(application.ProjectName, application.GitToken, application.PlatformToken, templateURL)
 	if err != nil {
 		return err
 	}

@@ -10,15 +10,17 @@ import (
 )
 
 const (
-	nodeBuildPack  = ""
-	reactBuildPack = ""
+	nodeBuildPack  = "heroku/nodejs"
+	nodeTemplate   = "https://github.com/elko-dev/nodejs-graphql-typescript-template.git"
+	reactTemplate  = "https://github.com/elko-dev/react-native-template.git"
+	reactBuildPack = "mars/create-react-app"
 )
 
 // Application is a struct representing a full application
 type Application struct {
 	ProjectName     string
-	DeployToken     string
-	AccessToken     string
+	PlatformToken   string
+	GitToken        string
 	ApplicationType string
 	Environments    []string
 	TemplateURL     string
@@ -34,8 +36,8 @@ type HerokuApp struct {
 }
 
 // Create method to create heroku repository
-func (h HerokuPlatform) Create(application Application, environments []string) error {
-	heroku.DefaultTransport.BearerToken = application.AccessToken
+func (h HerokuPlatform) Create(application Application) error {
+	heroku.DefaultTransport.BearerToken = application.PlatformToken
 
 	region := "us"
 	stack := "heroku-18"
@@ -46,7 +48,7 @@ func (h HerokuPlatform) Create(application Application, environments []string) e
 		return errors.New("Error Retrieving Heroku Team Name")
 	}
 
-	for _, environment := range environments {
+	for _, environment := range application.Environments {
 		herokuName := createHerokuName(application.ProjectName, environment)
 		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
 
@@ -60,11 +62,13 @@ func (h HerokuPlatform) Create(application Application, environments []string) e
 		buildPackOps, err := createBuildpack(application)
 
 		if err != nil {
+			println("error creating heroku build pack")
 			return err
 		}
 		_, err = h.Service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
 
 		if err != nil {
+			println("error configuring build pack")
 			return err
 		}
 		println("Created Application for " + environment + " at url " + app.WebURL)
@@ -77,6 +81,7 @@ func createBuildpack(application Application) (heroku.BuildpackInstallationUpdat
 	buildPackName, err := getApplicationBuildpack(application.ApplicationType)
 
 	if err != nil {
+		println("Invalid application type " + application.ApplicationType)
 		return heroku.BuildpackInstallationUpdateOpts{}, err
 	}
 	buildPackOps := heroku.BuildpackInstallationUpdateOpts{

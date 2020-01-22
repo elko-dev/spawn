@@ -21,3 +21,26 @@ func TestHerokuNameReturnsCorrectFormat(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestCreateBuildpackReturnsCorrectBuildpackValueWhenNodeJsProvided(t *testing.T) {
+	application := Application{ApplicationType: "NodeJs"}
+	buildPack, _ := createBuildpack(application)
+	expected := "heroku/nodejs"
+	actual := buildPack.Updates[0].Buildpack
+	if actual != expected {
+		t.Log("got wrong buildpack, expected " + expected + " got " + actual)
+		t.Fail()
+	}
+}
+
+func TestCreateBuildpackReturnsCorrectBuildpackValueWhenReactProvided(t *testing.T) {
+	application := Application{ApplicationType: "React"}
+	buildPack, _ := createBuildpack(application)
+
+	actual := buildPack.Updates[0].Buildpack
+
+	if actual != "mars/create-react-app" {
+		t.Log("got wrong buildpack, got", actual)
+		t.Fail()
+	}
+}

@@ -28,14 +28,14 @@ type GitRepository struct {
 }
 
 // AddEnvironmentVariables to project
-func (rest GitlabHTTP) AddEnvironmentVariables(deployToken string, projectID string, accessToken string) error {
+func (rest GitlabHTTP) AddEnvironmentVariables(deployToken string, projectID string, gitToken string) error {
 	environmentRequest := []byte(`{
 		"key": "HEROKU_API_KEY",
 		"value": "` + deployToken + `",
 		"protected": true
 	}`)
 	url := fmt.Sprintf(gitlabEnvironmentURL, projectID)
-	req, err := createPostRequest(accessToken, url, environmentRequest)
+	req, err := createPostRequest(gitToken, url, environmentRequest)
 
 	if err != nil {
 		println("Error adding environment variables")
@@ -61,14 +61,14 @@ func (rest GitlabHTTP) AddEnvironmentVariables(deployToken string, projectID str
 }
 
 // PostGitRepository Creates Git Repository
-func (rest GitlabHTTP) PostGitRepository(repositoryName string, accessToken string) (GitRepository, error) {
+func (rest GitlabHTTP) PostGitRepository(repositoryName string, gitToken string) (GitRepository, error) {
 	group, err := prompt.GitlabGroupID()
 	if err != nil {
 		println("Error retrieving Gitlab Group name")
 		return GitRepository{}, err
 	}
 	var projectRequest = createProjectRequest(repositoryName, group)
-	req, err := createPostRequest(accessToken, gitlabProjectURL, projectRequest)
+	req, err := createPostRequest(gitToken, gitlabProjectURL, projectRequest)
 
 	client := &http.Client{}
 	resp, err := client.Do(req)
@@ -99,9 +99,9 @@ func createProjectRequest(respositoryName string, group string) []byte {
 	return []byte(`{"path":"` + respositoryName + `", "namespace_id": ` + group + `}`)
 }
 
-func createPostRequest(accessToken string, url string, request []byte) (*http.Request, error) {
+func createPostRequest(gitToken string, url string, request []byte) (*http.Request, error) {
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(request))
-	req.Header.Set("PRIVATE-TOKEN", accessToken)
+	req.Header.Set("PRIVATE-TOKEN", gitToken)
 	req.Header.Set("Content-Type", "application/json")
 	return req, err
 }

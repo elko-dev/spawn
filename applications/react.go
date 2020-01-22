@@ -4,11 +4,8 @@ import "github.com/elko-dev/spawn/platform"
 
 // React struct to create Node aplication
 type React struct {
-	Name        string
-	AccessToken string
-	DeployToken string
-	Repo        GitRepository
-	Platform    PlatformRepository
+	Repo     GitRepository
+	Platform PlatformRepository
 }
 
 const (
@@ -16,13 +13,13 @@ const (
 )
 
 // Create is a function to generate a react application
-func (react React) Create(application platform.Application, environments []string) error {
+func (react React) Create(application platform.Application) error {
 
-	err := createApp(react.Platform, environments, application)
+	err := createApp(react.Platform, application)
 	if err != nil {
 		return err
 	}
-	gitRepo, err := react.Repo.CreateGitRepository(react.Name, react.AccessToken, react.DeployToken, reactTemplateURL)
+	gitRepo, err := react.Repo.CreateGitRepository(application.ProjectName, application.GitToken, application.PlatformToken, reactTemplateURL)
 	if err != nil {
 		return err
 	}

@@ -75,9 +75,9 @@ func Test_isUnauthorized(t *testing.T) {
 
 func Test_createPostRequest(t *testing.T) {
 	type args struct {
-		accessToken string
-		url         string
-		request     []byte
+		gitToken string
+		url      string
+		request  []byte
 	}
 	var token = "token"
 
@@ -89,16 +89,16 @@ func Test_createPostRequest(t *testing.T) {
 	}{
 		{
 			args: args{
-				accessToken: token,
-				url:         "https://url",
-				request:     []byte(`{"name":"test"}`),
+				gitToken: token,
+				url:      "https://url",
+				request:  []byte(`{"name":"test"}`),
 			},
 			want: token,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := createPostRequest(tt.args.accessToken, tt.args.url, tt.args.request)
+			got, err := createPostRequest(tt.args.gitToken, tt.args.url, tt.args.request)
 			actual := got.Header.Get("PRIVATE-TOKEN")
 			if (err != nil) != tt.wantErr {
 				t.Errorf("createPostRequest() error = %v, wantErr %v", err, tt.wantErr)

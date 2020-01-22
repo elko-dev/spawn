@@ -25,8 +25,8 @@ func GitlabAccessToken() (string, error) {
 	return accessTokenPrompt.Run()
 }
 
-// DeployAccessToken prompts user for heroku token
-func DeployAccessToken() (string, error) {
+// PlatformToken prompts user for heroku token
+func PlatformToken() (string, error) {
 	deployTokenValidate :=
 		func(input string) error {
 			return validation.Validate(input,

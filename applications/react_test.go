@@ -9,7 +9,7 @@ import (
 type mockHerokuPlatform struct {
 }
 
-func (mockHerokuPlatform mockHerokuPlatform) Create(application platform.Application, environments []string) error {
+func (mockHerokuPlatform mockHerokuPlatform) Create(application platform.Application) error {
 	return nil
 }
 
@@ -18,9 +18,8 @@ func TestReactCreateReturnsErrorWhenGitlabReturnsError(t *testing.T) {
 	mockPlatform := mockGoodPlatform{}
 	react := React{Repo: mockRepo, Platform: mockPlatform}
 	expected := "GITLAB_ERROR"
-	environments := []string{"dev"}
 
-	actual := react.Create(platform.Application{}, environments).Error()
+	actual := react.Create(platform.Application{}).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -34,9 +33,8 @@ func TestReactCreateReturnsErrorWhenGitlabReturnsSuccessfullyButHerokuFails(t *t
 	mockBadPlatform := mockBadPlatform{}
 	react := React{Repo: mockRepo, Platform: mockBadPlatform}
 	expected := expectedPlatformError
-	environments := []string{"dev"}
 
-	actual := react.Create(platform.Application{}, environments).Error()
+	actual := react.Create(platform.Application{}).Error()
 
 	if actual != expected {
 		t.Log("Incorrect error, expected ", expected, " got ", actual)
@@ -50,9 +48,8 @@ func TestHerokuIsProvidedCorrectBuildPack(t *testing.T) {
 	mockRepo := mockGoodRepository{}
 	mockHerokuPlatform := mockHerokuPlatform{}
 	react := React{Repo: mockRepo, Platform: mockHerokuPlatform}
-	environments := []string{"dev"}
 
-	error := react.Create(platform.Application{}, environments)
+	error := react.Create(platform.Application{})
 
 	if error != nil {
 		t.Log("no error expected")

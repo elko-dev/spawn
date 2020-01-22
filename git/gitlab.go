@@ -12,30 +12,30 @@ type GitlabRepository struct {
 
 // Git to interact with git
 type Git interface {
-	DuplicateRepo(url string, accessToken string, repository api.GitRepository) error
+	DuplicateRepo(url string, gitToken string, repository api.GitRepository) error
 }
 
 // HTTP describing the functionality to Create repositories
 type HTTP interface {
-	PostGitRepository(repositoryName string, accessToken string) (api.GitRepository, error)
-	AddEnvironmentVariables(deployToken string, projectID string, accessToken string) error
+	PostGitRepository(repositoryName string, gitToken string) (api.GitRepository, error)
+	AddEnvironmentVariables(platformToken string, projectID string, gitToken string) error
 }
 
 // CreateGitRepository action to create a Gitlab repo
-func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, accessToken string, deployToken string, url string) (api.GitRepository, error) {
-	repository, err := gitlab.HTTP.PostGitRepository(repositoryName, accessToken)
+func (gitlab GitlabRepository) CreateGitRepository(repositoryName string, gitToken string, platformToken string, url string) (api.GitRepository, error) {
+	repository, err := gitlab.HTTP.PostGitRepository(repositoryName, gitToken)
 
 	if err != nil {
 		return api.GitRepository{}, err
 	}
 
-	err = gitlab.HTTP.AddEnvironmentVariables(deployToken, repository.ID.String(), accessToken)
+	err = gitlab.HTTP.AddEnvironmentVariables(platformToken, repository.ID.String(), gitToken)
 	if err != nil {
 		println("Failed to add environment variables to Gitlab repo...")
 		return api.GitRepository{}, err
 	}
 
-	err = gitlab.Git.DuplicateRepo(url, accessToken, repository)
+	err = gitlab.Git.DuplicateRepo(url, gitToken, repository)
 
 	if err != nil {
 		return api.GitRepository{}, err

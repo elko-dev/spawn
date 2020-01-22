@@ -14,7 +14,7 @@ import (
 
 // SpawnAction describing the functionality to Create repositories
 type SpawnAction interface {
-	Application(app applications.App, application platform.Application, environments []string) error
+	Application(app applications.App, application platform.Application) error
 }
 
 // Run is the method to run the CreateRepository command
@@ -54,10 +54,6 @@ func promptUserForInput() (platform.Application, error) {
 	application.ProjectName = projectName
 
 	useCustomTemplate, err := prompt.UseCustomTemplate()
-	if err != nil {
-		println("Use Custom Template Failed")
-		return platform.Application{}, err
-	}
 
 	if strings.ToLower(useCustomTemplate) == "y" {
 		templateURL, err := prompt.TemplateURL()
@@ -68,19 +64,19 @@ func promptUserForInput() (platform.Application, error) {
 		application.TemplateURL = templateURL
 	}
 
-	deployToken, err := prompt.DeployAccessToken()
+	platformToken, err := prompt.PlatformToken()
 	if err != nil {
 		println("Invalid DeployToken")
 		return platform.Application{}, err
 	}
-	application.DeployToken = deployToken
+	application.PlatformToken = platformToken
 
-	accessToken, err := prompt.GitlabAccessToken()
+	gitToken, err := prompt.GitlabAccessToken()
 	if err != nil {
-		println("Invalid AccessToken")
+		println("Invalid Git Token")
 		return platform.Application{}, err
 	}
-	application.AccessToken = accessToken
+	application.GitToken = gitToken
 
 	environments := []string{"dev", "stage", "prod"}
 	application.Environments = environments
@@ -94,7 +90,7 @@ func executeAction(action SpawnAction, application platform.Application) error {
 		println("Error creating application.  Please verify your parameters are correct or submit an issue to Github")
 		os.Exit(1)
 	}
-	err = action.Application(app, application, application.Environments)
+	err = action.Application(app, application)
 	if err != nil {
 		println("Some number of operations failed, exiting...")
 		os.Exit(1)

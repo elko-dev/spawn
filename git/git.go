@@ -23,7 +23,7 @@ type Template interface {
 }
 
 // DuplicateRepo contains logic to duplicate a repository
-func (local Local) DuplicateRepo(url string, accessToken string, repository api.GitRepository) error {
+func (local Local) DuplicateRepo(url string, gitToken string, repository api.GitRepository) error {
 
 	r, err := git.PlainClone(repository.Name, false, &git.CloneOptions{
 		URL:               url,
@@ -81,7 +81,7 @@ func (local Local) DuplicateRepo(url string, accessToken string, repository api.
 		RemoteName: "origin",
 		Auth: &http.BasicAuth{
 			Username: "abc123", // yes, this can be anything except an empty string
-			Password: accessToken,
+			Password: gitToken,
 		},
 	})
 	if err != nil {

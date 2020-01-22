@@ -17,8 +17,8 @@ type SpawnAction struct {
 }
 
 // Application action to create a project Scaffolding
-func (spawn SpawnAction) Application(app applications.App, application platform.Application, environments []string) error {
-	return app.Create(application, environments)
+func (spawn SpawnAction) Application(app applications.App, application platform.Application) error {
+	return app.Create(application)
 }
 
 // NewSpawnAction init function
