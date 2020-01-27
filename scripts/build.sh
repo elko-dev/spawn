@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -euo pipefail
 
 APP_NAME=$1
 SRC_LOCATION=$2

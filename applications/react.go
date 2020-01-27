@@ -9,7 +9,7 @@ type React struct {
 }
 
 const (
-	reactTemplateURL = "https://github.com/elko-dev/react-native-template.git"
+	reactTemplateURL = "https://github.com/elko-dev/react-template.git"
 )
 
 // Create is a function to generate a react application

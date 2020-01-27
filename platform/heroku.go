@@ -12,7 +12,7 @@ import (
 const (
 	nodeBuildPack  = "heroku/nodejs"
 	nodeTemplate   = "https://github.com/elko-dev/nodejs-graphql-typescript-template.git"
-	reactTemplate  = "https://github.com/elko-dev/react-native-template.git"
+	reactTemplate  = "https://github.com/elko-dev/react-template.git"
 	reactBuildPack = "mars/create-react-app"
 )
 
