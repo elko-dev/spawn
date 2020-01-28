@@ -3,6 +3,7 @@ package applications
 import (
 	"errors"
 
+	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/git"
 	"github.com/elko-dev/spawn/git/api"
 	"github.com/elko-dev/spawn/platform"
@@ -25,11 +26,11 @@ type PlatformRepository interface {
 
 // CreateApp returns an app
 func CreateApp(application platform.Application) (App, error) {
-	if application.ApplicationType == "NodeJs" {
+	if application.ApplicationType == constants.NodeServerType {
 		nodeJsApp := NewNodeJs(git.NewGitlabRepository(git.NewLocal()), platform.NewHerokuPlatform())
 		return nodeJsApp, nil
 	}
-	if application.ApplicationType == "React" {
+	if application.ApplicationType == constants.ReactClientLanguageType {
 		reactApp := NewReact(git.NewGitlabRepository(git.NewLocal()), platform.NewHerokuPlatform())
 		return reactApp, nil
 	}

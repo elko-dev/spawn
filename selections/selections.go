@@ -1,6 +1,7 @@
 package selections
 
 import (
+	"github.com/elko-dev/spawn/constants"
 	"github.com/manifoldco/promptui"
 )
 
@@ -8,7 +9,7 @@ import (
 func ApplicationType() (int, string, error) {
 	prompt := promptui.Select{
 		Label: "Select Application Type",
-		Items: []string{"NodeJs", "React"},
+		Items: []string{constants.NodeServerType, constants.ReactClientLanguageType},
 	}
 
 	return prompt.Run()

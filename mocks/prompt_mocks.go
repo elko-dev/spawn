@@ -32,6 +32,21 @@ func (m *MockCommand) EXPECT() *MockCommandMockRecorder {
 	return m.recorder
 }
 
+// ProjectName mocks base method
+func (m *MockCommand) ProjectName() (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ProjectName")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ProjectName indicates an expected call of ProjectName
+func (mr *MockCommandMockRecorder) ProjectName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ProjectName", reflect.TypeOf((*MockCommand)(nil).ProjectName))
+}
+
 // ApplicationType mocks base method
 func (m *MockCommand) ApplicationType() (string, error) {
 	m.ctrl.T.Helper()

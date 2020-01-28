@@ -1,6 +1,7 @@
 package commands
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -34,6 +35,21 @@ func Run(action SpawnAction) cli.Command {
 	}
 }
 
+func Temp(action SpawnAction) cli.Command {
+	return cli.Command{
+		Name:    "temp",
+		Aliases: []string{"temp"},
+		Usage:   "Spawns application",
+		Flags:   flags.Repository(),
+		Action: func(c *cli.Context) error {
+			command := prompt.UserCommands{}
+			selection := prompt.Selection{command}
+			userSelections, _ := selection.Application()
+			executeActionTemp(action, userSelections)
+			return nil
+		},
+	}
+}
 func promptUserForInput() (platform.Application, error) {
 	//TODO: Consider refactoring to builder
 	application := platform.Application{}
@@ -97,4 +113,59 @@ func executeAction(action SpawnAction, application platform.Application) error {
 	}
 
 	return nil
+}
+
+func executeActionTemp(action SpawnAction, userCommands prompt.UserSelections) {
+	//create client
+	clientApplication := createClientApplication(userCommands)
+	executeApp(action, clientApplication)
+	//create server
+	serverApplication := createServerApplication(userCommands)
+	executeApp(action, serverApplication)
+}
+
+func executeApp(action SpawnAction, application platform.Application) {
+	fmt.Printf("%+v\n", application)
+
+	app, err := applications.CreateApp(application)
+	if err != nil {
+		println("Error creating application.  Please verify your parameters are correct or submit an issue to Github")
+		os.Exit(1)
+	}
+	err = action.Application(app, application)
+	if err != nil {
+		println("Some number of operations failed, exiting...")
+		os.Exit(1)
+	}
+}
+
+func createClientApplication(userCommands prompt.UserSelections) platform.Application {
+	clientApplication := platform.Application{}
+	clientApplication.ProjectName = "HardCode"
+	clientApplication.Environments = []string{"dev", "stage", "prod"}
+	clientApplication.ApplicationType = userCommands.ClientLanguageType
+	clientApplication.ProjectName = userCommands.ProjectName + "-client"
+	//TODO: factor this out
+	gitToken, _ := prompt.GitlabAccessToken()
+	clientApplication.GitToken = gitToken
+
+	platformToken, _ := prompt.PlatformToken()
+	clientApplication.PlatformToken = platformToken
+	return clientApplication
+}
+
+func createServerApplication(userCommands prompt.UserSelections) platform.Application {
+	serverApplication := platform.Application{}
+	serverApplication.ProjectName = "HardCode"
+	serverApplication.Environments = []string{"dev", "stage", "prod"}
+	serverApplication.ApplicationType = userCommands.ServerType
+	serverApplication.ProjectName = userCommands.ProjectName + "-server"
+
+	//TODO: factor this out
+	gitToken, _ := prompt.GitlabAccessToken()
+	serverApplication.GitToken = gitToken
+
+	platformToken, _ := prompt.PlatformToken()
+	serverApplication.PlatformToken = platformToken
+	return serverApplication
 }

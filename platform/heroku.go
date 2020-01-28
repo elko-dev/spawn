@@ -5,6 +5,7 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/prompt"
 	heroku "github.com/heroku/heroku-go/v5"
 )
@@ -98,11 +99,11 @@ func createBuildpack(application Application) (heroku.BuildpackInstallationUpdat
 	return buildPackOps, nil
 }
 func getApplicationBuildpack(applicationType string) (string, error) {
-	if applicationType == "NodeJs" {
+	if applicationType == constants.NodeServerType {
 		return nodeBuildPack, nil
 	}
 
-	if applicationType == "React" {
+	if applicationType == constants.ReactClientLanguageType {
 		return reactBuildPack, nil
 	}
 

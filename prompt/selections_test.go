@@ -3,79 +3,33 @@ package prompt
 import (
 	"errors"
 	"testing"
+
+	"github.com/elko-dev/spawn/constants"
+	"github.com/elko-dev/spawn/mocks"
+	"github.com/golang/mock/gomock"
 )
 
 const (
 	applicationType    = "WEB"
-	serverType         = "NodeJs"
-	clientLanguageType = "React"
+	serverType         = constants.NodeServerType
+	clientLanguageType = constants.ReactClientLanguageType
+	platform           = "Heroku"
+	projectName        = "SomeName"
 )
 
-type goodMockCommand struct {
-}
-
-func (goodMockCommand goodMockCommand) ApplicationType() (string, error) {
-	return applicationType, nil
-}
-
-func (goodMockCommand goodMockCommand) ServerType() (string, error) {
-	return serverType, nil
-}
-
-func (goodMockCommand goodMockCommand) ClientLanguageType(inputApplicationType string) (string, error) {
-	if inputApplicationType != applicationType {
-		println("Incorrect application type passed, expected " + applicationType + " got " + inputApplicationType)
-		return "", errors.New("Incorrect application type passed, expected " + applicationType + " got " + inputApplicationType)
-	}
-	return clientLanguageType, nil
-}
-
-type badMockCommand struct {
-}
-
-func (badMockCommand badMockCommand) ApplicationType() (string, error) {
-	return "", errors.New("ERROR ENCOUNTERED")
-}
-
-func (badMockCommand badMockCommand) ServerType() (string, error) {
-	return "", errors.New("ERROR ENCOUNTERED")
-}
-func (badMockCommand badMockCommand) ClientLanguageType(applicationType string) (string, error) {
-	return serverType, nil
-}
-
-type badServerTypeMockCommand struct {
-}
-
-func (badServerTypeMockCommand badServerTypeMockCommand) ApplicationType() (string, error) {
-	return applicationType, nil
-}
-
-func (badServerTypeMockCommand badServerTypeMockCommand) ServerType() (string, error) {
-	return "", errors.New("ERROR ENCOUNTERED")
-}
-
-func (badServerTypeMockCommand badServerTypeMockCommand) ClientLanguageType(applicationType string) (string, error) {
-	return serverType, nil
-}
-
-type badClientLanguageMock struct {
-}
-
-func (badClientLanguageMock badClientLanguageMock) ApplicationType() (string, error) {
-	return applicationType, nil
-}
-
-func (badClientLanguageMock badClientLanguageMock) ServerType() (string, error) {
-	return serverType, nil
-}
-
-func (badClientLanguageMock badClientLanguageMock) ClientLanguageType(applicationType string) (string, error) {
-	return "", errors.New("ERROR ENCOUNTERED")
-}
-
 func TestWhenUserSelectsApplicationTypeUserSelectionContainsSaidType(t *testing.T) {
-	selection := Selection{goodMockCommand{}}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, nil)
+	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	m.EXPECT().Platform().Return(platform, nil)
+	m.EXPECT().ProjectName().Return(projectName, nil)
+
+	selection := Selection{m}
 	expected := applicationType
 
 	application, _ := selection.Application()
@@ -89,7 +43,14 @@ func TestWhenUserSelectsApplicationTypeUserSelectionContainsSaidType(t *testing.
 }
 
 func TestWhenUserSelectsApplicationTypeReturnsErrorApplicationErrorsError(t *testing.T) {
-	selection := Selection{badMockCommand{}}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+	selection := Selection{m}
+
+	m.EXPECT().ApplicationType().Return("", errors.New("ERROR ENCOUNTERED"))
+
 	_, error := selection.Application()
 
 	if error == nil {
@@ -100,7 +61,19 @@ func TestWhenUserSelectsApplicationTypeReturnsErrorApplicationErrorsError(t *tes
 }
 
 func TestWhenUserSelectsServerTypeUserSelectionContainsReturnedServerType(t *testing.T) {
-	selection := Selection{goodMockCommand{}}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, nil)
+	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	m.EXPECT().Platform().Return(platform, nil)
+	m.EXPECT().ProjectName().Return(projectName, nil)
+
+	selection := Selection{m}
+
 	expected := serverType
 
 	userSelections, _ := selection.Application()
@@ -114,7 +87,14 @@ func TestWhenUserSelectsServerTypeUserSelectionContainsReturnedServerType(t *tes
 }
 
 func TestWhenUserSelectsServerTypeUserSelectionReturnsErrorApplicationFuncToReturnError(t *testing.T) {
-	selection := Selection{badServerTypeMockCommand{}}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, errors.New("error encountered"))
+	selection := Selection{m}
 
 	_, err := selection.Application()
 
@@ -126,7 +106,19 @@ func TestWhenUserSelectsServerTypeUserSelectionReturnsErrorApplicationFuncToRetu
 }
 
 func TestWhenUserSelectsClientLanguageTypeTypeIsReturned(t *testing.T) {
-	selection := Selection{goodMockCommand{}}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, nil)
+	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	m.EXPECT().Platform().Return(platform, nil)
+	m.EXPECT().ProjectName().Return(projectName, nil)
+
+	selection := Selection{m}
+
 	expected := clientLanguageType
 
 	userSelections, _ := selection.Application()
@@ -140,12 +132,92 @@ func TestWhenUserSelectsClientLanguageTypeTypeIsReturned(t *testing.T) {
 }
 
 func TestWhenUserSelectsClientLanguageTypeUserSelectionReturnsErrorApplicationFuncToReturnError(t *testing.T) {
-	selection := Selection{badClientLanguageMock{}}
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, nil)
+	m.EXPECT().ClientLanguageType(applicationType).Return("", errors.New("error encountered"))
+	selection := Selection{m}
 
 	_, err := selection.Application()
 
 	if err == nil {
 		t.Log("Expected error, got none")
+		t.Fail()
+
+	}
+}
+
+func TestWhenUserSelectsPlatformPlatformIsReturned(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, nil)
+	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	m.EXPECT().Platform().Return(platform, nil)
+	m.EXPECT().ProjectName().Return(projectName, nil)
+
+	selection := Selection{m}
+
+	expected := platform
+
+	userSelections, _ := selection.Application()
+	actual := userSelections.Platform
+
+	if actual != expected {
+		t.Log("Incorrect type, expected ", expected, " got ", actual)
+		t.Fail()
+
+	}
+}
+
+func TestWhenUserSelectsPlatformReturnsErrorErrorIsReturned(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, nil)
+	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	m.EXPECT().Platform().Return("", errors.New("ERROR"))
+
+	selection := Selection{m}
+
+	_, err := selection.Application()
+
+	if err == nil {
+		t.Log("Expected error, got none")
+		t.Fail()
+
+	}
+}
+func TestWhenUserSelectsProjectNameValueIsReturned(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	m := mocks.NewMockCommand(ctrl)
+
+	m.EXPECT().ApplicationType().Return(applicationType, nil)
+	m.EXPECT().ServerType().Return(serverType, nil)
+	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	m.EXPECT().Platform().Return(platform, nil)
+	m.EXPECT().ProjectName().Return(projectName, nil)
+	selection := Selection{m}
+
+	expected := projectName
+
+	userSelections, _ := selection.Application()
+	actual := userSelections.ProjectName
+
+	if actual != expected {
+		t.Log("Incorrect type, expected ", expected, " got ", actual)
 		t.Fail()
 
 	}

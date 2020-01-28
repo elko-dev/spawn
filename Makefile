@@ -23,6 +23,7 @@ make_start:
 clean: 
 	$(GOCLEAN)
 	rm -f wire_gen.go
+	rm -rf mocks
 
 dependencies:
 	#global install
@@ -30,7 +31,7 @@ dependencies:
 	go get -u gopkg.in/src-d/go-git.v4
 	wire
 	$(GOGET)
-
+	mockgen -destination=mocks/prompt_mocks.go -package=mocks -source=prompt/selections.go
 test: 
 	$(GOTEST) -v ./...
 

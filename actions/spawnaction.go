@@ -5,13 +5,6 @@ import (
 	"github.com/elko-dev/spawn/platform"
 )
 
-const (
-	// NodeGraphQLApplicationType is a nodejs application
-	NodeGraphQLApplicationType = "NodeJs"
-	// ReactApplicationType is a React application
-	ReactApplicationType = "React"
-)
-
 // SpawnAction struct to leverage Gitlab
 type SpawnAction struct {
 }

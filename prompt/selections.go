@@ -2,6 +2,7 @@ package prompt
 
 // Command interface containing all prompted commands
 type Command interface {
+	ProjectName() (string, error)
 	ApplicationType() (string, error)
 	ServerType() (string, error)
 	ClientLanguageType(applicationType string) (string, error)
@@ -15,21 +16,18 @@ type Selection struct {
 
 // UserSelections represents the responses from users
 type UserSelections struct {
+	ProjectName        string
 	ApplicationType    string
 	ServerType         string
 	ClientLanguageType string
+	Platform           string
+	VersionControl     string
+	CIServer           string
 }
 
 // Application guides user to select an application to Spawn
 func (selection Selection) Application() (UserSelections, error) {
-	// Selection process:
-	// Application type: Web or Mobile
-	// Server Language: NodeJS
-	// Client Language (Mobile): React Native, Flutter, etc
-	// Client Language (Web): React
-	// Platform: Heroku
-	// Version Control: Gitlab
-	// CI/CD: GitlabCI
+
 	applicationType, err := selection.Command.ApplicationType()
 
 	if err != nil {
@@ -49,9 +47,27 @@ func (selection Selection) Application() (UserSelections, error) {
 
 	}
 
+	platform, err := selection.Command.Platform()
+
+	if err != nil {
+		return UserSelections{}, err
+
+	}
+
+	projectName, err := selection.Command.ProjectName()
+
+	if err != nil {
+		return UserSelections{}, err
+
+	}
+
 	return UserSelections{
 		ApplicationType:    applicationType,
 		ServerType:         serverType,
 		ClientLanguageType: clientLanguageType,
+		Platform:           platform,
+		ProjectName:        projectName,
+		VersionControl:     "Gitlab",
+		CIServer:           "GitlabCI",
 	}, nil
 }
