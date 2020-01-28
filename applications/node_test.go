@@ -72,24 +72,3 @@ func TestNodeJsCreateReturnsErrorWhenHerokuFails(t *testing.T) {
 
 	}
 }
-
-func TestNewNodeJsSetsTemplateUrlWhenNoneProvided(t *testing.T) {
-	expected := nodeTemplateURL
-	actual := getNodeTemplateURL(nodeTemplateURL)
-	if actual != expected {
-		t.Log("Incorrect error, expected ", expected, " got ", actual)
-		t.Fail()
-
-	}
-}
-
-func TestNewNodeJsSetsTemplateUrlToProvidedUrl(t *testing.T) {
-	expected := nodeTemplateURL
-	actual := getNodeTemplateURL("")
-
-	if actual != expected {
-		t.Log("Incorrect error, expected ", expected, " got ", actual)
-		t.Fail()
-
-	}
-}

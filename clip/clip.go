@@ -25,7 +25,6 @@ func Init(spawnAction actions.SpawnAction) *cli.App {
 	app.Usage = "Spawn creates project scaffolding, integrating GitLab with Heroku."
 	app.Commands = []cli.Command{
 		commands.Run(spawnAction),
-		commands.Temp(spawnAction),
 	}
 	return app
 }

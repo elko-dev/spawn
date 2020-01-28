@@ -24,7 +24,6 @@ type Application struct {
 	GitToken        string
 	ApplicationType string
 	Environments    []string
-	TemplateURL     string
 }
 
 // HerokuPlatform struct for heroku operations implementation

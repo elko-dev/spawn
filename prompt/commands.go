@@ -2,7 +2,6 @@ package prompt
 
 import (
 	"github.com/elko-dev/spawn/constants"
-	"github.com/elko-dev/spawn/prompt/validations"
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/manifoldco/promptui"
@@ -140,24 +139,6 @@ func PlatformToken() (string, error) {
 	return deployTokenPrompt.Run()
 }
 
-// ProjectName prompts user for project name
-func ProjectName() (string, error) {
-	projectValidate :=
-		func(input string) error {
-			return validation.Validate(input,
-				validation.Required, // not empty
-				is.Alphanumeric,
-			)
-		}
-
-	projectPrompt := promptui.Prompt{
-		Label:    "Project Name",
-		Validate: projectValidate,
-	}
-
-	return projectPrompt.Run()
-}
-
 // HerokuTeamName prompts user for heroku team name
 func HerokuTeamName() (string, error) {
 	projectValidate :=
@@ -193,25 +174,3 @@ func GitlabGroupID() (string, error) {
 	return projectPrompt.Run()
 }
 
-// UseCustomTemplate returns whether to use a custom template
-func UseCustomTemplate() (string, error) {
-
-	prompt := promptui.Prompt{
-		Label:     "Use Custom Template",
-		IsConfirm: true,
-		Validate:  validations.YOrNValidation,
-	}
-
-	return prompt.Run()
-}
-
-// TemplateURL prompts user for app template url
-func TemplateURL() (string, error) {
-
-	projectPrompt := promptui.Prompt{
-		Label:    "Template URL",
-		Validate: validations.GitValidation,
-	}
-
-	return projectPrompt.Run()
-}

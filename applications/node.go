@@ -20,22 +20,13 @@ func (nodeJs NodeJs) Create(application platform.Application) error {
 		return err
 	}
 
-	templateURL := getNodeTemplateURL(application.TemplateURL)
-	gitRepo, err := nodeJs.Repo.CreateGitRepository(application.ProjectName, application.GitToken, application.PlatformToken, templateURL)
+	gitRepo, err := nodeJs.Repo.CreateGitRepository(application.ProjectName, application.GitToken, application.PlatformToken, nodeTemplateURL)
 	if err != nil {
 		return err
 	}
 
 	println("Created gitlab respository with url: ", gitRepo.URL)
 	return nil
-}
-
-func getNodeTemplateURL(templateURL string) string {
-	if templateURL == "" {
-		return nodeTemplateURL
-	}
-
-	return templateURL
 }
 
 // NewNodeJs init function
