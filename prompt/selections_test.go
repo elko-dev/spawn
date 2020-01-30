@@ -18,6 +18,7 @@ const (
 	platformToken      = "tokenid"
 	projectName        = "SomeName"
 	gitToken           = "gittoken"
+	gitRepository      = "somerepo"
 )
 
 func TestWhenUserSelectsApplicationTypeUserSelectionContainsSaidType(t *testing.T) {
@@ -34,6 +35,7 @@ func TestWhenUserSelectsApplicationTypeUserSelectionContainsSaidType(t *testing.
 	command.EXPECT().ProjectName().Return(projectName, nil)
 	platform.EXPECT().Platform().Return(platformName, "", nil)
 	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	selection := Selection{command, platform, git}
 	expected := applicationType
@@ -82,6 +84,7 @@ func TestWhenUserSelectsServerTypeUserSelectionContainsReturnedServerType(t *tes
 	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
 	command.EXPECT().ProjectName().Return(projectName, nil)
 	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	platform.EXPECT().Platform().Return(platformName, "", nil)
 
@@ -109,6 +112,8 @@ func TestWhenUserSelectsServerTypeUserSelectionReturnsErrorApplicationFuncToRetu
 
 	command.EXPECT().ApplicationType().Return(applicationType, nil)
 	command.EXPECT().ServerType().Return(serverType, errors.New("error encountered"))
+	git.EXPECT().Repository().Return(gitRepository, nil)
+
 	selection := Selection{command, platform, git}
 
 	_, err := selection.Application()
@@ -133,6 +138,7 @@ func TestWhenUserSelectsClientLanguageTypeTypeIsReturned(t *testing.T) {
 	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
 	command.EXPECT().ProjectName().Return(projectName, nil)
 	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	platform.EXPECT().Platform().Return(platformName, "", nil)
 
@@ -161,6 +167,7 @@ func TestWhenUserSelectsClientLanguageTypeUserSelectionReturnsErrorApplicationFu
 	command.EXPECT().ApplicationType().Return(applicationType, nil)
 	command.EXPECT().ServerType().Return(serverType, nil)
 	command.EXPECT().ClientLanguageType(applicationType).Return("", errors.New("error encountered"))
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	selection := Selection{command, platform, git}
 
@@ -187,6 +194,7 @@ func TestWhenUserSelectsPlatformTokenPlatformTokenIsReturned(t *testing.T) {
 	command.EXPECT().ProjectName().Return(projectName, nil)
 	platform.EXPECT().Platform().Return(platformToken, platformTeamName, nil)
 	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	selection := Selection{command, platform, git}
 
@@ -215,6 +223,7 @@ func TestWhenUserSelectsPlatformTeamNameTeamNameIsReturned(t *testing.T) {
 	command.EXPECT().ProjectName().Return(projectName, nil)
 	platform.EXPECT().Platform().Return(platformToken, platformTeamName, nil)
 	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	selection := Selection{command, platform, git}
 
@@ -241,6 +250,7 @@ func TestWhenUserSelectsPlatformReturnsErrorErrorIsReturned(t *testing.T) {
 	command.EXPECT().ApplicationType().Return(applicationType, nil)
 	command.EXPECT().ServerType().Return(serverType, nil)
 	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	platform.EXPECT().Platform().Return("", "", errors.New("ERROR"))
 
@@ -267,6 +277,7 @@ func TestWhenUserSelectsProjectNameValueIsReturned(t *testing.T) {
 	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
 	command.EXPECT().ProjectName().Return(projectName, nil)
 	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
 
 	platform.EXPECT().Platform().Return(platformName, "", nil)
 
@@ -299,12 +310,45 @@ func TestWhenUserInputsGitTokenValueIsReturned(t *testing.T) {
 
 	platform.EXPECT().Platform().Return(platformName, "", nil)
 	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
+
 	selection := Selection{command, platform, git}
 
 	expected := gitToken
 
 	userSelections, _ := selection.Application()
 	actual := userSelections.GitToken
+
+	if actual != expected {
+		t.Log("Incorrect type, expected ", expected, " got ", actual)
+		t.Fail()
+
+	}
+}
+
+func TestWhenUserInputsGitRepositoryValueIsReturned(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
+	git := mocks.NewMockGitCommand(ctrl)
+
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	command.EXPECT().ProjectName().Return(projectName, nil)
+
+	platform.EXPECT().Platform().Return(platformName, "", nil)
+	git.EXPECT().Token().Return(gitToken, nil)
+	git.EXPECT().Repository().Return(gitRepository, nil)
+
+	selection := Selection{command, platform, git}
+
+	expected := gitRepository
+
+	userSelections, _ := selection.Application()
+	actual := userSelections.VersionControl
 
 	if actual != expected {
 		t.Log("Incorrect type, expected ", expected, " got ", actual)

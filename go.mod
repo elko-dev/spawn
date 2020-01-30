@@ -11,6 +11,8 @@ require (
 	github.com/google/wire v0.4.0
 	github.com/heroku/heroku-go/v5 v5.1.0
 	github.com/manifoldco/promptui v0.6.0
+	github.com/microsoft/azure-devops-go-api v0.0.0-20191230214132-3cd87c562d09 // indirect
+	github.com/microsoft/azure-devops-go-api/azuredevops v0.0.0-20191230214132-3cd87c562d09
 	github.com/sergi/go-diff v1.1.0 // indirect
 	github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80 // indirect
 	github.com/urfave/cli v1.22.1

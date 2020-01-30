@@ -44,6 +44,8 @@ github.com/google/subcommands v1.0.1 h1:/eqq+otEXm5vhfBrbREPCSVQbvofip6kIz+mX5TU
 github.com/google/subcommands v1.0.1/go.mod h1:ZjhPrFU+Olkh9WazFPsl27BQ4UPiG37m3yTrtFlrHVk=
 github.com/google/uuid v1.0.0 h1:b4Gk+7WdP/d3HZH8EJsZpvV7EtDOgaZLtnaNGIu1adA=
 github.com/google/uuid v1.0.0/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
+github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
 github.com/google/wire v0.4.0 h1:kXcsA/rIGzJImVqPdhfnr6q0xsS9gU0515q1EPpJ9fE=
 github.com/google/wire v0.4.0/go.mod h1:ngWDr9Qvq3yZA10YrxfyGELY/AFWGVpy9c1LTRi1EoU=
 github.com/gordonklaus/ineffassign v0.0.0-20180909121442-1003c8bd00dc h1:cJlkeAx1QYgO5N80aF5xRGstVsRQwgLR7uA2FnP1ZjY=
@@ -70,6 +72,10 @@ github.com/mattn/go-colorable v0.0.9 h1:UVL0vNpWh04HeJXV0KLcaT7r06gOH2l4OW6ddYRU
 github.com/mattn/go-colorable v0.0.9/go.mod h1:9vuHe8Xs5qXnSaW/c/ABM9alt+Vo+STaOChaDxuIBZU=
 github.com/mattn/go-isatty v0.0.4 h1:bnP0vzxcAdeI1zdubAl5PjU6zsERjGZb7raWodagDYs=
 github.com/mattn/go-isatty v0.0.4/go.mod h1:M+lRXTBqGeGNdLjl/ufCoiOlB5xdOkqRJdNxMWT7Zi4=
+github.com/microsoft/azure-devops-go-api v0.0.0-20191230214132-3cd87c562d09 h1:OeYEgVdqigP/8k+wJpun0CBOryi1fL/bvHGZt4LkfjI=
+github.com/microsoft/azure-devops-go-api v0.0.0-20191230214132-3cd87c562d09/go.mod h1:HfrxIH2ObkhL6NepJKAuEwUYY8kNvspOWDp6HDRIRQs=
+github.com/microsoft/azure-devops-go-api/azuredevops v0.0.0-20191230214132-3cd87c562d09 h1:tCCY3K8sWqrRz2IYiGDU34evVzfZIqNbRmGRlkGVn1o=
+github.com/microsoft/azure-devops-go-api/azuredevops v0.0.0-20191230214132-3cd87c562d09/go.mod h1:PoGiBqKSQK1vIfQ+yVaFcGjDySHvym6FM1cNYnwzbrY=
 github.com/mitchellh/go-homedir v1.1.0 h1:lukF9ziXFxDFPkA1vsr5zpc1XuPDn/wFntq5mG+4E0Y=
 github.com/mitchellh/go-homedir v1.1.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
 github.com/nicksnyder/go-i18n v1.10.1 h1:isfg77E/aCD7+0lD/D00ebR2MV5vgeQ276WYyDaCRQc=

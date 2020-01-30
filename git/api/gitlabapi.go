@@ -20,6 +20,7 @@ type GitlabHTTP struct {
 	// client http.Client
 }
 
+//TODO: Factor out ID to be used by multiple git repos
 // GitRepository struct containing information about git repository
 type GitRepository struct {
 	Name string      `json:"name"`

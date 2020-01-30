@@ -16,6 +16,7 @@ type PlatformCommand interface {
 // GitCommand to retrieve git values
 type GitCommand interface {
 	Token() (string, error)
+	Repository() (string, error)
 }
 
 // PlatformInput struct to retrieve user commands
@@ -48,6 +49,12 @@ type UserSelections struct {
 func (selection Selection) Application() (UserSelections, error) {
 
 	applicationType, err := selection.Command.ApplicationType()
+
+	if err != nil {
+		return UserSelections{}, err
+	}
+
+	gitRepository, err := selection.GitCommand.Repository()
 
 	if err != nil {
 		return UserSelections{}, err
@@ -92,7 +99,7 @@ func (selection Selection) Application() (UserSelections, error) {
 		PlatformTeamName:   teamName,
 		ProjectName:        projectName,
 		GitToken:           gitToken,
-		VersionControl:     "Gitlab",
+		VersionControl:     gitRepository,
 		CIServer:           "GitlabCI",
 	}, nil
 }

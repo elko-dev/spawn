@@ -25,7 +25,7 @@ func Run(action SpawnAction) cli.Command {
 		Action: func(c *cli.Context) error {
 			command := prompt.UserCommands{}
 			platform := prompt.HerokuCommand{}
-			git := prompt.GitlabCommand{}
+			git := prompt.GitPrompts{}
 			selection := prompt.Selection{command, platform, git}
 			userSelections, _ := selection.Application()
 			executeAction(action, userSelections)
