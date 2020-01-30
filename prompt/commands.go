@@ -93,24 +93,6 @@ func selectProjectName() (string, error) {
 	return projectPrompt.Run()
 }
 
-// GitlabAccessToken prompts user for gitlab token
-func GitlabAccessToken() (string, error) {
-	accessTokenValidate :=
-		func(input string) error {
-			return validation.Validate(input,
-				validation.Required, // not empty
-			)
-		}
-
-	accessTokenPrompt := promptui.Prompt{
-		Label:    "Gitlab Access Token",
-		Validate: accessTokenValidate,
-		Mask:     '*',
-	}
-
-	return accessTokenPrompt.Run()
-}
-
 // GitlabGroupID prompts user for Gitlab group id to add repo
 func GitlabGroupID() (string, error) {
 	//TODO: Add custom id validation if we stick with group id instead of name

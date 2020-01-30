@@ -25,7 +25,8 @@ func Run(action SpawnAction) cli.Command {
 		Action: func(c *cli.Context) error {
 			command := prompt.UserCommands{}
 			platform := prompt.HerokuCommand{}
-			selection := prompt.Selection{command, platform}
+			git := prompt.GitlabCommand{}
+			selection := prompt.Selection{command, platform, git}
 			userSelections, _ := selection.Application()
 			executeAction(action, userSelections)
 			return nil
@@ -60,10 +61,7 @@ func createClientApplication(userCommands prompt.UserSelections) platform.Applic
 	clientApplication.Environments = []string{"dev", "stage", "prod"}
 	clientApplication.ApplicationType = userCommands.ClientLanguageType
 	clientApplication.ProjectName = userCommands.ProjectName + "-client"
-	//TODO: factor this out
-	gitToken, _ := prompt.GitlabAccessToken()
-	clientApplication.GitToken = gitToken
-
+	clientApplication.GitToken = userCommands.GitToken
 	clientApplication.PlatformToken = userCommands.PlatformToken
 	clientApplication.PlatformTeamName = userCommands.PlatformTeamName
 	return clientApplication
@@ -74,11 +72,7 @@ func createServerApplication(userCommands prompt.UserSelections) platform.Applic
 	serverApplication.Environments = []string{"dev", "stage", "prod"}
 	serverApplication.ApplicationType = userCommands.ServerType
 	serverApplication.ProjectName = userCommands.ProjectName + "-server"
-
-	//TODO: factor this out
-	gitToken, _ := prompt.GitlabAccessToken()
-	serverApplication.GitToken = gitToken
-
+	serverApplication.GitToken = userCommands.GitToken
 	serverApplication.PlatformToken = userCommands.PlatformToken
 	serverApplication.PlatformTeamName = userCommands.PlatformTeamName
 	return serverApplication
