@@ -65,6 +65,7 @@ func createClientApplication(userCommands prompt.UserSelections) platform.Applic
 	clientApplication.GitToken = gitToken
 
 	clientApplication.PlatformToken = userCommands.PlatformToken
+	clientApplication.PlatformTeamName = userCommands.PlatformTeamName
 	return clientApplication
 }
 
@@ -79,5 +80,6 @@ func createServerApplication(userCommands prompt.UserSelections) platform.Applic
 	serverApplication.GitToken = gitToken
 
 	serverApplication.PlatformToken = userCommands.PlatformToken
+	serverApplication.PlatformTeamName = userCommands.PlatformTeamName
 	return serverApplication
 }

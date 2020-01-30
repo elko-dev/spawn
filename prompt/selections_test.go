@@ -173,11 +173,11 @@ func TestWhenUserSelectsPlatformTokenPlatformTokenIsReturned(t *testing.T) {
 	command.EXPECT().ServerType().Return(serverType, nil)
 	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
 	command.EXPECT().ProjectName().Return(projectName, nil)
-	platform.EXPECT().Platform().Return(platformName, platformToken, nil)
+	platform.EXPECT().Platform().Return(platformToken, platformTeamName, nil)
 
 	selection := Selection{command, platform}
 
-	expected := platformName
+	expected := platformToken
 
 	userSelections, _ := selection.Application()
 	actual := userSelections.PlatformToken
@@ -199,14 +199,14 @@ func TestWhenUserSelectsPlatformTeamNameTeamNameIsReturned(t *testing.T) {
 	command.EXPECT().ServerType().Return(serverType, nil)
 	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
 	command.EXPECT().ProjectName().Return(projectName, nil)
-	platform.EXPECT().Platform().Return(platformTeamName, "", nil)
+	platform.EXPECT().Platform().Return(platformToken, platformTeamName, nil)
 
 	selection := Selection{command, platform}
 
 	expected := platformTeamName
 
 	userSelections, _ := selection.Application()
-	actual := userSelections.PlatformToken
+	actual := userSelections.PlatformTeamName
 
 	if actual != expected {
 		t.Log("Incorrect type, expected ", expected, " got ", actual)

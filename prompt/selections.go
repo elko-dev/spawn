@@ -59,7 +59,7 @@ func (selection Selection) Application() (UserSelections, error) {
 
 	}
 
-	token, _, err := selection.PlatformCommand.Platform()
+	token, teamName, err := selection.PlatformCommand.Platform()
 
 	if err != nil {
 		return UserSelections{}, err
@@ -78,6 +78,7 @@ func (selection Selection) Application() (UserSelections, error) {
 		ServerType:         serverType,
 		ClientLanguageType: clientLanguageType,
 		PlatformToken:      token,
+		PlatformTeamName:   teamName,
 		ProjectName:        projectName,
 		VersionControl:     "Gitlab",
 		CIServer:           "GitlabCI",

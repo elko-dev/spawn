@@ -11,20 +11,19 @@ type HerokuCommand struct {
 
 // Platform test
 func (platform HerokuCommand) Platform() (string, string, error) {
-	token, err := PlatformToken()
+	token, err := selectPlatformToken()
 	if err != nil {
 		return "","", err
 	}
 
-	teamName, err := HerokuTeamName()
+	teamName, err := selectHerokuTeamName()
 	if err != nil {
 		return  "","", err
 	}
 	return token, teamName, nil
 }
 
-// PlatformToken prompts user for heroku token
-func PlatformToken() (string, error) {
+func selectPlatformToken() (string, error) {
 	deployTokenValidate :=
 		func(input string) error {
 			return validation.Validate(input,
@@ -41,8 +40,7 @@ func PlatformToken() (string, error) {
 	return deployTokenPrompt.Run()
 }
 
-// HerokuTeamName prompts user for heroku team name
-func HerokuTeamName() (string, error) {
+func selectHerokuTeamName() (string, error) {
 	projectValidate :=
 		func(input string) error {
 			return validation.Validate(input,

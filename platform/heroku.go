@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/elko-dev/spawn/constants"
-	"github.com/elko-dev/spawn/prompt"
 	heroku "github.com/heroku/heroku-go/v5"
 )
 
@@ -19,11 +18,12 @@ const (
 
 // Application is a struct representing a full application
 type Application struct {
-	ProjectName     string
-	PlatformToken   string
-	GitToken        string
-	ApplicationType string
-	Environments    []string
+	ProjectName      string
+	PlatformToken    string
+	PlatformTeamName string
+	GitToken         string
+	ApplicationType  string
+	Environments     []string
 }
 
 // HerokuPlatform struct for heroku operations implementation
@@ -41,16 +41,10 @@ func (h HerokuPlatform) Create(application Application) error {
 
 	region := "us"
 	stack := "heroku-18"
-	teamName, err := prompt.HerokuTeamName()
-
-	if err != nil {
-		println(err.Error())
-		return errors.New("Error Retrieving Heroku Team Name")
-	}
 
 	for _, environment := range application.Environments {
 		herokuName := createHerokuName(application.ProjectName, environment)
-		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &teamName}
+		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &application.PlatformTeamName}
 
 		app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
 
