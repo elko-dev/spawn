@@ -12,8 +12,8 @@ BIN_OUTPUT=release
 APP_NAME=spawn
 REPO=elko-dev
 MAJOR_VERSION=0
-PATCH_VERSION=1
-MINOR_VERSION=2
+PATCH_VERSION=0
+MINOR_VERSION=3
 
 default: make_start clean dependencies test build make_stop
 
