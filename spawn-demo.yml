@@ -1,0 +1,265 @@
+# The configurations that used for the recording, feel free to edit them
+config:
+
+  # Specify a command to be executed
+  # like `/bin/bash -l`, `ls`, or any other commands
+  # the default is bash for Linux
+  # or powershell.exe for Windows
+  command: bash -l
+  
+  # Specify the current working directory path
+  # the default is the current working directory path
+  cwd: /Users/andrewlarsen/go/src/github.com/elko-dev/spawn
+  
+  # Export additional ENV variables
+  env:
+    recording: true
+  
+  # Explicitly set the number of columns
+  # or use `auto` to take the current
+  # number of columns of your shell
+  cols: 163
+  
+  # Explicitly set the number of rows
+  # or use `auto` to take the current
+  # number of rows of your shell
+  rows: 18
+  
+  # Amount of times to repeat GIF
+  # If value is -1, play once
+  # If value is 0, loop indefinitely
+  # If value is a positive number, loop n times
+  repeat: 0
+  
+  # Quality
+  # 1 - 100
+  quality: 100
+  
+  # Delay between frames in ms
+  # If the value is `auto` use the actual recording delays
+  frameDelay: auto
+  
+  # Maximum delay between frames in ms
+  # Ignored if the `frameDelay` isn't set to `auto`
+  # Set to `auto` to prevent limiting the max idle time
+  maxIdleTime: 2000
+  
+  # The surrounding frame box
+  # The `type` can be null, window, floating, or solid`
+  # To hide the title use the value null
+  # Don't forget to add a backgroundColor style with a null as type
+  frameBox:
+    type: floating
+    title: Terminalizer
+    style:
+      border: 0px black solid
+      # boxShadow: none
+      # margin: 0px
+  
+  # Add a watermark image to the rendered gif
+  # You need to specify an absolute path for
+  # the image on your machine or a URL, and you can also
+  # add your own CSS styles
+  watermark:
+    imagePath: null
+    style:
+      position: absolute
+      right: 15px
+      bottom: 15px
+      width: 100px
+      opacity: 0.9
+  
+  # Cursor style can be one of
+  # `block`, `underline`, or `bar`
+  cursorStyle: block
+  
+  # Font family
+  # You can use any font that is installed on your machine
+  # in CSS-like syntax
+  fontFamily: "Monaco, Lucida Console, Ubuntu Mono, Monospace"
+  
+  # The size of the font
+  fontSize: 12
+  
+  # The height of lines
+  lineHeight: 1
+  
+  # The spacing between letters
+  letterSpacing: 0
+  
+  # Theme
+  theme:
+    background: "transparent"
+    foreground: "#afafaf"
+    cursor: "#c7c7c7"
+    black: "#232628"
+    red: "#fc4384"
+    green: "#b3e33b"
+    yellow: "#ffa727"
+    blue: "#75dff2"
+    magenta: "#ae89fe"
+    cyan: "#708387"
+    white: "#d5d5d0"
+    brightBlack: "#626566"
+    brightRed: "#ff7fac"
+    brightGreen: "#c8ed71"
+    brightYellow: "#ebdf86"
+    brightBlue: "#75dff2"
+    brightMagenta: "#ae89fe"
+    brightCyan: "#b1c6ca"
+    brightWhite: "#f9f9f4"
+  
+# Records, feel free to edit them
+records:
+  - delay: 711
+    content: "\e[?1034hAndrews-MBP-4:spawn andrewlarsen$ "
+  - delay: 630
+    content: .
+  - delay: 207
+    content: /
+  - delay: 472
+    content: s
+  - delay: 249
+    content: "\a"
+  - delay: 591
+    content: p
+  - delay: 169
+    content: 'awn '
+  - delay: 855
+    content: a
+  - delay: 65
+    content: p
+  - delay: 152
+    content: p
+  - delay: 71
+    content: l
+  - delay: 160
+    content: i
+  - delay: 97
+    content: c
+  - delay: 31
+    content: a
+  - delay: 200
+    content: t
+  - delay: 22
+    content: i
+  - delay: 154
+    content: o
+  - delay: 145
+    content: 'n'
+  - delay: 256
+    content: "\r\n"
+  - delay: 21
+    content: "\e[?25l\e[2K\r\e[2mUse the arrow keys to navigate:\e[0m \e[2m↓\e[0m \e[2m↑\e[0m \e[2m→\e[0m \e[2m←\e[0m \r\n\e[2K\r\e[34m?\e[0m Select Application Type: \r\n\e[2K\r  \e[1m▸\e[0m \e[4mWeb\e[0m\r\n\e[2K\r    Mobile\r\n\e[J\e[2K\r \b"
+  - delay: 1059
+    content: "\a\e[J\e[2K\r\e[1A\e[1A\e[1A\e[1A\e[2K\r\e[2mUse the arrow keys to navigate:\e[0m \e[2m↓\e[0m \e[2m↑\e[0m \e[2m→\e[0m \e[2m←\e[0m \e[1B\e[2K\r\e[34m?\e[0m Select Application Type: \e[1B\e[2K\r    Web\e[1B\e[2K\r  \e[1m▸\e[0m \e[4mMobile\e[0m\e[1B \b\e[J\e[2K\r \b"
+  - delay: 255
+    content: "\a\e[J\e[2K\r\e[1A\e[1A\e[1A\e[1A\e[2K\r\e[2mUse the arrow keys to navigate:\e[0m \e[2m↓\e[0m \e[2m↑\e[0m \e[2m→\e[0m \e[2m←\e[0m \e[1B\e[2K\r\e[34m?\e[0m Select Application Type: \e[1B\e[2K\r  \e[1m▸\e[0m \e[4mWeb\e[0m\e[1B\e[2K\r    Mobile\e[1B \b\e[J\e[2K\r \b"
+  - delay: 624
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r \b\e[1A\e[2K\r\e[1A\e[2K\r\e[1A\e[2K\r\e[1A\e[2K\r\e[2K\r\e[32m\e[32m✔\e[0m \e[2mWeb\e[0m\r\n\e[?25h\e[J\e[2K\r\e[?25l\e[2K\r\e[2mUse the arrow keys to navigate:\e[0m \e[2m↓\e[0m \e[2m↑\e[0m \e[2m→\e[0m \e[2m←\e[0m \r\n\e[2K\r\e[34m?\e[0m Select Backend Language: \r\n\e[2K\r  \e[1m▸\e[0m \e[4mNodeJs\e[0m\r\n\e[J\e[2K\r \b"
+  - delay: 1751
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r \b\e[1A\e[2K\r\e[1A\e[2K\r\e[1A\e[2K\r\e[2K\r\e[32m\e[32m✔\e[0m \e[2mNodeJs\e[0m\r\n\e[?25h\e[J\e[2K\r\e[?25l\e[2K\r\e[2mUse the arrow keys to navigate:\e[0m \e[2m↓\e[0m \e[2m↑\e[0m \e[2m→\e[0m \e[2m←\e[0m \r\n\e[2K\r\e[34m?\e[0m Select Client Language: \r\n\e[2K\r  \e[1m▸\e[0m \e[4mReact\e[0m\r\n\e[J\e[2K\r \b"
+  - delay: 1103
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r \b\e[1A\e[2K\r\e[1A\e[2K\r\e[1A\e[2K\r\e[2K\r\e[32m\e[32m✔\e[0m \e[2mReact\e[0m\r\n\e[?25h\e[J\e[2K\r\e[?25l\e[2K\r\e[1m\e[31m✗\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m █\r\n\e[J\e[2K\r \b"
+  - delay: 6436
+    content: "\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m **█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ***█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ****█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *****█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ******█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *******█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m **********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ***********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m **************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ***************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ****************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *****************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ******************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *******************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ********************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *********************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m **********************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ***********************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m **************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ***************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ****************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *****************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ******************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *******************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ********************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m *********************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m **********************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ***********************************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ************************************█\r\n*\e[J\e[2K\r \b"
+  - delay: 577
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Access Token\e[0m\e[1m:\e[0m ************************************█\r\n\e[1A\e[2K\r\e[2K\r\e[2mHeroku Access Token\e[0m\e[2m:\e[0m ************************************█\r\n\e[?25h\e[?25l\e[2K\r\e[1m\e[31m✗\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m █\r\n\e[J\e[2K\r \b"
+  - delay: 3110
+    content: "\e[J\e[2K\re\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m e█\r\ne\e[J\e[2K\r \b"
+  - delay: 176
+    content: "\e[J\e[2K\rl\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m el█\r\nl\e[J\e[2K\r \b"
+  - delay: 184
+    content: "\e[J\e[2K\rk\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elk█\r\nk\e[J\e[2K\r \b"
+  - delay: 152
+    content: "\e[J\e[2K\ro\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko█\r\no\e[J\e[2K\r \b"
+  - delay: 215
+    content: "\e[J\e[2K\r-\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-█\r\n-\e[J\e[2K\r \b"
+  - delay: 312
+    content: "\e[J\e[2K\rp\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-p█\r\np\e[J\e[2K\r \b"
+  - delay: 128
+    content: "\e[J\e[2K\rl\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-pl█\r\nl\e[J\e[2K\r \b"
+  - delay: 135
+    content: "\e[J\e[2K\ra\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-pla█\r\na\e[J\e[2K\r \b"
+  - delay: 168
+    content: "\e[J\e[2K\ry\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-play█\r\ny\e[J\e[2K\r \b"
+  - delay: 119
+    content: "\e[J\e[2K\rg\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-playg█\r\ng\e[J\e[2K\r \b"
+  - delay: 168
+    content: "\e[J\e[2K\rr\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-playgr█\r\nr\e[J\e[2K\r \b"
+  - delay: 72
+    content: "\e[J\e[2K\ro\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-playgro█\r\no\e[J\e[2K\r \b"
+  - delay: 167
+    content: "\e[J\e[2K\ru\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-playgrou█\r\nu\e[J\e[2K\r \b"
+  - delay: 88
+    content: "\e[J\e[2K\rn\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-playgroun█\r\nn\e[J\e[2K\r \b"
+  - delay: 87
+    content: "\e[J\e[2K\rd\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-playground█\r\nd\e[J\e[2K\r \b"
+  - delay: 215
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mHeroku Team Name\e[0m\e[1m:\e[0m elko-playground█\r\n\e[1A\e[2K\r\e[2K\r\e[2mHeroku Team Name\e[0m\e[2m:\e[0m elko-playground█\r\n\e[?25h\e[?25l\e[2K\r\e[1m\e[31m✗\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m █\r\n\e[J\e[2K\r \b"
+  - delay: 2904
+    content: "\e[J\e[2K\re\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m e█\r\ne\e[J\e[2K\r \b"
+  - delay: 415
+    content: "\a\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[31m✗\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m █\r\n \b\e[J\e[2K\r \b"
+  - delay: 71
+    content: "\e[J\e[2K\rr\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m r█\r\nr\e[J\e[2K\r \b"
+  - delay: 49
+    content: "\e[J\e[2K\re\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m re█\r\ne\e[J\e[2K\r \b"
+  - delay: 56
+    content: "\e[J\e[2K\ra\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m rea█\r\na\e[J\e[2K\r \b"
+  - delay: 144
+    content: "\e[J\e[2K\rc\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reac█\r\nc\e[J\e[2K\r \b"
+  - delay: 224
+    content: "\e[J\e[2K\rt\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m react█\r\nt\e[J\e[2K\r \b"
+  - delay: 479
+    content: "\e[J\e[2K\rs\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reacts█\r\ns\e[J\e[2K\r \b"
+  - delay: 88
+    content: "\e[J\e[2K\rp\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactsp█\r\np\e[J\e[2K\r \b"
+  - delay: 119
+    content: "\e[J\e[2K\ra\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspa█\r\na\e[J\e[2K\r \b"
+  - delay: 80
+    content: "\e[J\e[2K\rw\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspaw█\r\nw\e[J\e[2K\r \b"
+  - delay: 111
+    content: "\e[J\e[2K\rn\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspawn█\r\nn\e[J\e[2K\r \b"
+  - delay: 207
+    content: "\e[J\e[2K\rd\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspawnd█\r\nd\e[J\e[2K\r \b"
+  - delay: 55
+    content: "\e[J\e[2K\re\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspawnde█\r\ne\e[J\e[2K\r \b"
+  - delay: 56
+    content: "\e[J\e[2K\rm\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspawndem█\r\nm\e[J\e[2K\r \b"
+  - delay: 160
+    content: "\e[J\e[2K\ro\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspawndemo█\r\no\e[J\e[2K\r \b"
+  - delay: 567
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mProject Name\e[0m\e[1m:\e[0m reactspawndemo█\r\n\e[1A\e[2K\r\e[2K\r\e[2mProject Name\e[0m\e[2m:\e[0m reactspawndemo█\r\n\e[?25h\e[?25l\e[2K\r\e[1m\e[31m✗\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m █\r\n\e[J\e[2K\r \b"
+  - delay: 8394
+    content: "\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m *█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m **█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ***█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ****█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m *****█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ******█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m *******█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m *********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m **********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ***********█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m *************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m **************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ***************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ****************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m *****************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ******************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m *******************█\r\n*\e[J\e[2K\r \b\e[J\e[2K\r*\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ********************█\r\n*\e[J\e[2K\r \b"
+  - delay: 491
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Access Token\e[0m\e[1m:\e[0m ********************█\r\n\e[1A\e[2K\r\e[2K\r\e[2mGitlab Access Token\e[0m\e[2m:\e[0m ********************█\r\n\e[?25h"
+  - delay: 676
+    content: "Created Application for dev at url https://dev-reactspawndemo-client.herokuapp.com/\r\n"
+  - delay: 343
+    content: "Created Application for stage at url https://stage-reactspawndemo-client.herokuapp.com/\r\n"
+  - delay: 482
+    content: "Created Application for prod at url https://prod-reactspawndemo-client.herokuapp.com/\r\n\e[?25l\e[2K\r\e[1m\e[31m✗\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m █\r\n\e[J\e[2K\r \b"
+  - delay: 4021
+    content: "\e[J\e[2K\r6\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6█\r\n6\e[J\e[2K\r \b\e[J\e[2K\r9\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 69█\r\n9\e[J\e[2K\r \b\e[J\e[2K\r4\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 694█\r\n4\e[J\e[2K\r \b\e[J\e[2K\r7\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6947█\r\n7\e[J\e[2K\r \b\e[J\e[2K\r5\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 69475█\r\n5\e[J\e[2K\r \b\e[J\e[2K\r0\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 694750█\r\n0\e[J\e[2K\r \b\e[J\e[2K\r0\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6947500█\r\n0\e[J\e[2K\r \b"
+  - delay: 390
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6947500█\r\n\e[1A\e[2K\r\e[2K\r\e[2mGitlab Group Id\e[0m\e[2m:\e[0m 6947500█\r\n\e[?25h"
+  - delay: 3496
+    content: "Created gitlab respository with url:  https://gitlab.com/elko-dev/reactspawndemo-client.git\r\n"
+  - delay: 331
+    content: "Created Application for dev at url https://dev-reactspawndemo-server.herokuapp.com/\r\n"
+  - delay: 400
+    content: "Created Application for stage at url https://stage-reactspawndemo-server.herokuapp.com/\r\n"
+  - delay: 441
+    content: "Created Application for prod at url https://prod-reactspawndemo-server.herokuapp.com/\r\n\e[?25l\e[2K\r\e[1m\e[31m✗\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m █\r\n\e[J\e[2K\r \b"
+  - delay: 1139
+    content: "\e[J\e[2K\r6\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6█\r\n6\e[J\e[2K\r \b\e[J\e[2K\r9\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 69█\r\n9\e[J\e[2K\r \b\e[J\e[2K\r4\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 694█\r\n4\e[J\e[2K\r \b\e[J\e[2K\r7\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6947█\r\n7\e[J\e[2K\r \b\e[J\e[2K\r5\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 69475█\r\n5\e[J\e[2K\r \b\e[J\e[2K\r0\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 694750█\r\n0\e[J\e[2K\r \b\e[J\e[2K\r0\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6947500█\r\n0\e[J\e[2K\r \b"
+  - delay: 430
+    content: "\e[J\e[2K\r \b\e[J\e[2K\r\e[1A\e[2K\r\e[2K\r\e[1m\e[32m✔\e[0m \e[1mGitlab Group Id\e[0m\e[1m:\e[0m 6947500█\r\n\e[1A\e[2K\r\e[2K\r\e[2mGitlab Group Id\e[0m\e[2m:\e[0m 6947500█\r\n\e[?25h"
+  - delay: 3730
+    content: "Created gitlab respository with url:  https://gitlab.com/elko-dev/reactspawndemo-server.git\r\n"
+  - delay: 5
+    content: 'Andrews-MBP-4:spawn andrewlarsen$ '
+  - delay: 5265
+    content: "logout\r\n"
