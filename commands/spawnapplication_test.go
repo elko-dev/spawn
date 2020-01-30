@@ -8,6 +8,7 @@ import (
 
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/platform"
+	"github.com/elko-dev/spawn/prompt"
 )
 
 type mockSpawnAction struct {
@@ -20,7 +21,7 @@ func (mock mockSpawnAction) Application(app applications.App, application platfo
 
 func TestRunEncountersErrorProcessExitWithCode1(t *testing.T) {
 	spawnAction := mockSpawnAction{}
-	application := platform.Application{}
+	application := prompt.UserSelections{}
 	if os.Getenv("BE_CRASHER") == "1" {
 		executeAction(spawnAction, application)
 		return

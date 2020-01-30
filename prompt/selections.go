@@ -6,12 +6,23 @@ type Command interface {
 	ApplicationType() (string, error)
 	ServerType() (string, error)
 	ClientLanguageType(applicationType string) (string, error)
-	Platform() (string, error)
+}
+
+// PlatformInput struct to retrieve user commands
+type PlatformInput struct {
+	Token    string
+	TeamName string
+}
+
+// PlatformCommand interface containing all prompted commands for Platform
+type PlatformCommand interface {
+	Platform() (string, string, error)
 }
 
 // Selection is a struct containing functionality to determine user application to spawn
 type Selection struct {
-	Command Command
+	Command         Command
+	PlatformCommand PlatformCommand
 }
 
 // UserSelections represents the responses from users
@@ -20,7 +31,8 @@ type UserSelections struct {
 	ApplicationType    string
 	ServerType         string
 	ClientLanguageType string
-	Platform           string
+	PlatformToken      string
+	PlatformTeamName   string
 	VersionControl     string
 	CIServer           string
 }
@@ -47,7 +59,7 @@ func (selection Selection) Application() (UserSelections, error) {
 
 	}
 
-	platform, err := selection.Command.Platform()
+	token, _, err := selection.PlatformCommand.Platform()
 
 	if err != nil {
 		return UserSelections{}, err
@@ -65,7 +77,7 @@ func (selection Selection) Application() (UserSelections, error) {
 		ApplicationType:    applicationType,
 		ServerType:         serverType,
 		ClientLanguageType: clientLanguageType,
-		Platform:           platform,
+		PlatformToken:      token,
 		ProjectName:        projectName,
 		VersionControl:     "Gitlab",
 		CIServer:           "GitlabCI",

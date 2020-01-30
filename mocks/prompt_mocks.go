@@ -92,17 +92,41 @@ func (mr *MockCommandMockRecorder) ClientLanguageType(applicationType interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ClientLanguageType", reflect.TypeOf((*MockCommand)(nil).ClientLanguageType), applicationType)
 }
 
+// MockPlatformCommand is a mock of PlatformCommand interface
+type MockPlatformCommand struct {
+	ctrl     *gomock.Controller
+	recorder *MockPlatformCommandMockRecorder
+}
+
+// MockPlatformCommandMockRecorder is the mock recorder for MockPlatformCommand
+type MockPlatformCommandMockRecorder struct {
+	mock *MockPlatformCommand
+}
+
+// NewMockPlatformCommand creates a new mock instance
+func NewMockPlatformCommand(ctrl *gomock.Controller) *MockPlatformCommand {
+	mock := &MockPlatformCommand{ctrl: ctrl}
+	mock.recorder = &MockPlatformCommandMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockPlatformCommand) EXPECT() *MockPlatformCommandMockRecorder {
+	return m.recorder
+}
+
 // Platform mocks base method
-func (m *MockCommand) Platform() (string, error) {
+func (m *MockPlatformCommand) Platform() (string, string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Platform")
 	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
+	ret1, _ := ret[1].(string)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
 }
 
 // Platform indicates an expected call of Platform
-func (mr *MockCommandMockRecorder) Platform() *gomock.Call {
+func (mr *MockPlatformCommandMockRecorder) Platform() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Platform", reflect.TypeOf((*MockCommand)(nil).Platform))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Platform", reflect.TypeOf((*MockPlatformCommand)(nil).Platform))
 }

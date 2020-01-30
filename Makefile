@@ -31,7 +31,7 @@ dependencies:
 	go get -u gopkg.in/src-d/go-git.v4
 	wire
 	$(GOGET)
-	mockgen -destination=mocks/prompt_mocks.go -package=mocks -source=prompt/selections.go
+	mockgen -destination=mocks/prompt_mocks.go -package=mocks -source=prompt/selections.go -self_package=github.com/elko-dev/spawn/mocks
 test: 
 	$(GOTEST) -v ./...
 

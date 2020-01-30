@@ -50,16 +50,6 @@ func (userCommands UserCommands) Platform() (string, error) {
 	return "Heroku", nil
 }
 
-func getClientLangaugeSelections(applicationType string) []string {
-	if applicationType == "Web" {
-		return []string{constants.ReactClientLanguageType}
-	}
-	if applicationType == "Mobile" {
-		return []string{"React Native"}
-	}
-	return make([]string, 0, 0)
-}
-
 func selectClientLanguageTypes(selections []string) (int, string, error) {
 	prompt := promptui.Select{
 		Label: "Select Client Language",
@@ -121,41 +111,6 @@ func GitlabAccessToken() (string, error) {
 	return accessTokenPrompt.Run()
 }
 
-// PlatformToken prompts user for heroku token
-func PlatformToken() (string, error) {
-	deployTokenValidate :=
-		func(input string) error {
-			return validation.Validate(input,
-				validation.Required, // not empty
-			)
-		}
-
-	deployTokenPrompt := promptui.Prompt{
-		Label:    "Heroku Access Token",
-		Validate: deployTokenValidate,
-		Mask:     '*',
-	}
-
-	return deployTokenPrompt.Run()
-}
-
-// HerokuTeamName prompts user for heroku team name
-func HerokuTeamName() (string, error) {
-	projectValidate :=
-		func(input string) error {
-			return validation.Validate(input,
-				validation.Required, // not empty
-			)
-		}
-
-	projectPrompt := promptui.Prompt{
-		Label:    "Heroku Team Name",
-		Validate: projectValidate,
-	}
-
-	return projectPrompt.Run()
-}
-
 // GitlabGroupID prompts user for Gitlab group id to add repo
 func GitlabGroupID() (string, error) {
 	//TODO: Add custom id validation if we stick with group id instead of name
@@ -174,3 +129,13 @@ func GitlabGroupID() (string, error) {
 	return projectPrompt.Run()
 }
 
+//Sorry for the term but...helper function
+func getClientLangaugeSelections(applicationType string) []string {
+	if applicationType == "Web" {
+		return []string{constants.ReactClientLanguageType}
+	}
+	if applicationType == "Mobile" {
+		return []string{"React Native"}
+	}
+	return make([]string, 0, 0)
+}

@@ -24,7 +24,8 @@ func Run(action SpawnAction) cli.Command {
 		Flags:   flags.Repository(),
 		Action: func(c *cli.Context) error {
 			command := prompt.UserCommands{}
-			selection := prompt.Selection{command}
+			platform := prompt.HerokuCommand{}
+			selection := prompt.Selection{command, platform}
 			userSelections, _ := selection.Application()
 			executeAction(action, userSelections)
 			return nil
@@ -63,8 +64,7 @@ func createClientApplication(userCommands prompt.UserSelections) platform.Applic
 	gitToken, _ := prompt.GitlabAccessToken()
 	clientApplication.GitToken = gitToken
 
-	platformToken, _ := prompt.PlatformToken()
-	clientApplication.PlatformToken = platformToken
+	clientApplication.PlatformToken = userCommands.PlatformToken
 	return clientApplication
 }
 
@@ -78,7 +78,6 @@ func createServerApplication(userCommands prompt.UserSelections) platform.Applic
 	gitToken, _ := prompt.GitlabAccessToken()
 	serverApplication.GitToken = gitToken
 
-	platformToken, _ := prompt.PlatformToken()
-	serverApplication.PlatformToken = platformToken
+	serverApplication.PlatformToken = userCommands.PlatformToken
 	return serverApplication
 }

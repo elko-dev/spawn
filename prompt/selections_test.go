@@ -13,7 +13,9 @@ const (
 	applicationType    = "WEB"
 	serverType         = constants.NodeServerType
 	clientLanguageType = constants.ReactClientLanguageType
-	platform           = "Heroku"
+	platformName       = "Heroku"
+	platformTeamName   = "teamname"
+	platformToken      = "tokenid"
 	projectName        = "SomeName"
 )
 
@@ -21,15 +23,16 @@ func TestWhenUserSelectsApplicationTypeUserSelectionContainsSaidType(t *testing.
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, nil)
-	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
-	m.EXPECT().Platform().Return(platform, nil)
-	m.EXPECT().ProjectName().Return(projectName, nil)
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	command.EXPECT().ProjectName().Return(projectName, nil)
+	platform.EXPECT().Platform().Return(platformName, "", nil)
 
-	selection := Selection{m}
+	selection := Selection{command, platform}
 	expected := applicationType
 
 	application, _ := selection.Application()
@@ -47,7 +50,9 @@ func TestWhenUserSelectsApplicationTypeReturnsErrorApplicationErrorsError(t *tes
 	defer ctrl.Finish()
 
 	m := mocks.NewMockCommand(ctrl)
-	selection := Selection{m}
+	platform := mocks.NewMockPlatformCommand(ctrl)
+
+	selection := Selection{m, platform}
 
 	m.EXPECT().ApplicationType().Return("", errors.New("ERROR ENCOUNTERED"))
 
@@ -64,15 +69,17 @@ func TestWhenUserSelectsServerTypeUserSelectionContainsReturnedServerType(t *tes
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, nil)
-	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
-	m.EXPECT().Platform().Return(platform, nil)
-	m.EXPECT().ProjectName().Return(projectName, nil)
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	command.EXPECT().ProjectName().Return(projectName, nil)
 
-	selection := Selection{m}
+	platform.EXPECT().Platform().Return(platformName, "", nil)
+
+	selection := Selection{command, platform}
 
 	expected := serverType
 
@@ -90,11 +97,12 @@ func TestWhenUserSelectsServerTypeUserSelectionReturnsErrorApplicationFuncToRetu
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, errors.New("error encountered"))
-	selection := Selection{m}
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, errors.New("error encountered"))
+	selection := Selection{command, platform}
 
 	_, err := selection.Application()
 
@@ -109,15 +117,17 @@ func TestWhenUserSelectsClientLanguageTypeTypeIsReturned(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, nil)
-	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
-	m.EXPECT().Platform().Return(platform, nil)
-	m.EXPECT().ProjectName().Return(projectName, nil)
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	command.EXPECT().ProjectName().Return(projectName, nil)
 
-	selection := Selection{m}
+	platform.EXPECT().Platform().Return(platformName, "", nil)
+
+	selection := Selection{command, platform}
 
 	expected := clientLanguageType
 
@@ -135,12 +145,13 @@ func TestWhenUserSelectsClientLanguageTypeUserSelectionReturnsErrorApplicationFu
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, nil)
-	m.EXPECT().ClientLanguageType(applicationType).Return("", errors.New("error encountered"))
-	selection := Selection{m}
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return("", errors.New("error encountered"))
+	selection := Selection{command, platform}
 
 	_, err := selection.Application()
 
@@ -151,24 +162,51 @@ func TestWhenUserSelectsClientLanguageTypeUserSelectionReturnsErrorApplicationFu
 	}
 }
 
-func TestWhenUserSelectsPlatformPlatformIsReturned(t *testing.T) {
+func TestWhenUserSelectsPlatformTokenPlatformTokenIsReturned(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, nil)
-	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
-	m.EXPECT().Platform().Return(platform, nil)
-	m.EXPECT().ProjectName().Return(projectName, nil)
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	command.EXPECT().ProjectName().Return(projectName, nil)
+	platform.EXPECT().Platform().Return(platformName, platformToken, nil)
 
-	selection := Selection{m}
+	selection := Selection{command, platform}
 
-	expected := platform
+	expected := platformName
 
 	userSelections, _ := selection.Application()
-	actual := userSelections.Platform
+	actual := userSelections.PlatformToken
+
+	if actual != expected {
+		t.Log("Incorrect type, expected ", expected, " got ", actual)
+		t.Fail()
+
+	}
+}
+func TestWhenUserSelectsPlatformTeamNameTeamNameIsReturned(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
+
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	command.EXPECT().ProjectName().Return(projectName, nil)
+	platform.EXPECT().Platform().Return(platformTeamName, "", nil)
+
+	selection := Selection{command, platform}
+
+	expected := platformTeamName
+
+	userSelections, _ := selection.Application()
+	actual := userSelections.PlatformToken
 
 	if actual != expected {
 		t.Log("Incorrect type, expected ", expected, " got ", actual)
@@ -181,14 +219,16 @@ func TestWhenUserSelectsPlatformReturnsErrorErrorIsReturned(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, nil)
-	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
-	m.EXPECT().Platform().Return("", errors.New("ERROR"))
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
 
-	selection := Selection{m}
+	platform.EXPECT().Platform().Return("", "", errors.New("ERROR"))
+
+	selection := Selection{command, platform}
 
 	_, err := selection.Application()
 
@@ -202,14 +242,17 @@ func TestWhenUserSelectsProjectNameValueIsReturned(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	m := mocks.NewMockCommand(ctrl)
+	command := mocks.NewMockCommand(ctrl)
+	platform := mocks.NewMockPlatformCommand(ctrl)
 
-	m.EXPECT().ApplicationType().Return(applicationType, nil)
-	m.EXPECT().ServerType().Return(serverType, nil)
-	m.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
-	m.EXPECT().Platform().Return(platform, nil)
-	m.EXPECT().ProjectName().Return(projectName, nil)
-	selection := Selection{m}
+	command.EXPECT().ApplicationType().Return(applicationType, nil)
+	command.EXPECT().ServerType().Return(serverType, nil)
+	command.EXPECT().ClientLanguageType(applicationType).Return(clientLanguageType, nil)
+	command.EXPECT().ProjectName().Return(projectName, nil)
+
+	platform.EXPECT().Platform().Return(platformName, "", nil)
+
+	selection := Selection{command, platform}
 
 	expected := projectName
 
