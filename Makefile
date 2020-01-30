@@ -29,6 +29,7 @@ dependencies:
 	#global install
 	go get github.com/google/wire/cmd/wire
 	go get -u gopkg.in/src-d/go-git.v4
+	go get github.com/golang/mock/mockgen@latest
 	wire
 	$(GOGET)
 	mockgen -destination=mocks/prompt_mocks.go -package=mocks -source=prompt/selections.go -self_package=github.com/elko-dev/spawn/mocks
