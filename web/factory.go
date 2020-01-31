@@ -16,15 +16,15 @@ type AppFactory interface {
 
 // Prompt interface defines user prompts to determine application configuration
 type Prompt interface {
-	getClientType() (string, error)
-	getServerType() (string, error)
+	ForClientType(applicationType string) (string, error)
+	ForServerType() (string, error)
 }
 
 // Create Web type
-func (factory Factory) Create() WebType {
+func (factory Factory) Create(applicationType string) WebType {
 	//These are no-ops to present to user until more languages are supported
-	factory.webCommand.getClientType()
-	factory.webCommand.getServerType()
+	factory.webCommand.ForClientType(applicationType)
+	factory.webCommand.ForServerType()
 	client := factory.reactFactory.Create()
 	server := factory.nodeJsFactory.Create()
 	return NewWebType(client, server)

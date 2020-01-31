@@ -70,32 +70,32 @@ func (m *MockPrompt) EXPECT() *MockPromptMockRecorder {
 	return m.recorder
 }
 
-// getClientType mocks base method
-func (m *MockPrompt) getClientType() (string, error) {
+// ForClientType mocks base method
+func (m *MockPrompt) ForClientType(applicationType string) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "getClientType")
+	ret := m.ctrl.Call(m, "ForClientType", applicationType)
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// getClientType indicates an expected call of getClientType
-func (mr *MockPromptMockRecorder) getClientType() *gomock.Call {
+// ForClientType indicates an expected call of ForClientType
+func (mr *MockPromptMockRecorder) ForClientType(applicationType interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getClientType", reflect.TypeOf((*MockPrompt)(nil).getClientType))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ForClientType", reflect.TypeOf((*MockPrompt)(nil).ForClientType), applicationType)
 }
 
-// getServerType mocks base method
-func (m *MockPrompt) getServerType() (string, error) {
+// ForServerType mocks base method
+func (m *MockPrompt) ForServerType() (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "getServerType")
+	ret := m.ctrl.Call(m, "ForServerType")
 	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// getServerType indicates an expected call of getServerType
-func (mr *MockPromptMockRecorder) getServerType() *gomock.Call {
+// ForServerType indicates an expected call of ForServerType
+func (mr *MockPromptMockRecorder) ForServerType() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "getServerType", reflect.TypeOf((*MockPrompt)(nil).getServerType))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ForServerType", reflect.TypeOf((*MockPrompt)(nil).ForServerType))
 }

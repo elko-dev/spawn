@@ -9,6 +9,10 @@ import (
 	gomock "github.com/golang/mock/gomock"
 )
 
+const (
+	applicationType = "SOME_TYPE"
+)
+
 func TestWhenServerIsNodeJsWebTypeContainsNodeServer(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -17,13 +21,13 @@ func TestWhenServerIsNodeJsWebTypeContainsNodeServer(t *testing.T) {
 	mockNodeJsFactory := NewMockAppFactory(ctrl)
 	mockReactFactory := NewMockAppFactory(ctrl)
 
-	mockPrompt.EXPECT().getClientType().Return(constants.ReactClientLanguageType, nil)
-	mockPrompt.EXPECT().getServerType().Return(constants.NodeServerType, nil)
+	mockPrompt.EXPECT().ForClientType(applicationType).Return(constants.ReactClientLanguageType, nil)
+	mockPrompt.EXPECT().ForServerType().Return(constants.NodeServerType, nil)
 	mockNodeJsFactory.EXPECT().Create().Return(applications.NodeJs{})
 	mockReactFactory.EXPECT().Create().Return(applications.React{})
 	factory := Factory{mockNodeJsFactory, mockReactFactory, mockPrompt}
 
-	webType := factory.Create()
+	webType := factory.Create(applicationType)
 	client := webType.Server
 
 	if !isNodeJsType(client) {
@@ -41,13 +45,13 @@ func TestWhenClientIsReactWebTypeContainsReactClient(t *testing.T) {
 	mockNodeJsFactory := NewMockAppFactory(ctrl)
 	mockReactFactory := NewMockAppFactory(ctrl)
 
-	mockPrompt.EXPECT().getClientType().Return(constants.ReactClientLanguageType, nil)
-	mockPrompt.EXPECT().getServerType().Return(constants.NodeServerType, nil)
+	mockPrompt.EXPECT().ForClientType(applicationType).Return(constants.ReactClientLanguageType, nil)
+	mockPrompt.EXPECT().ForServerType().Return(constants.NodeServerType, nil)
 	mockNodeJsFactory.EXPECT().Create().Return(applications.NodeJs{})
 	mockReactFactory.EXPECT().Create().Return(applications.React{})
 	factory := Factory{mockNodeJsFactory, mockReactFactory, mockPrompt}
 
-	webType := factory.Create()
+	webType := factory.Create(applicationType)
 	client := webType.Client
 
 	if !isReactType(client) {

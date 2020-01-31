@@ -2,8 +2,9 @@ package applicationtype
 
 import (
 	"github.com/elko-dev/spawn/constants"
-	"github.com/elko-dev/spawn/prompt"
-	"github.com/elko-dev/spawn/web"
+	"github.com/elko-dev/spawn/functions"
+	prompt "github.com/elko-dev/spawn/prompt"
+	web "github.com/elko-dev/spawn/web"
 )
 
 // Prompt interface defines user prompts to determine application type
@@ -24,18 +25,24 @@ type Factory struct {
 // CreateApplicationType creates app type
 func (factory Factory) CreateApplicationType() TempAppType {
 	webFactory := web.Factory{}
+	functionFactory := functions.Factory{}
 	// prompt user for application type
 	appType, _ := factory.prompt.ForType()
 
 	var applicationType TempAppType
 
 	if appType == constants.WebApplicationType {
-		applicationType = webFactory.Create()
+		applicationType = webFactory.Create(appType)
+	}
+
+	if appType == constants.AzureFunctions {
+		applicationType = functionFactory.Create()
 	}
 
 	return applicationType
 }
 
 // NewFactory creates an ApplicationType factory
-// func NewFactory(appFactory ApplicationFactory, prompt Prompt) Factory {
-// 	return Factory{appFactory: appFactory, prompt: prompt}
+func NewFactory() Factory {
+	return Factory{prompt: Prompts{}}
+}
