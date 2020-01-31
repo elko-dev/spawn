@@ -18,10 +18,20 @@ type Factory struct {
 
 // Create method to construct a Project
 func (factory Factory) Create() (applications.Project, error) {
-	projectName, _ := factory.prompt.ForAppName()
+	projectName, err := factory.prompt.ForAppName()
+	if err != nil {
+		return nil, err
+	}
+	git, err := factory.gitFactory.Create(projectName)
+	if err != nil {
+		return nil, err
+	}
 
-	git, _ := factory.gitFactory.Create(projectName)
-	platform, _ := factory.platformFactory.Create(projectName)
+	platform, err := factory.platformFactory.Create(projectName)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return NewNode(git, platform, projectName), nil
 }

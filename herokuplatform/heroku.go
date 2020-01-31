@@ -1,4 +1,4 @@
-package platform
+package herokuplatform
 
 import (
 	"context"
@@ -16,48 +16,41 @@ const (
 	reactBuildPack = "mars/create-react-app"
 )
 
-// Application is a struct representing a full application
-type Application struct {
-	ProjectName      string
-	PlatformToken    string
-	PlatformTeamName string
-	Platform         string
-	GitToken         string
-	ApplicationType  string
-	VersionControl   string
-	Environments     []string
+// Heroku Platform
+type Heroku struct {
+	service          *heroku.Service
+	platformToken    string
+	environments     []string
+	projectName      string
+	platformTeamName string
+	applicationType  string
 }
 
-// HerokuPlatform struct for heroku operations implementation
-type HerokuPlatform struct {
-	Service *heroku.Service
-}
-
-// Create method to create heroku repository
-func (h HerokuPlatform) Create(application Application) error {
-	heroku.DefaultTransport.BearerToken = application.PlatformToken
+// Create Heroku Platform
+func (h Heroku) Create() error {
+	heroku.DefaultTransport.BearerToken = h.platformToken
 
 	region := "us"
 	stack := "heroku-18"
 
-	for _, environment := range application.Environments {
-		herokuName := createHerokuName(application.ProjectName, environment)
-		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &application.PlatformTeamName}
+	for _, environment := range h.environments {
+		herokuName := createHerokuName(h.projectName, environment)
+		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &h.platformTeamName}
 
-		app, err := h.Service.TeamAppCreate(context.TODO(), createOpts)
+		app, err := h.service.TeamAppCreate(context.TODO(), createOpts)
 
 		if err != nil {
 			println(err.Error())
 			return errors.New("Error Creating App")
 		}
 
-		buildPackOps, err := createBuildpack(application)
+		buildPackOps, err := createBuildpack(h.applicationType)
 
 		if err != nil {
 			println("error creating heroku build pack")
 			return err
 		}
-		_, err = h.Service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
+		_, err = h.service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
 
 		if err != nil {
 			println("error configuring build pack")
@@ -67,13 +60,14 @@ func (h HerokuPlatform) Create(application Application) error {
 	}
 
 	return nil
+
 }
 
-func createBuildpack(application Application) (heroku.BuildpackInstallationUpdateOpts, error) {
-	buildPackName, err := getApplicationBuildpack(application.ApplicationType)
+func createBuildpack(applicationType string) (heroku.BuildpackInstallationUpdateOpts, error) {
+	buildPackName, err := getApplicationBuildpack(applicationType)
 
 	if err != nil {
-		println("Invalid application type " + application.ApplicationType)
+		println("Invalid application type " + applicationType)
 		return heroku.BuildpackInstallationUpdateOpts{}, err
 	}
 	buildPackOps := heroku.BuildpackInstallationUpdateOpts{
@@ -107,8 +101,15 @@ func createHerokuName(applicationName string, environment string) string {
 	return herokuName
 }
 
-// NewHerokuPlatform init function
-func NewHerokuPlatform() HerokuPlatform {
+// NewHeroku init function
+func NewHeroku(platformToken string, environments []string, projectName string, platformTeamName string, applicationType string) Heroku {
 	s := heroku.NewService(heroku.DefaultClient)
-	return HerokuPlatform{Service: s}
+	h := Heroku{}
+	h.platformToken = platformToken
+	h.environments = environments
+	h.projectName = projectName
+	h.platformTeamName = platformTeamName
+	h.applicationType = applicationType
+	h.service = s
+	return h
 }

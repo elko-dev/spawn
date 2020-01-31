@@ -27,9 +27,19 @@ type GitRepository interface {
 	CreateGitRepository(repositoryName string, gitToken string, platformToken string, url string) (api.GitRepository, error)
 }
 
+// GitRepo describing the functionality to Create repositories
+type GitRepo interface {
+	CreateGitRepository() (api.GitRepository, error)
+}
+
 // PlatformRepository repository that defines creation of Platform repo
 type PlatformRepository interface {
 	Create(application platform.Application) error
+}
+
+// Platform repository that defines creation of Platform repo
+type Platform interface {
+	Create() error
 }
 
 // PlatformFactory interface defining platform request

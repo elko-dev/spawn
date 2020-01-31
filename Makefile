@@ -38,6 +38,7 @@ dependencies:
 	mockgen -destination=web/web_mocks.go -package=web -source=web/factory.go -self_package=github.com/elko-dev/spawn/mocks
 	mockgen -destination=applications/applications_mocks.go -package=applications -source=applications/applications.go -self_package=github.com/elko-dev/spawn/mocks
 	mockgen -destination=nodejs/nodejs_mocks.go -package=nodejs -source=nodejs/factory.go -self_package=github.com/elko-dev/spawn/mocks
+	mockgen -destination=herokuplatform/herokuplatform_mocks.go -package=herokuplatform -source=herokuplatform/factory.go -self_package=github.com/elko-dev/spawn/mocks
 test: 
 	$(GOTEST) -v ./...
 
