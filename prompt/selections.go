@@ -40,6 +40,7 @@ type UserSelections struct {
 	ClientLanguageType string
 	PlatformToken      string
 	PlatformTeamName   string
+	Platform           string
 	GitToken           string
 	VersionControl     string
 	CIServer           string
@@ -97,9 +98,11 @@ func (selection Selection) Application() (UserSelections, error) {
 		ClientLanguageType: clientLanguageType,
 		PlatformToken:      token,
 		PlatformTeamName:   teamName,
-		ProjectName:        projectName,
-		GitToken:           gitToken,
-		VersionControl:     gitRepository,
-		CIServer:           "GitlabCI",
+		//TODO: check for supported selections when other options are allowed
+		Platform:       applicationType,
+		ProjectName:    projectName,
+		GitToken:       gitToken,
+		VersionControl: gitRepository,
+		CIServer:       "GitlabCI",
 	}, nil
 }

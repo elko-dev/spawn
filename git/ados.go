@@ -33,6 +33,5 @@ func (ados ADOSRepository) CreateGitRepository(repositoryName string, gitToken s
 
 // NewADOSRepository init method
 func NewADOSRepository(git Git) ADOSRepository {
-
 	return ADOSRepository{}
 }

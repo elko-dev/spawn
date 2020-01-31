@@ -71,7 +71,7 @@ func selectServerType() (int, string, error) {
 func selectApplicationType() (int, string, error) {
 	prompt := promptui.Select{
 		Label: "Select Application Type",
-		Items: []string{"Web", "Mobile"},
+		Items: []string{constants.WebApplicationType, constants.MobileApplicationType, constants.AzureFunctions},
 	}
 
 	return prompt.Run()
@@ -113,11 +113,15 @@ func GitlabGroupID() (string, error) {
 
 //Sorry for the term but...helper function
 func getClientLangaugeSelections(applicationType string) []string {
-	if applicationType == "Web" {
+	if applicationType == constants.WebApplicationType {
 		return []string{constants.ReactClientLanguageType}
 	}
-	if applicationType == "Mobile" {
+	if applicationType == constants.MobileApplicationType {
 		return []string{"React Native"}
+	}
+	//TODO: This seems to be a bit of a hack; need to rethink the interface
+	if applicationType == constants.AzureFunctions {
+		return []string{"None"}
 	}
 	return make([]string, 0, 0)
 }

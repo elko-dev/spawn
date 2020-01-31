@@ -3,20 +3,19 @@ package commands
 import (
 	"os"
 
-	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/flags"
-	"github.com/elko-dev/spawn/platform"
 	"github.com/elko-dev/spawn/prompt"
+	"github.com/elko-dev/spawn/web"
 	"github.com/urfave/cli"
 )
 
-// SpawnAction describing the functionality to Create repositories
-type SpawnAction interface {
-	Application(app applications.App, application platform.Application) error
+type ApplicationType interface {
+	Create(action web.SpawnAction, userCommands prompt.UserSelections) error
 }
 
 // Run is the method to run the CreateRepository command
-func Run(action SpawnAction) cli.Command {
+func Run(action web.SpawnAction) cli.Command {
 	return cli.Command{
 		Name:    "application",
 		Aliases: []string{"application"},
@@ -34,46 +33,20 @@ func Run(action SpawnAction) cli.Command {
 	}
 }
 
-func executeAction(action SpawnAction, userCommands prompt.UserSelections) {
-	//create client
-	clientApplication := createClientApplication(userCommands)
-	createApp(action, clientApplication)
-	//create server
-	serverApplication := createServerApplication(userCommands)
-	createApp(action, serverApplication)
-}
+func executeAction(action web.SpawnAction, userCommands prompt.UserSelections) {
+	var applicationType ApplicationType
 
-func createApp(action SpawnAction, application platform.Application) {
-	app, err := applications.CreateApp(application)
-	if err != nil {
-		println("Error creating application.  Please verify your parameters are correct or submit an issue to Github")
-		os.Exit(1)
+	if userCommands.ApplicationType == constants.WebApplicationType {
+		applicationType = web.WebType{}
 	}
-	err = action.Application(app, application)
-	if err != nil {
-		println("Some number of operations failed, exiting...")
-		os.Exit(1)
+
+	if applicationType == nil {
+		println("Unsupported Application Type")
+		os.Exit(0)
 	}
-}
+	err := applicationType.Create(action, userCommands)
 
-func createClientApplication(userCommands prompt.UserSelections) platform.Application {
-	clientApplication := platform.Application{}
-	clientApplication.Environments = []string{"dev", "stage", "prod"}
-	clientApplication.ApplicationType = userCommands.ClientLanguageType
-	clientApplication.ProjectName = userCommands.ProjectName + "-client"
-	clientApplication.GitToken = userCommands.GitToken
-	clientApplication.PlatformToken = userCommands.PlatformToken
-	clientApplication.PlatformTeamName = userCommands.PlatformTeamName
-	return clientApplication
-}
-
-func createServerApplication(userCommands prompt.UserSelections) platform.Application {
-	serverApplication := platform.Application{}
-	serverApplication.Environments = []string{"dev", "stage", "prod"}
-	serverApplication.ApplicationType = userCommands.ServerType
-	serverApplication.ProjectName = userCommands.ProjectName + "-server"
-	serverApplication.GitToken = userCommands.GitToken
-	serverApplication.PlatformToken = userCommands.PlatformToken
-	serverApplication.PlatformTeamName = userCommands.PlatformTeamName
-	return serverApplication
+	if err != nil {
+		os.Exit(0)
+	}
 }

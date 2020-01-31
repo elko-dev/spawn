@@ -34,6 +34,8 @@ dependencies:
 	wire
 	$(GOGET)
 	mockgen -destination=mocks/prompt_mocks.go -package=mocks -source=prompt/selections.go -self_package=github.com/elko-dev/spawn/mocks
+	mockgen -destination=applicationtype/applicationtype_mocks.go -package=applicationtype -source=applicationtype/applicationtypefactory.go -self_package=github.com/elko-dev/spawn/mocks
+	mockgen -destination=web/web_mocks.go -package=web -source=web/factory.go -self_package=github.com/elko-dev/spawn/mocks
 test: 
 	$(GOTEST) -v ./...
 

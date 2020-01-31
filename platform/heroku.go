@@ -21,8 +21,10 @@ type Application struct {
 	ProjectName      string
 	PlatformToken    string
 	PlatformTeamName string
+	Platform         string
 	GitToken         string
 	ApplicationType  string
+	VersionControl   string
 	Environments     []string
 }
 

@@ -13,12 +13,12 @@ type HerokuCommand struct {
 func (platform HerokuCommand) Platform() (string, string, error) {
 	token, err := selectPlatformToken()
 	if err != nil {
-		return "","", err
+		return "", "",  err
 	}
 
 	teamName, err := selectHerokuTeamName()
 	if err != nil {
-		return  "","", err
+		return "", "",err
 	}
 	return token, teamName, nil
 }
