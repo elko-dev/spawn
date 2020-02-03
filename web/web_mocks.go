@@ -10,31 +10,31 @@ import (
 	reflect "reflect"
 )
 
-// MockAppFactory is a mock of AppFactory interface
-type MockAppFactory struct {
+// MockClientAppFactory is a mock of ClientAppFactory interface
+type MockClientAppFactory struct {
 	ctrl     *gomock.Controller
-	recorder *MockAppFactoryMockRecorder
+	recorder *MockClientAppFactoryMockRecorder
 }
 
-// MockAppFactoryMockRecorder is the mock recorder for MockAppFactory
-type MockAppFactoryMockRecorder struct {
-	mock *MockAppFactory
+// MockClientAppFactoryMockRecorder is the mock recorder for MockClientAppFactory
+type MockClientAppFactoryMockRecorder struct {
+	mock *MockClientAppFactory
 }
 
-// NewMockAppFactory creates a new mock instance
-func NewMockAppFactory(ctrl *gomock.Controller) *MockAppFactory {
-	mock := &MockAppFactory{ctrl: ctrl}
-	mock.recorder = &MockAppFactoryMockRecorder{mock}
+// NewMockClientAppFactory creates a new mock instance
+func NewMockClientAppFactory(ctrl *gomock.Controller) *MockClientAppFactory {
+	mock := &MockClientAppFactory{ctrl: ctrl}
+	mock.recorder = &MockClientAppFactoryMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockAppFactory) EXPECT() *MockAppFactoryMockRecorder {
+func (m *MockClientAppFactory) EXPECT() *MockClientAppFactoryMockRecorder {
 	return m.recorder
 }
 
 // Create mocks base method
-func (m *MockAppFactory) Create(applicationType string) (applications.Project, error) {
+func (m *MockClientAppFactory) Create(applicationType string) (applications.Project, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", applicationType)
 	ret0, _ := ret[0].(applications.Project)
@@ -43,9 +43,47 @@ func (m *MockAppFactory) Create(applicationType string) (applications.Project, e
 }
 
 // Create indicates an expected call of Create
-func (mr *MockAppFactoryMockRecorder) Create(applicationType interface{}) *gomock.Call {
+func (mr *MockClientAppFactoryMockRecorder) Create(applicationType interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAppFactory)(nil).Create), applicationType)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockClientAppFactory)(nil).Create), applicationType)
+}
+
+// MockServerAppFactory is a mock of ServerAppFactory interface
+type MockServerAppFactory struct {
+	ctrl     *gomock.Controller
+	recorder *MockServerAppFactoryMockRecorder
+}
+
+// MockServerAppFactoryMockRecorder is the mock recorder for MockServerAppFactory
+type MockServerAppFactoryMockRecorder struct {
+	mock *MockServerAppFactory
+}
+
+// NewMockServerAppFactory creates a new mock instance
+func NewMockServerAppFactory(ctrl *gomock.Controller) *MockServerAppFactory {
+	mock := &MockServerAppFactory{ctrl: ctrl}
+	mock.recorder = &MockServerAppFactoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockServerAppFactory) EXPECT() *MockServerAppFactoryMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockServerAppFactory) Create(applicationType string) (applications.Project, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", applicationType)
+	ret0, _ := ret[0].(applications.Project)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockServerAppFactoryMockRecorder) Create(applicationType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockServerAppFactory)(nil).Create), applicationType)
 }
 
 // MockPrompt is a mock of Prompt interface

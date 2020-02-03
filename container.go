@@ -10,6 +10,7 @@ import (
 	"github.com/elko-dev/spawn/herokuplatform"
 	"github.com/elko-dev/spawn/nodejs"
 	"github.com/elko-dev/spawn/platform"
+	"github.com/elko-dev/spawn/react"
 	"github.com/elko-dev/spawn/web"
 	"github.com/google/wire"
 )
@@ -32,12 +33,13 @@ func CreateFunctionsTypeFactory() platform.FunctionsPlatformFactory {
 func CreateWebFactory() web.Factory {
 	panic(wire.Build(
 		CreateNodeJsFactory,
+		CreateReactFactory,
 		web.NewPrompts,
 		web.NewWebFactory,
 	))
 }
 
-func CreateNodeJsFactory() web.AppFactory {
+func CreateNodeJsFactory() web.ServerAppFactory {
 	panic(wire.Build(
 		CreateGitFactory,
 		CreatePlatformFactory,
@@ -45,7 +47,14 @@ func CreateNodeJsFactory() web.AppFactory {
 		nodejs.NewFactory,
 	))
 }
-
+func CreateReactFactory() web.ClientAppFactory {
+	panic(wire.Build(
+		CreateGitFactory,
+		CreatePlatformFactory,
+		react.NewPrompts,
+		react.NewFactory,
+	))
+}
 func CreateGitFactory() applications.GitFactory {
 	panic(wire.Build(
 		git.NewPrompts,

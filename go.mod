@@ -14,6 +14,7 @@ require (
 	github.com/microsoft/azure-devops-go-api v0.0.0-20191230214132-3cd87c562d09 // indirect
 	github.com/microsoft/azure-devops-go-api/azuredevops v0.0.0-20191230214132-3cd87c562d09
 	github.com/sergi/go-diff v1.1.0 // indirect
+	github.com/sirupsen/logrus v1.4.2
 	github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80 // indirect
 	github.com/urfave/cli v1.22.1
 	github.com/voxelbrain/goptions v0.0.0-20180630082107-58cddc247ea2 // indirect

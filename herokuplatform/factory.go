@@ -37,7 +37,7 @@ func (factory Factory) Create(projectName string, applicationType string) (appli
 		return Heroku{}, err
 	}
 
-	return NewHeroku(token, envs, projectName, teamName, ""), nil
+	return NewHeroku(token, envs, projectName, teamName, applicationType), nil
 }
 
 // NewFactory init

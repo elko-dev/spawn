@@ -1,18 +1,18 @@
-package nodejs
+package react
 
 import (
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/web"
 )
 
-// Prompt for Node specific configuration
+// Prompt for React specific configuration
 type Prompt interface {
 	forAppName() (string, error)
 	forPlatform() (string, error)
 	forVersionControl() (string, error)
 }
 
-// Factory to construct Node App
+// Factory to construct React App
 type Factory struct {
 	gitFactory      applications.GitFactory
 	platformFactory applications.PlatformFactory
@@ -36,10 +36,10 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		return nil, err
 	}
 
-	return NewNode(git, platform, projectName), nil
+	return NewReact(git, platform, projectName), nil
 }
 
 // NewFactory init func
-func NewFactory(gitFactory applications.GitFactory, platformFactory applications.PlatformFactory, prompt Prompt) web.ServerAppFactory {
+func NewFactory(gitFactory applications.GitFactory, platformFactory applications.PlatformFactory, prompt Prompt) web.ClientAppFactory {
 	return Factory{gitFactory, platformFactory, prompt}
 }

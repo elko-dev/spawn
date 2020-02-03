@@ -3,6 +3,7 @@ package herokuplatform
 import (
 	"context"
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"strings"
 
 	"github.com/elko-dev/spawn/constants"
@@ -28,11 +29,17 @@ type Heroku struct {
 
 // Create Heroku Platform
 func (h Heroku) Create() error {
+	contextLogger := log.WithFields(log.Fields{
+		"applicationType":  h.applicationType,
+		"environments":     h.environments,
+		"projectName":      h.projectName,
+		"platformTeamName": h.platformTeamName,
+	})
 	heroku.DefaultTransport.BearerToken = h.platformToken
 
 	region := "us"
 	stack := "heroku-18"
-
+	contextLogger.Debug("Creating platform environments")
 	for _, environment := range h.environments {
 		herokuName := createHerokuName(h.projectName, environment)
 		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &h.platformTeamName}
@@ -61,6 +68,11 @@ func (h Heroku) Create() error {
 
 	return nil
 
+}
+
+// GetToken retrieves access token for platform
+func (h Heroku) GetToken() string {
+	return h.platformToken
 }
 
 func createBuildpack(applicationType string) (heroku.BuildpackInstallationUpdateOpts, error) {

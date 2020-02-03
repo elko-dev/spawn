@@ -20,6 +20,7 @@ type GitRepo interface {
 // PlatformRepository repository that defines creation of Platform repo
 type PlatformRepository interface {
 	Create() error
+	GetToken() string
 }
 
 // PlatformFactory interface defining platform request

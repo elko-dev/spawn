@@ -9,6 +9,11 @@ func (function FunctionsType) Create() error {
 	return nil
 }
 
+// GetToken retrieves access token for platform
+func (function FunctionsType) GetToken() string {
+	return ""
+}
+
 // NewFunctionsType init function
 func NewFunctionsType() FunctionsType {
 	return FunctionsType{}
