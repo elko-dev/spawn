@@ -7,6 +7,8 @@ import (
 )
 
 func main() {
-	app := clip.Init()
+
+	applicationFactory := CreateFactory()
+	app := clip.Init(applicationFactory)
 	app.Run(os.Args)
 }

@@ -48,31 +48,31 @@ func (mr *MockPromptMockRecorder) forPlatformType() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "forPlatformType", reflect.TypeOf((*MockPrompt)(nil).forPlatformType))
 }
 
-// MockPlatformFactory is a mock of PlatformFactory interface
-type MockPlatformFactory struct {
+// MockHerokuPlatformFactory is a mock of HerokuPlatformFactory interface
+type MockHerokuPlatformFactory struct {
 	ctrl     *gomock.Controller
-	recorder *MockPlatformFactoryMockRecorder
+	recorder *MockHerokuPlatformFactoryMockRecorder
 }
 
-// MockPlatformFactoryMockRecorder is the mock recorder for MockPlatformFactory
-type MockPlatformFactoryMockRecorder struct {
-	mock *MockPlatformFactory
+// MockHerokuPlatformFactoryMockRecorder is the mock recorder for MockHerokuPlatformFactory
+type MockHerokuPlatformFactoryMockRecorder struct {
+	mock *MockHerokuPlatformFactory
 }
 
-// NewMockPlatformFactory creates a new mock instance
-func NewMockPlatformFactory(ctrl *gomock.Controller) *MockPlatformFactory {
-	mock := &MockPlatformFactory{ctrl: ctrl}
-	mock.recorder = &MockPlatformFactoryMockRecorder{mock}
+// NewMockHerokuPlatformFactory creates a new mock instance
+func NewMockHerokuPlatformFactory(ctrl *gomock.Controller) *MockHerokuPlatformFactory {
+	mock := &MockHerokuPlatformFactory{ctrl: ctrl}
+	mock.recorder = &MockHerokuPlatformFactoryMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockPlatformFactory) EXPECT() *MockPlatformFactoryMockRecorder {
+func (m *MockHerokuPlatformFactory) EXPECT() *MockHerokuPlatformFactoryMockRecorder {
 	return m.recorder
 }
 
 // Create mocks base method
-func (m *MockPlatformFactory) Create(projectName, applicationType string) (applications.PlatformRepository, error) {
+func (m *MockHerokuPlatformFactory) Create(projectName, applicationType string) (applications.PlatformRepository, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", projectName, applicationType)
 	ret0, _ := ret[0].(applications.PlatformRepository)
@@ -81,7 +81,45 @@ func (m *MockPlatformFactory) Create(projectName, applicationType string) (appli
 }
 
 // Create indicates an expected call of Create
-func (mr *MockPlatformFactoryMockRecorder) Create(projectName, applicationType interface{}) *gomock.Call {
+func (mr *MockHerokuPlatformFactoryMockRecorder) Create(projectName, applicationType interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockPlatformFactory)(nil).Create), projectName, applicationType)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockHerokuPlatformFactory)(nil).Create), projectName, applicationType)
+}
+
+// MockFunctionsPlatformFactory is a mock of FunctionsPlatformFactory interface
+type MockFunctionsPlatformFactory struct {
+	ctrl     *gomock.Controller
+	recorder *MockFunctionsPlatformFactoryMockRecorder
+}
+
+// MockFunctionsPlatformFactoryMockRecorder is the mock recorder for MockFunctionsPlatformFactory
+type MockFunctionsPlatformFactoryMockRecorder struct {
+	mock *MockFunctionsPlatformFactory
+}
+
+// NewMockFunctionsPlatformFactory creates a new mock instance
+func NewMockFunctionsPlatformFactory(ctrl *gomock.Controller) *MockFunctionsPlatformFactory {
+	mock := &MockFunctionsPlatformFactory{ctrl: ctrl}
+	mock.recorder = &MockFunctionsPlatformFactoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockFunctionsPlatformFactory) EXPECT() *MockFunctionsPlatformFactoryMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockFunctionsPlatformFactory) Create(projectName, applicationType string) (applications.PlatformRepository, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", projectName, applicationType)
+	ret0, _ := ret[0].(applications.PlatformRepository)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockFunctionsPlatformFactoryMockRecorder) Create(projectName, applicationType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockFunctionsPlatformFactory)(nil).Create), projectName, applicationType)
 }

@@ -11,7 +11,7 @@ type Factory struct {
 
 // AppFactory factory to create an Application
 type AppFactory interface {
-	Create() (applications.Project, error)
+	Create(applicationType string) (applications.Project, error)
 }
 
 // Prompt interface defines user prompts to determine application configuration
@@ -26,8 +26,8 @@ func (factory Factory) Create(applicationType string) WebType {
 	factory.webCommand.ForClientType(applicationType)
 	factory.webCommand.ForServerType()
 	//TODO: refactor this to use react once that is implemented
-	client, _ := factory.nodeJsFactory.Create()
-	server, _ := factory.nodeJsFactory.Create()
+	client, _ := factory.nodeJsFactory.Create(applicationType)
+	server, _ := factory.nodeJsFactory.Create(applicationType)
 	return NewWebType(client, server)
 }
 

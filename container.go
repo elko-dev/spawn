@@ -3,8 +3,8 @@
 package main //The above newline is required by wire https://github.com/google/wire/issues/117
 
 import (
-	"github.com/elko-dev/spawn/applicationtype"
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/applicationtype"
 	"github.com/elko-dev/spawn/functions"
 	"github.com/elko-dev/spawn/git"
 	"github.com/elko-dev/spawn/herokuplatform"
@@ -25,7 +25,6 @@ func CreateFactory() applicationtype.Factory {
 
 func CreateFunctionsTypeFactory() platform.FunctionsPlatformFactory {
 	panic(wire.Build(
-		CreateNodeJsFactory,
 		functions.NewFactory,
 	))
 }
@@ -44,10 +43,10 @@ func CreateNodeJsFactory() web.AppFactory {
 		CreatePlatformFactory,
 		nodejs.NewPrompts,
 		nodejs.NewFactory,
-	)) 
-} 
+	))
+}
 
-func CreateGitFactory() applications.GitFactory { 
+func CreateGitFactory() applications.GitFactory {
 	panic(wire.Build(
 		git.NewPrompts,
 		git.NewFactory,
@@ -70,9 +69,8 @@ func CreateHerokuFactory() platform.HerokuPlatformFactory {
 	))
 }
 
-func CreateFunctionsFactory() platform.FunctionsPlatformFactory{
+func CreateFunctionsFactory() platform.FunctionsPlatformFactory {
 	panic(wire.Build(
-		CreateNodeJsFactory,
 		functions.NewFactory,
 	))
 }

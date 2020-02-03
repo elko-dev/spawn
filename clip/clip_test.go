@@ -3,8 +3,8 @@ package clip
 import (
 	"testing"
 
+	"github.com/elko-dev/spawn/applicationtype"
 	"github.com/urfave/cli"
-	"github.com/elko-dev/spawn/actions"
 )
 
 func ExpectedNameIsSpawn(t *testing.T) {
@@ -13,7 +13,7 @@ func ExpectedNameIsSpawn(t *testing.T) {
 		Name: "spawn",
 	}
 
-	actual := Init(actions.SpawnAction{})
+	actual := Init(applicationtype.Factory{})
 
 	if expected.Name != actual.Name {
 		t.Errorf("Init: != Name (%v != %v)", actual, expected)

@@ -20,7 +20,7 @@ type Factory struct {
 }
 
 // Create method to construct a Project
-func (factory Factory) Create() (applications.Project, error) {
+func (factory Factory) Create(applicationType string) (applications.Project, error) {
 	projectName, err := factory.prompt.forAppName()
 	if err != nil {
 		return nil, err
@@ -30,7 +30,7 @@ func (factory Factory) Create() (applications.Project, error) {
 		return nil, err
 	}
 
-	platform, err := factory.platformFactory.Create(projectName, "TODO: ADD ME ")
+	platform, err := factory.platformFactory.Create(projectName, applicationType)
 
 	if err != nil {
 		return nil, err

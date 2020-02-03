@@ -34,18 +34,18 @@ func (m *MockAppFactory) EXPECT() *MockAppFactoryMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockAppFactory) Create() (applications.Project, error) {
+func (m *MockAppFactory) Create(applicationType string) (applications.Project, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create")
+	ret := m.ctrl.Call(m, "Create", applicationType)
 	ret0, _ := ret[0].(applications.Project)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create
-func (mr *MockAppFactoryMockRecorder) Create() *gomock.Call {
+func (mr *MockAppFactoryMockRecorder) Create(applicationType interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAppFactory)(nil).Create))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockAppFactory)(nil).Create), applicationType)
 }
 
 // MockPrompt is a mock of Prompt interface

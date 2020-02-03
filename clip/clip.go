@@ -2,6 +2,7 @@
 package clip
 
 import (
+	"github.com/elko-dev/spawn/applicationtype"
 	"github.com/elko-dev/spawn/commands"
 	"github.com/urfave/cli"
 )
@@ -17,13 +18,13 @@ type CommandArgs struct {
 }
 
 // Init ... this is a basic fn
-func Init() *cli.App {
+func Init(factory applicationtype.Factory) *cli.App {
 
 	app := cli.NewApp()
 	app.Name = "spawn"
 	app.Usage = "Spawn creates project scaffolding, integrating GitLab with Heroku."
 	app.Commands = []cli.Command{
-		commands.Run(),
+		commands.Run(factory),
 	}
 	return app
 }

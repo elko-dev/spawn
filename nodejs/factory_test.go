@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	platformName = "somename"
+	platformName    = "somename"
+	applicationType = "type"
 )
 
 func TestRetrievesProjectNameAndCreatesPlatformWithName(t *testing.T) {
@@ -20,12 +21,12 @@ func TestRetrievesProjectNameAndCreatesPlatformWithName(t *testing.T) {
 	platformMock := NewMockPrompt(ctrl)
 
 	gitFactoryMock.EXPECT().Create(platformName).Return(nil, nil)
-	platformFactoryMock.EXPECT().Create(platformName).Return(nil, nil)
+	platformFactoryMock.EXPECT().Create(platformName, applicationType).Return(nil, nil)
 	platformMock.EXPECT().forAppName().Return(platformName, nil)
 
 	factory := NewFactory(gitFactoryMock, platformFactoryMock, platformMock)
 
-	project, _ := factory.Create()
+	project, _ := factory.Create(applicationType)
 
 	if project == nil {
 		t.Log("project not returned")
