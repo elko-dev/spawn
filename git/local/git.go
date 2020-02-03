@@ -1,4 +1,4 @@
-package git
+package local
 
 import (
 	"os"
@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/elko-dev/spawn/file"
-	"github.com/elko-dev/spawn/git/api"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/config"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
@@ -16,6 +15,12 @@ import (
 // Local struct containing logic to interact with Git locally
 type Local struct {
 }
+ 
+// Git to interact with git
+type Git interface {
+	DuplicateRepo(url string, gitToken string, name string, repoURL string) error
+}
+
 
 // Template interface to replace templated values
 type Template interface {
@@ -23,9 +28,9 @@ type Template interface {
 }
 
 // DuplicateRepo contains logic to duplicate a repository
-func (local Local) DuplicateRepo(url string, gitToken string, repository api.GitRepository) error {
+func (local Local) DuplicateRepo(url string, gitToken string, name string, repoURL string) error {
 
-	r, err := git.PlainClone(repository.Name, false, &git.CloneOptions{
+	r, err := git.PlainClone(name, false, &git.CloneOptions{
 		URL:               url,
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 	})
@@ -35,7 +40,7 @@ func (local Local) DuplicateRepo(url string, gitToken string, repository api.Git
 		return err
 	}
 
-	template := file.TemplateFile{Name: strings.ToLower(repository.Name)}
+	template := file.TemplateFile{Name: strings.ToLower(name)}
 	err = template.Replace()
 	if err != nil {
 		println("Template replacement failed")
@@ -52,7 +57,7 @@ func (local Local) DuplicateRepo(url string, gitToken string, repository api.Git
 
 	_, err = r.CreateRemote(&config.RemoteConfig{
 		Name: "origin",
-		URLs: []string{repository.URL},
+		URLs: []string{repoURL},
 	})
 	if err != nil {
 		println("Create remote failed")
@@ -69,7 +74,7 @@ func (local Local) DuplicateRepo(url string, gitToken string, repository api.Git
 		return err
 	}
 
-	_, err = w.Commit(repository.Name+" configuration", &git.CommitOptions{
+	_, err = w.Commit(name+" configuration", &git.CommitOptions{
 		Author: &object.Signature{
 			Name:  "Spawn",
 			Email: "spawn@elko.dev",
@@ -94,6 +99,6 @@ func (local Local) DuplicateRepo(url string, gitToken string, repository api.Git
 }
 
 // NewLocal init method
-func NewLocal() Git {
+func NewLocal() Local {
 	return Local{}
 }

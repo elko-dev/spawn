@@ -1,5 +1,10 @@
 package herokuplatform
 
+import (
+	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/platform"
+)
+
 // Factory to create a platform
 type Factory struct {
 	prompt Prompt
@@ -13,7 +18,7 @@ type Prompt interface {
 }
 
 // Create a platform repo
-func (factory Factory) Create(projectName string) (Heroku, error) {
+func (factory Factory) Create(projectName string, applicationType string) (applications.PlatformRepository, error) {
 	// fields to create
 	// applicationType  string
 	envs, err := factory.prompt.forEnvironments()
@@ -36,6 +41,6 @@ func (factory Factory) Create(projectName string) (Heroku, error) {
 }
 
 // NewFactory init
-func NewFactory(prompt Prompt) Factory {
+func NewFactory(prompt Prompt) platform.HerokuPlatformFactory {
 	return Factory{prompt}
 }

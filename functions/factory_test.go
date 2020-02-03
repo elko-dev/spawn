@@ -3,7 +3,6 @@ package functions
 import (
 	"testing"
 
-	"github.com/elko-dev/spawn/platform"
 	"github.com/elko-dev/spawn/web"
 	"github.com/golang/mock/gomock"
 )
@@ -11,7 +10,7 @@ import (
 type mockApp struct {
 }
 
-func (mockApp mockApp) Create(application platform.Application) error {
+func (mockApp mockApp) Create() error {
 	return nil
 }
 func TestWhenCreateIsCalledNewFunctionsTypeIsReturned(t *testing.T) {
@@ -21,14 +20,15 @@ func TestWhenCreateIsCalledNewFunctionsTypeIsReturned(t *testing.T) {
 
 	expected := mockApp{}
 	appFactory := web.NewMockAppFactory(ctrl)
-	appFactory.EXPECT().Create().Return(expected)
+	appFactory.EXPECT().Create().Return(expected, nil)
 
 	factory := NewFactory(appFactory)
 	//act
-	actual := factory.Create().function
+	platform, _ := factory.Create("", "")
+	functions := platform.(FunctionsType)
 	//assert
-	if actual != expected {
-		t.Log("Incorrect function returned")
+	if functions.project != expected {
+		t.Log("Incorrect project returned")
 		t.Fail()
 	}
 }

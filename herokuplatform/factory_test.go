@@ -8,20 +8,12 @@ import (
 )
 
 const (
-	projectName    = "test"
-	herokuTeamName = "teeamName"
-	token          = "token"
+	projectName     = "test"
+	applicationType = "test"
+	herokuTeamName  = "teeamName"
+	token           = "token"
 )
 
-// platformToken    string
-// 	environments     []string
-// 	projectName      string
-// 	platformTeamName string
-// 	applicationType  string
-
-//get envrionments
-//get team name
-//get platform token
 func TestWhenEnvironmentsAreReturnedHerokuContainsEnvironments(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -34,7 +26,8 @@ func TestWhenEnvironmentsAreReturnedHerokuContainsEnvironments(t *testing.T) {
 
 	factory := NewFactory(mockPrompt)
 
-	heroku, _ := factory.Create(projectName)
+	platform, _ := factory.Create(projectName, applicationType)
+	heroku := platform.(Heroku)
 
 	actual := heroku.environments
 	if !reflect.DeepEqual(actual, expected) {
@@ -57,8 +50,8 @@ func TestWhenHerokuTeamNameAreSelectedHerokuContainsTeamName(t *testing.T) {
 
 	factory := NewFactory(mockPrompt)
 
-	heroku, _ := factory.Create(projectName)
-
+	platform, _ := factory.Create(projectName, applicationType)
+	heroku := platform.(Heroku)
 	actual := heroku.platformTeamName
 	if !reflect.DeepEqual(actual, expected) {
 		t.Log("platformTeamName did not match")
@@ -81,8 +74,8 @@ func TestWhenTokenIsSelectedHerokuContainsToken(t *testing.T) {
 
 	factory := NewFactory(mockPrompt)
 
-	heroku, _ := factory.Create(projectName)
-
+	platform, _ := factory.Create(projectName, applicationType)
+	heroku := platform.(Heroku)
 	actual := heroku.platformToken
 	if !reflect.DeepEqual(actual, expected) {
 		t.Log("platformTeamName did not match")

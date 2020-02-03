@@ -1,6 +1,10 @@
 package functions
 
-import "github.com/elko-dev/spawn/web"
+import (
+	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/platform"
+	"github.com/elko-dev/spawn/web"
+)
 
 // Factory to create Functions App
 type Factory struct {
@@ -8,13 +12,13 @@ type Factory struct {
 }
 
 // Create returns a FunctionType
-func (factory Factory) Create() FunctionsType {
-	nodeJs := factory.nodeJsFactory.Create()
+func (factory Factory) Create(projectName string, applicationType string) (applications.PlatformRepository, error) {
+	nodeJs, _ := factory.nodeJsFactory.Create()
 
-	return NewFunctionsType(nodeJs)
+	return NewFunctionsType(nodeJs), nil
 }
 
 //NewFactory init function
-func NewFactory(nodeJsFactory web.AppFactory) Factory {
+func NewFactory(nodeJsFactory web.AppFactory) platform.FunctionsPlatformFactory {
 	return Factory{nodeJsFactory}
 }

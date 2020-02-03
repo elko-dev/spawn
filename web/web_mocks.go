@@ -34,11 +34,12 @@ func (m *MockAppFactory) EXPECT() *MockAppFactoryMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockAppFactory) Create() applications.App {
+func (m *MockAppFactory) Create() (applications.Project, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create")
-	ret0, _ := ret[0].(applications.App)
-	return ret0
+	ret0, _ := ret[0].(applications.Project)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // Create indicates an expected call of Create

@@ -21,7 +21,7 @@ func TestRetrievesProjectNameAndCreatesPlatformWithName(t *testing.T) {
 
 	gitFactoryMock.EXPECT().Create(platformName).Return(nil, nil)
 	platformFactoryMock.EXPECT().Create(platformName).Return(nil, nil)
-	platformMock.EXPECT().ForAppName().Return(platformName, nil)
+	platformMock.EXPECT().forAppName().Return(platformName, nil)
 
 	factory := NewFactory(gitFactoryMock, platformFactoryMock, platformMock)
 

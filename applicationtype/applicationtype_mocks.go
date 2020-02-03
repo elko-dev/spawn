@@ -5,8 +5,6 @@
 package applicationtype
 
 import (
-	prompt "github.com/elko-dev/spawn/prompt"
-	web "github.com/elko-dev/spawn/web"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )
@@ -49,39 +47,39 @@ func (mr *MockPromptMockRecorder) ForType() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ForType", reflect.TypeOf((*MockPrompt)(nil).ForType))
 }
 
-// MockTempAppType is a mock of TempAppType interface
-type MockTempAppType struct {
+// MockApplicationType is a mock of ApplicationType interface
+type MockApplicationType struct {
 	ctrl     *gomock.Controller
-	recorder *MockTempAppTypeMockRecorder
+	recorder *MockApplicationTypeMockRecorder
 }
 
-// MockTempAppTypeMockRecorder is the mock recorder for MockTempAppType
-type MockTempAppTypeMockRecorder struct {
-	mock *MockTempAppType
+// MockApplicationTypeMockRecorder is the mock recorder for MockApplicationType
+type MockApplicationTypeMockRecorder struct {
+	mock *MockApplicationType
 }
 
-// NewMockTempAppType creates a new mock instance
-func NewMockTempAppType(ctrl *gomock.Controller) *MockTempAppType {
-	mock := &MockTempAppType{ctrl: ctrl}
-	mock.recorder = &MockTempAppTypeMockRecorder{mock}
+// NewMockApplicationType creates a new mock instance
+func NewMockApplicationType(ctrl *gomock.Controller) *MockApplicationType {
+	mock := &MockApplicationType{ctrl: ctrl}
+	mock.recorder = &MockApplicationTypeMockRecorder{mock}
 	return mock
 }
 
 // EXPECT returns an object that allows the caller to indicate expected use
-func (m *MockTempAppType) EXPECT() *MockTempAppTypeMockRecorder {
+func (m *MockApplicationType) EXPECT() *MockApplicationTypeMockRecorder {
 	return m.recorder
 }
 
 // Create mocks base method
-func (m *MockTempAppType) Create(action web.SpawnAction, userCommands prompt.UserSelections) error {
+func (m *MockApplicationType) Create() error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", action, userCommands)
+	ret := m.ctrl.Call(m, "Create")
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Create indicates an expected call of Create
-func (mr *MockTempAppTypeMockRecorder) Create(action, userCommands interface{}) *gomock.Call {
+func (mr *MockApplicationTypeMockRecorder) Create() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockTempAppType)(nil).Create), action, userCommands)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockApplicationType)(nil).Create))
 }

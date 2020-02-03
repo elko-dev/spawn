@@ -2,22 +2,19 @@ package functions
 
 import (
 	"github.com/elko-dev/spawn/applications"
-	"github.com/elko-dev/spawn/prompt"
-	"github.com/elko-dev/spawn/web"
 )
 
 // FunctionsType struct to create an Azure Functions type
 type FunctionsType struct {
-	function applications.App
+	project applications.Project
 }
 
 // Create sets up a new application
-func (function FunctionsType) Create(action web.SpawnAction, userCommands prompt.UserSelections) error {
-
-	return nil
+func (function FunctionsType) Create() error {
+	return function.project.Create()
 }
 
 // NewFunctionsType init function
-func NewFunctionsType(function applications.App) FunctionsType {
-	return FunctionsType{function}
+func NewFunctionsType(project applications.Project) FunctionsType {
+	return FunctionsType{project}
 }

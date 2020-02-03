@@ -2,8 +2,7 @@ package applicationtype
 
 import (
 	"github.com/elko-dev/spawn/constants"
-	"github.com/elko-dev/spawn/functions"
-	prompt "github.com/elko-dev/spawn/prompt"
+	"github.com/elko-dev/spawn/platform"
 	web "github.com/elko-dev/spawn/web"
 )
 
@@ -13,36 +12,37 @@ type Prompt interface {
 }
 
 //TODO: Setting this here to make progress.  Need to refactor to move this elsewhere and actually define
-type TempAppType interface {
-	Create(action web.SpawnAction, userCommands prompt.UserSelections) error
+type ApplicationType interface {
+	Create() error
 }
 
 // Factory to create an application type
 type Factory struct {
-	prompt Prompt
+	prompt          Prompt
+	webFactory      web.Factory
+	functionFactory platform.FunctionsPlatformFactory
 }
 
 // CreateApplicationType creates app type
-func (factory Factory) CreateApplicationType() TempAppType {
-	webFactory := web.Factory{}
-	functionFactory := functions.Factory{}
+func (factory Factory) CreateApplicationType() ApplicationType {
 	// prompt user for application type
 	appType, _ := factory.prompt.ForType()
 
-	var applicationType TempAppType
+	var applicationType ApplicationType
 
 	if appType == constants.WebApplicationType {
-		applicationType = webFactory.Create(appType)
+		applicationType = factory.webFactory.Create(appType)
 	}
 
+	//TODO: COME BACK HERE!!!
 	if appType == constants.AzureFunctions {
-		applicationType = functionFactory.Create()
+		applicationType, _ = factory.functionFactory.Create("PROJECT_NAME_CHANGE_ME", appType)
 	}
 
 	return applicationType
 }
 
 // NewFactory creates an ApplicationType factory
-func NewFactory() Factory {
-	return Factory{prompt: Prompts{}}
+func NewFactory(prompt Prompts, webFactory web.Factory, functionsFactory platform.FunctionsPlatformFactory) Factory {
+	return Factory{prompt, webFactory, functionsFactory}
 }

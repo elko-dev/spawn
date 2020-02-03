@@ -7,6 +7,6 @@ import (
 )
 
 func main() {
-	app := clip.Init(CreateSpawnAction())
+	app := clip.Init()
 	app.Run(os.Args)
 }

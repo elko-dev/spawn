@@ -54,3 +54,8 @@ func getClientLangaugeSelections(applicationType string) []string {
 	}
 	return make([]string, 0, 0)
 }
+
+// NewPrompts init
+func NewPrompts() Prompt {
+	return Prompts{}
+}

@@ -1,4 +1,4 @@
-package api
+package gitlab
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"io/ioutil"
 	"net/http"
 )
-
+ 
 const (
 	gitlabProjectURL     = "https://gitlab.com/api/v4/projects"
 	gitlabEnvironmentURL = "https://gitlab.com/api/v4/projects/%v/variables"

@@ -4,8 +4,8 @@ import (
 	reflect "reflect"
 	"testing"
 
-	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/constants"
+	"github.com/elko-dev/spawn/nodejs"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -19,13 +19,15 @@ func TestWhenServerIsNodeJsWebTypeContainsNodeServer(t *testing.T) {
 
 	mockPrompt := NewMockPrompt(ctrl)
 	mockNodeJsFactory := NewMockAppFactory(ctrl)
-	mockReactFactory := NewMockAppFactory(ctrl)
+	// mockReactFactory := NewMockAppFactory(ctrl)
 
 	mockPrompt.EXPECT().ForClientType(applicationType).Return(constants.ReactClientLanguageType, nil)
 	mockPrompt.EXPECT().ForServerType().Return(constants.NodeServerType, nil)
-	mockNodeJsFactory.EXPECT().Create().Return(applications.NodeJs{})
-	mockReactFactory.EXPECT().Create().Return(applications.React{})
-	factory := Factory{mockNodeJsFactory, mockReactFactory, mockPrompt}
+	//TODO: Hacked to call twice until react implement
+	mockNodeJsFactory.EXPECT().Create().Return(nodejs.NewNode(nil, nil, "", ""), nil)
+	mockNodeJsFactory.EXPECT().Create().Return(nodejs.NewNode(nil, nil, "", ""), nil)
+	// mockReactFactory.EXPECT().Create().Return(nil)
+	factory := Factory{mockNodeJsFactory, mockPrompt}
 
 	webType := factory.Create(applicationType)
 	client := webType.Server
@@ -43,13 +45,14 @@ func TestWhenClientIsReactWebTypeContainsReactClient(t *testing.T) {
 
 	mockPrompt := NewMockPrompt(ctrl)
 	mockNodeJsFactory := NewMockAppFactory(ctrl)
-	mockReactFactory := NewMockAppFactory(ctrl)
+	// mockReactFactory := NewMockAppFactory(ctrl)
 
 	mockPrompt.EXPECT().ForClientType(applicationType).Return(constants.ReactClientLanguageType, nil)
 	mockPrompt.EXPECT().ForServerType().Return(constants.NodeServerType, nil)
-	mockNodeJsFactory.EXPECT().Create().Return(applications.NodeJs{})
-	mockReactFactory.EXPECT().Create().Return(applications.React{})
-	factory := Factory{mockNodeJsFactory, mockReactFactory, mockPrompt}
+	mockNodeJsFactory.EXPECT().Create().Return(nodejs.NewNode(nil, nil, "", ""), nil)
+	mockNodeJsFactory.EXPECT().Create().Return(nodejs.NewNode(nil, nil, "", ""), nil)
+	// mockReactFactory.EXPECT().Create().Return(nil)
+	factory := Factory{mockNodeJsFactory, mockPrompt}
 
 	webType := factory.Create(applicationType)
 	client := webType.Client
@@ -64,7 +67,7 @@ func TestWhenClientIsReactWebTypeContainsReactClient(t *testing.T) {
 func isNodeJsType(t interface{}) bool {
 	switch t.(type) {
 
-	case applications.NodeJs:
+	case nodejs.Node:
 		return true
 	default:
 		return false
@@ -74,7 +77,7 @@ func isNodeJsType(t interface{}) bool {
 func isReactType(t interface{}) bool {
 	switch t.(type) {
 
-	case applications.React:
+	case nodejs.Node:
 		return true
 	default:
 		return false

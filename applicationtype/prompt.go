@@ -23,3 +23,8 @@ func selectApplicationType() (int, string, error) {
 
 	return prompt.Run()
 }
+
+// NewPrompts init
+func NewPrompts() Prompts {
+	return Prompts{}
+}
