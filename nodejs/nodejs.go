@@ -20,13 +20,6 @@ type Node struct {
 
 // Create  Node Project
 func (node Node) Create() error {
-	log.WithFields(log.Fields{}).Debug("Creating NodeJS platform")
-
-	err := node.platform.Create()
-
-	if err != nil {
-		return err
-	}
 
 	templateURL := getTemplateURL(node.platform.GetPlatformType())
 
@@ -35,7 +28,13 @@ func (node Node) Create() error {
 		"templateURL": templateURL,
 	}).Debug("Creating NodeJS Git repository")
 
-	return node.repo.CreateGitRepository(node.projectName, templateURL, node.platform.GetToken())
+	err := node.repo.CreateGitRepository(node.projectName, templateURL, node.platform.GetToken())
+	if err != nil {
+		return err
+	}
+	log.WithFields(log.Fields{}).Debug("Creating NodeJS platform")
+
+	return node.platform.Create()
 }
 
 func getTemplateURL(platformType string) string {

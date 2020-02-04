@@ -85,7 +85,9 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 	)
 
 	adosGitRepoURL := "https://dev.azure.com/" + organization + "/" + repositoryName + "/_git/" + repositoryName
-	time.Sleep(10 * time.Second)
+
+	log.WithFields(log.Fields{}).Info("Waiting for azure repo to create....")
+	time.Sleep(5 * time.Second)
 
 	return ados.Git.DuplicateRepo(templateURL, gitToken, repositoryName, adosGitRepoURL)
 }

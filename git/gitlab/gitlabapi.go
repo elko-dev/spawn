@@ -87,7 +87,7 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, gitToken string)
 		return response, nil
 	}
 
-	if resp.StatusCode == 401 {
+	if isUnauthorized(resp.StatusCode) {
 		fmt.Println("Received unauthorized from Gitlab")
 		return response, errors.New("Unauthorized")
 	}
