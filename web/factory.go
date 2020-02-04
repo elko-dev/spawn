@@ -40,7 +40,7 @@ func (factory Factory) Create(applicationType string) WebType {
 		"clientApplicationType": clientApplicationType,
 		"serverApplicationType": serverApplicationType,
 	})
-	//TODO: refactor this to use react once that is implemented
+
 	contextLogger.Debug("Constructing server application...")
 	client, _ := factory.serverFactory.Create(clientApplicationType)
 	contextLogger.Debug("Constructing client application...")

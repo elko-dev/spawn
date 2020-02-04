@@ -34,9 +34,8 @@ func (factory Factory) CreateApplicationType() ApplicationType {
 		applicationType = factory.webFactory.Create(appType)
 	}
 
-	//TODO: COME BACK HERE!!!
 	if appType == constants.AzureFunctions {
-		applicationType, _ = factory.functionFactory.Create("PROJECT_NAME_CHANGE_ME", appType)
+		applicationType, _ = factory.functionFactory.Create(appType)
 	}
 
 	return applicationType

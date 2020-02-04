@@ -53,7 +53,6 @@ func gitOrganization() (string, error) {
 	accessTokenPrompt := promptui.Prompt{
 		Label:    "ADOS Organization",
 		Validate: accessTokenValidate,
-		Mask:     '*',
 	}
 
 	return accessTokenPrompt.Run()

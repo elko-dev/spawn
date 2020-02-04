@@ -18,7 +18,7 @@ func (prompts Prompts) ForType() (string, error) {
 func selectApplicationType() (int, string, error) {
 	prompt := promptui.Select{
 		Label: "Select Application Type",
-		Items: []string{constants.WebApplicationType, constants.MobileApplicationType, constants.AzureFunctions},
+		Items: []string{constants.WebApplicationType, constants.AzureFunctions},
 	}
 
 	return prompt.Run()

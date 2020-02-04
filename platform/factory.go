@@ -1,6 +1,7 @@
 package platform
 
 import "github.com/elko-dev/spawn/applications"
+import log "github.com/sirupsen/logrus"
 
 import "github.com/elko-dev/spawn/constants"
 
@@ -23,11 +24,13 @@ type HerokuPlatformFactory interface {
 
 // FunctionsPlatformFactory builds platforms
 type FunctionsPlatformFactory interface {
-	Create(projectName string, applicationType string) (applications.PlatformRepository, error)
+	Create(applicationType string) (applications.PlatformRepository, error)
 }
 
 // Create platform
 func (factory Factory) Create(projectName string, applicationType string) (applications.PlatformRepository, error) {
+	context := log.WithFields(log.Fields{"projectName": projectName, "applicationType": applicationType})
+
 	// select platform
 	platformType, err := factory.prompt.forPlatformType()
 
@@ -36,9 +39,11 @@ func (factory Factory) Create(projectName string, applicationType string) (appli
 	}
 
 	if platformType == constants.AzureFunctions {
-		return factory.functionsFactory.Create(projectName, applicationType)
+		context.Debug("Creating Azure Functions Factory")
+		return factory.functionsFactory.Create(applicationType)
 	}
 
+	context.Debug("Creating Heroku Factory")
 	//build platform
 	return factory.herokuFactory.Create(projectName, applicationType)
 }

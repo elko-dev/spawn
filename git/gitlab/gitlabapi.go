@@ -5,11 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/elko-dev/spawn/prompt"
 	"io/ioutil"
 	"net/http"
 )
- 
+
 const (
 	gitlabProjectURL     = "https://gitlab.com/api/v4/projects"
 	gitlabEnvironmentURL = "https://gitlab.com/api/v4/projects/%v/variables"
@@ -18,6 +17,7 @@ const (
 // GitlabHTTP struct to leverage Gitlab
 type GitlabHTTP struct {
 	// client http.Client
+	prompt Prompt
 }
 
 //TODO: Factor out ID to be used by multiple git repos
@@ -63,7 +63,7 @@ func (rest GitlabHTTP) AddEnvironmentVariables(deployToken string, projectID str
 
 // PostGitRepository Creates Git Repository
 func (rest GitlabHTTP) PostGitRepository(repositoryName string, gitToken string) (GitRepository, error) {
-	group, err := prompt.GitlabGroupID()
+	group, err := rest.prompt.forGroupId()
 	if err != nil {
 		println("Error retrieving Gitlab Group name")
 		return GitRepository{}, err
@@ -130,3 +130,7 @@ func parseGitlabResponse(response *http.Response, target interface{}) error {
 
 // 	return GitlabHTTP{client: client}
 // }
+
+func NewGitlabHTTP(prompt Prompt) GitlabHTTP {
+	return GitlabHTTP{prompt}
+}

@@ -108,17 +108,17 @@ func (m *MockGitRepo) EXPECT() *MockGitRepoMockRecorder {
 }
 
 // CreateGitRepository mocks base method
-func (m *MockGitRepo) CreateGitRepository(repositoryName, url, platformToken string) error {
+func (m *MockGitRepo) CreateGitRepository(repositoryName, templateURL, platformToken string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateGitRepository", repositoryName, url, platformToken)
+	ret := m.ctrl.Call(m, "CreateGitRepository", repositoryName, templateURL, platformToken)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // CreateGitRepository indicates an expected call of CreateGitRepository
-func (mr *MockGitRepoMockRecorder) CreateGitRepository(repositoryName, url, platformToken interface{}) *gomock.Call {
+func (mr *MockGitRepoMockRecorder) CreateGitRepository(repositoryName, templateURL, platformToken interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGitRepository", reflect.TypeOf((*MockGitRepo)(nil).CreateGitRepository), repositoryName, url, platformToken)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGitRepository", reflect.TypeOf((*MockGitRepo)(nil).CreateGitRepository), repositoryName, templateURL, platformToken)
 }
 
 // MockPlatformRepository is a mock of PlatformRepository interface

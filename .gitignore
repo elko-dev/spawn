@@ -4,3 +4,4 @@ wire_gen.go
 release
 local.md
 mocks
+functions

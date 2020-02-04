@@ -5,6 +5,7 @@ package main //The above newline is required by wire https://github.com/google/w
 import (
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/applicationtype"
+	"github.com/elko-dev/spawn/azurefunctions"
 	"github.com/elko-dev/spawn/functions"
 	"github.com/elko-dev/spawn/git"
 	"github.com/elko-dev/spawn/herokuplatform"
@@ -26,6 +27,7 @@ func CreateFactory() applicationtype.Factory {
 
 func CreateFunctionsTypeFactory() platform.FunctionsPlatformFactory {
 	panic(wire.Build(
+		CreateNodeJsFactory,
 		functions.NewFactory,
 	))
 }
@@ -66,7 +68,7 @@ func CreatePlatformFactory() applications.PlatformFactory {
 	panic(wire.Build(
 		platform.NewPrompts,
 		CreateHerokuFactory,
-		CreateFunctionsFactory,
+		azurefunctions.NewFactory,
 		platform.NewFactory,
 	))
 }
@@ -80,6 +82,7 @@ func CreateHerokuFactory() platform.HerokuPlatformFactory {
 
 func CreateFunctionsFactory() platform.FunctionsPlatformFactory {
 	panic(wire.Build(
+		CreateNodeJsFactory,
 		functions.NewFactory,
 	))
 }

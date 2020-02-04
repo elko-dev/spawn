@@ -8,6 +8,25 @@ import (
 type Prompts struct {
 }
 
+func (prompt Prompts) forGroupId() (string, error){
+	//TODO: Add custom id validation if we stick with group id instead of name
+	gitlabGroupValidate :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	projectPrompt := promptui.Prompt{
+		Label:    "Gitlab Group Id",
+		Validate: gitlabGroupValidate,
+	}
+
+	return projectPrompt.Run()
+}
+
+
+
 func (prompt Prompts) forGitToken() (string, error) {
 	token, err := gitAccessToken()
 

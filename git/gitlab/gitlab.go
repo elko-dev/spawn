@@ -10,6 +10,7 @@ type GitlabRepo struct {
 
 type Prompt interface {
 	forGitToken() (string, error)
+	forGroupId() (string, error)
 }
 
 // HTTP describing the functionality to Create repositories
@@ -19,7 +20,7 @@ type HTTP interface {
 }
 
 // CreateGitRepository creates gitlab instance
-func (git GitlabRepo) CreateGitRepository(repositoryName string, url string, platformToken string) error {
+func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string) error {
 
 	gitToken, err := git.prompt.forGitToken()
 	repository, err := git.HTTP.PostGitRepository(repositoryName, gitToken)
@@ -34,7 +35,7 @@ func (git GitlabRepo) CreateGitRepository(repositoryName string, url string, pla
 		return err
 	}
 
-	err = git.Git.DuplicateRepo(url, gitToken, repository.Name, repository.URL)
+	err = git.Git.DuplicateRepo(templateURL, gitToken, repository.Name, repository.URL)
 
 	if err != nil {
 		return err
@@ -46,7 +47,6 @@ func (git GitlabRepo) CreateGitRepository(repositoryName string, url string, pla
 
 // NewGitlabRepo Init
 func NewGitlabRepo(prompt Prompt) GitlabRepo {
-	http := GitlabHTTP{}
-
+	http := NewGitlabHTTP(prompt)
 	return GitlabRepo{http, local.NewLocal(), prompt}
 }

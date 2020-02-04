@@ -14,7 +14,7 @@ type Project interface {
 
 // GitRepo describing the functionality to Create repositories
 type GitRepo interface {
-	CreateGitRepository(repositoryName string, url string, platformToken string) error
+	CreateGitRepository(repositoryName string, templateURL string, platformToken string) error
 }
 
 // PlatformRepository repository that defines creation of Platform repo

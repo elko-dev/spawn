@@ -3,21 +3,23 @@ package functions
 import (
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/platform"
+	"github.com/elko-dev/spawn/web"
+	log "github.com/sirupsen/logrus"
 )
 
 // Factory to create Functions App
 type Factory struct {
-	// nodeJsFactory web.AppFactory
+	serverFactory web.ServerAppFactory
 }
 
 // Create returns a FunctionType
-func (factory Factory) Create(projectName string, applicationType string) (applications.PlatformRepository, error) {
-	// nodeJs, _ := factory.nodeJsFactory.Create(applicationType)
-
-	return NewFunctionsType(), nil
+func (factory Factory) Create(applicationType string) (applications.PlatformRepository, error) {
+	log.WithFields(log.Fields{"applicationType": applicationType}).Debug("Creating functions server")
+	nodeJs, _ := factory.serverFactory.Create(applicationType)
+	return NewFunctionsType(nodeJs), nil
 }
 
 //NewFactory init function
-func NewFactory() platform.FunctionsPlatformFactory {
-	return Factory{}
+func NewFactory(serverFactory web.ServerAppFactory) platform.FunctionsPlatformFactory {
+	return Factory{serverFactory}
 }

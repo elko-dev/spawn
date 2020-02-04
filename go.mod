@@ -8,6 +8,7 @@ require (
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/golang/mock v1.4.0
+	github.com/google/uuid v1.1.1
 	github.com/google/wire v0.4.0
 	github.com/heroku/heroku-go/v5 v5.1.0
 	github.com/manifoldco/promptui v0.6.0
