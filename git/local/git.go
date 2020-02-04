@@ -79,7 +79,7 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	err = r.Push(&git.PushOptions{
 		RemoteName: "origin",
 		Auth: &http.BasicAuth{
-			Username: "abc123", // yes, this can be anything except an empty string
+			Username: "andrew", // yes, this can be anything except an empty string
 			Password: gitToken,
 		},
 	})

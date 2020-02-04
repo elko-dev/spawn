@@ -25,14 +25,15 @@ func CreateFactory() applicationtype.Factory {
 	))
 }
 
-func CreateFunctionsTypeFactory() platform.FunctionsPlatformFactory {
+func CreateFunctionsTypeFactory() applicationtype.FunctionTypeFactory {
 	panic(wire.Build(
 		CreateNodeJsFactory,
+		functions.NewPrompts,
 		functions.NewFactory,
 	))
 }
 
-func CreateWebFactory() web.Factory {
+func CreateWebFactory() applicationtype.WebTypeFactory {
 	panic(wire.Build(
 		CreateNodeJsFactory,
 		CreateReactFactory,
@@ -77,12 +78,5 @@ func CreateHerokuFactory() platform.HerokuPlatformFactory {
 	panic(wire.Build(
 		herokuplatform.NewPrompts,
 		herokuplatform.NewFactory,
-	))
-}
-
-func CreateFunctionsFactory() platform.FunctionsPlatformFactory {
-	panic(wire.Build(
-		CreateNodeJsFactory,
-		functions.NewFactory,
 	))
 }

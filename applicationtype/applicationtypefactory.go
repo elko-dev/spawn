@@ -2,8 +2,6 @@ package applicationtype
 
 import (
 	"github.com/elko-dev/spawn/constants"
-	"github.com/elko-dev/spawn/platform"
-	web "github.com/elko-dev/spawn/web"
 )
 
 // Prompt interface defines user prompts to determine application type
@@ -16,11 +14,19 @@ type ApplicationType interface {
 	Create() error
 }
 
+//TODO: Setting this here to make progress.  Need to refactor to move this elsewhere and actually define
+type WebTypeFactory interface {
+	Create(applicationType string) (ApplicationType, error)
+}
+type FunctionTypeFactory interface {
+	Create(applicationType string) (ApplicationType, error)
+}
+
 // Factory to create an application type
 type Factory struct {
 	prompt          Prompt
-	webFactory      web.Factory
-	functionFactory platform.FunctionsPlatformFactory
+	webFactory      WebTypeFactory
+	functionFactory FunctionTypeFactory
 }
 
 // CreateApplicationType creates app type
@@ -31,7 +37,7 @@ func (factory Factory) CreateApplicationType() ApplicationType {
 	var applicationType ApplicationType
 
 	if appType == constants.WebApplicationType {
-		applicationType = factory.webFactory.Create(appType)
+		applicationType, _ = factory.webFactory.Create(appType)
 	}
 
 	if appType == constants.AzureFunctions {
@@ -42,6 +48,6 @@ func (factory Factory) CreateApplicationType() ApplicationType {
 }
 
 // NewFactory creates an ApplicationType factory
-func NewFactory(prompt Prompts, webFactory web.Factory, functionsFactory platform.FunctionsPlatformFactory) Factory {
+func NewFactory(prompt Prompts, webFactory WebTypeFactory, functionsFactory FunctionTypeFactory) Factory {
 	return Factory{prompt, webFactory, functionsFactory}
 }

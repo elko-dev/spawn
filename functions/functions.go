@@ -2,6 +2,7 @@ package functions
 
 import (
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/constants"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -20,6 +21,11 @@ func (function FunctionsType) Create() error {
 // GetToken retrieves access token for platform
 func (function FunctionsType) GetToken() string {
 	return ""
+}
+
+// GetPlatformType returns type of platform
+func (function FunctionsType) GetPlatformType() string {
+	return constants.AzureFunctions
 }
 
 // NewFunctionsType init function

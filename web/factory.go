@@ -2,6 +2,7 @@ package web
 
 import (
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/applicationtype"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -29,7 +30,7 @@ type Prompt interface {
 }
 
 // Create Web type
-func (factory Factory) Create(applicationType string) WebType {
+func (factory Factory) Create(applicationType string) (applicationtype.ApplicationType, error) {
 
 	clientApplicationType, _ := factory.webCommand.ForClientType(applicationType)
 	serverApplicationType, _ := factory.webCommand.ForServerType()
@@ -46,10 +47,10 @@ func (factory Factory) Create(applicationType string) WebType {
 	contextLogger.Debug("Constructing client application...")
 	server, _ := factory.clientFactory.Create(serverApplicationType)
 
-	return NewWebType(client, server)
+	return NewWebType(client, server), nil
 }
 
 // NewWebFactory init function
-func NewWebFactory(serverFactory ServerAppFactory, clientFactory ClientAppFactory, webCommand Prompt) Factory {
+func NewWebFactory(serverFactory ServerAppFactory, clientFactory ClientAppFactory, webCommand Prompt) applicationtype.WebTypeFactory {
 	return Factory{serverFactory, clientFactory, webCommand}
 }

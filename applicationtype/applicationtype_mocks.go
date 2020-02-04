@@ -83,3 +83,79 @@ func (mr *MockApplicationTypeMockRecorder) Create() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockApplicationType)(nil).Create))
 }
+
+// MockWebTypeFactory is a mock of WebTypeFactory interface
+type MockWebTypeFactory struct {
+	ctrl     *gomock.Controller
+	recorder *MockWebTypeFactoryMockRecorder
+}
+
+// MockWebTypeFactoryMockRecorder is the mock recorder for MockWebTypeFactory
+type MockWebTypeFactoryMockRecorder struct {
+	mock *MockWebTypeFactory
+}
+
+// NewMockWebTypeFactory creates a new mock instance
+func NewMockWebTypeFactory(ctrl *gomock.Controller) *MockWebTypeFactory {
+	mock := &MockWebTypeFactory{ctrl: ctrl}
+	mock.recorder = &MockWebTypeFactoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockWebTypeFactory) EXPECT() *MockWebTypeFactoryMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockWebTypeFactory) Create(applicationType string) (ApplicationType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", applicationType)
+	ret0, _ := ret[0].(ApplicationType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockWebTypeFactoryMockRecorder) Create(applicationType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockWebTypeFactory)(nil).Create), applicationType)
+}
+
+// MockFunctionTypeFactory is a mock of FunctionTypeFactory interface
+type MockFunctionTypeFactory struct {
+	ctrl     *gomock.Controller
+	recorder *MockFunctionTypeFactoryMockRecorder
+}
+
+// MockFunctionTypeFactoryMockRecorder is the mock recorder for MockFunctionTypeFactory
+type MockFunctionTypeFactoryMockRecorder struct {
+	mock *MockFunctionTypeFactory
+}
+
+// NewMockFunctionTypeFactory creates a new mock instance
+func NewMockFunctionTypeFactory(ctrl *gomock.Controller) *MockFunctionTypeFactory {
+	mock := &MockFunctionTypeFactory{ctrl: ctrl}
+	mock.recorder = &MockFunctionTypeFactoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockFunctionTypeFactory) EXPECT() *MockFunctionTypeFactoryMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockFunctionTypeFactory) Create(applicationType string) (ApplicationType, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", applicationType)
+	ret0, _ := ret[0].(ApplicationType)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockFunctionTypeFactoryMockRecorder) Create(applicationType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockFunctionTypeFactory)(nil).Create), applicationType)
+}
