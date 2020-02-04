@@ -24,7 +24,7 @@ type HerokuPlatformFactory interface {
 
 // FunctionsPlatformFactory builds platforms
 type FunctionsPlatformFactory interface {
-	Create(applicationType string) (applications.PlatformRepository, error)
+	Create(projectName string, applicationType string) (applications.PlatformRepository, error)
 }
 
 // Create platform
@@ -40,7 +40,7 @@ func (factory Factory) Create(projectName string, applicationType string) (appli
 
 	if platformType == constants.AzureFunctions {
 		context.Debug("Creating Azure Functions Factory")
-		return factory.functionsFactory.Create(applicationType)
+		return factory.functionsFactory.Create(projectName, applicationType)
 	}
 
 	context.Debug("Creating Heroku Factory")

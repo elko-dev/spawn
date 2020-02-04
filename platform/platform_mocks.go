@@ -110,16 +110,16 @@ func (m *MockFunctionsPlatformFactory) EXPECT() *MockFunctionsPlatformFactoryMoc
 }
 
 // Create mocks base method
-func (m *MockFunctionsPlatformFactory) Create(applicationType string) (applications.PlatformRepository, error) {
+func (m *MockFunctionsPlatformFactory) Create(projectName, applicationType string) (applications.PlatformRepository, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", applicationType)
+	ret := m.ctrl.Call(m, "Create", projectName, applicationType)
 	ret0, _ := ret[0].(applications.PlatformRepository)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Create indicates an expected call of Create
-func (mr *MockFunctionsPlatformFactoryMockRecorder) Create(applicationType interface{}) *gomock.Call {
+func (mr *MockFunctionsPlatformFactoryMockRecorder) Create(projectName, applicationType interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockFunctionsPlatformFactory)(nil).Create), applicationType)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockFunctionsPlatformFactory)(nil).Create), projectName, applicationType)
 }

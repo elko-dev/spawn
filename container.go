@@ -69,8 +69,15 @@ func CreatePlatformFactory() applications.PlatformFactory {
 	panic(wire.Build(
 		platform.NewPrompts,
 		CreateHerokuFactory,
-		azurefunctions.NewFactory,
+		CreateAzureFunctionsFactory,
 		platform.NewFactory,
+	))
+}
+
+func CreateAzureFunctionsFactory() platform.FunctionsPlatformFactory {
+	panic(wire.Build(
+		azurefunctions.NewPrompts,
+		azurefunctions.NewFactory,
 	))
 }
 
