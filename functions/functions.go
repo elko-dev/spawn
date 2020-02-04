@@ -10,10 +10,6 @@ type FunctionsType struct {
 	server applications.Project
 }
 
-const (
-	templateURL = "https://github.com/elko-dev/nodejs-azure-functions-template.git"
-)
-
 // Create sets up a new function
 func (function FunctionsType) Create() error {
 	log.WithFields(log.Fields{}).Debug("Running server creation")

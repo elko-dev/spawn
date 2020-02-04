@@ -10,12 +10,12 @@ import (
 	"github.com/microsoft/azure-devops-go-api/azuredevops/core"
 )
 
-// ADOSRepository struct to leverage Azure DevOps
+// Repository struct to leverage Azure DevOps
 type Repository struct {
 	prompt Prompt
 }
 
-// ADOSPrompt for user info
+// Prompt for user info
 type Prompt interface {
 	forOrganization() (string, error)
 	forGitToken() (string, error)
@@ -47,8 +47,8 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 	connection := azuredevops.NewPatConnection(organizationURL, gitToken)
 	ctx := context.Background()
 	coreClient, err := core.NewClient(ctx, connection)
+	
 	if err != nil {
-		contextLogger.Error(err)
 		return err
 	}
 	contextLogger.Debug("created ados context")
@@ -67,7 +67,6 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 
 	_, err = coreClient.QueueCreateProject(ctx, projectArgs)
 	if err != nil {
-		contextLogger.Error(err)
 		return err
 	}
 	contextLogger.Debug("ados project queued")

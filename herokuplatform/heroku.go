@@ -74,6 +74,11 @@ func (h Heroku) GetToken() string {
 	return h.platformToken
 }
 
+// GetPlatformType returns type of platform
+func (h Heroku) GetPlatformType() string {
+	return constants.HerokuPlatform
+}
+
 func createBuildpack(applicationType string) (heroku.BuildpackInstallationUpdateOpts, error) {
 	buildPackName, err := getApplicationBuildpack(applicationType)
 

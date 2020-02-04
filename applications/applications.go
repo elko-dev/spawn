@@ -21,6 +21,7 @@ type GitRepo interface {
 type PlatformRepository interface {
 	Create() error
 	GetToken() string
+	GetPlatformType() string
 }
 
 // PlatformFactory interface defining platform request

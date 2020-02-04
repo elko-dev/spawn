@@ -172,6 +172,20 @@ func (mr *MockPlatformRepositoryMockRecorder) GetToken() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetToken", reflect.TypeOf((*MockPlatformRepository)(nil).GetToken))
 }
 
+// GetPlatformType mocks base method
+func (m *MockPlatformRepository) GetPlatformType() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetPlatformType")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetPlatformType indicates an expected call of GetPlatformType
+func (mr *MockPlatformRepositoryMockRecorder) GetPlatformType() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPlatformType", reflect.TypeOf((*MockPlatformRepository)(nil).GetPlatformType))
+}
+
 // MockPlatformFactory is a mock of PlatformFactory interface
 type MockPlatformFactory struct {
 	ctrl     *gomock.Controller

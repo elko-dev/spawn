@@ -15,12 +15,11 @@ import (
 // Local struct containing logic to interact with Git locally
 type Local struct {
 }
- 
+
 // Git to interact with git
 type Git interface {
 	DuplicateRepo(url string, gitToken string, name string, repoURL string) error
 }
-
 
 // Template interface to replace templated values
 type Template interface {
@@ -36,7 +35,6 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Clone failed")
-		println(err.Error())
 		return err
 	}
 
@@ -44,14 +42,12 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	err = template.Replace()
 	if err != nil {
 		println("Template replacement failed")
-		println(err.Error())
 		return err
 	}
 
 	err = r.DeleteRemote("origin")
 	if err != nil {
 		println("Delete failed")
-		println(err.Error())
 		return err
 	}
 
@@ -61,7 +57,6 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Create remote failed")
-		println(err.Error())
 		return err
 	}
 
@@ -70,7 +65,6 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	_, err = w.Add(".")
 	if err != nil {
 		println("Add failed")
-		println(err.Error())
 		return err
 	}
 
@@ -91,7 +85,6 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Push failed")
-		println(err.Error())
 		return err
 	}
 
