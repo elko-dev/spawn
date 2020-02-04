@@ -3,6 +3,7 @@ package commands
 import (
 	"github.com/elko-dev/spawn/applicationtype"
 	"github.com/elko-dev/spawn/flags"
+	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )
 
@@ -18,7 +19,14 @@ func Run(factory applicationtype.Factory) cli.Command {
 		Usage:   "Spawns application",
 		Flags:   flags.Repository(),
 		Action: func(c *cli.Context) error {
-			return factory.CreateApplicationType().Create()
+			err := factory.CreateApplicationType().Create()
+			if err != nil {
+				log.WithFields(log.Fields{}).Error(
+					err,
+					"\n Spawn encountered an error",
+				)
+			}
+			return err
 		},
 	}
 }

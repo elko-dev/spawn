@@ -2,6 +2,7 @@ package nodejs
 
 import (
 	"github.com/elko-dev/spawn/applications"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -17,6 +18,7 @@ type Node struct {
 
 // Create  Node Project
 func (node Node) Create() error {
+	log.WithFields(log.Fields{}).Debug("Creating NodeJS Project")
 	err := node.platform.Create()
 	if err != nil {
 		return err

@@ -47,8 +47,7 @@ func (h Heroku) Create() error {
 		app, err := h.service.TeamAppCreate(context.TODO(), createOpts)
 
 		if err != nil {
-			println(err.Error())
-			return errors.New("Error Creating App")
+			return err
 		}
 
 		buildPackOps, err := createBuildpack(h.applicationType)

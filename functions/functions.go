@@ -14,7 +14,7 @@ const (
 	templateURL = "https://github.com/elko-dev/nodejs-azure-functions-template.git"
 )
 
-// Create sets up a new application
+// Create sets up a new function
 func (function FunctionsType) Create() error {
 	log.WithFields(log.Fields{}).Debug("Running server creation")
 

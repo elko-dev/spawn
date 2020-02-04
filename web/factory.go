@@ -31,10 +31,9 @@ type Prompt interface {
 // Create Web type
 func (factory Factory) Create(applicationType string) WebType {
 
-	//These are no-ops to present to user until more languages are supported
-
 	clientApplicationType, _ := factory.webCommand.ForClientType(applicationType)
 	serverApplicationType, _ := factory.webCommand.ForServerType()
+
 	contextLogger := log.WithFields(log.Fields{
 		"applicationType":       applicationType,
 		"clientApplicationType": clientApplicationType,
@@ -43,8 +42,10 @@ func (factory Factory) Create(applicationType string) WebType {
 
 	contextLogger.Debug("Constructing server application...")
 	client, _ := factory.serverFactory.Create(clientApplicationType)
+
 	contextLogger.Debug("Constructing client application...")
 	server, _ := factory.clientFactory.Create(serverApplicationType)
+
 	return NewWebType(client, server)
 }
 
