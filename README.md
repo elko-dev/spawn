@@ -98,7 +98,7 @@ Once you find the correct version you can download the version of spawn you need
 
 ```bash
 wget https://github.com/elko-dev/spawn/releases/download/<VERSION>/<SPAWN_OS_NAME> -O spawn
-```
+``` 
 
 example:
 
