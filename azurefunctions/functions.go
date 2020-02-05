@@ -15,7 +15,7 @@ type AzureFunctions struct {
 
 // Create AzureFunction
 func (f AzureFunctions) Create() error {
-	log.WithFields(log.Fields{}).Info("Created Azure Functions.  Navigate to https.dev.azure.com to finish pipeline setup")
+	log.WithFields(log.Fields{}).Info("Created Azure Functions.  Navigate to https://dev.azure.com to finish pipeline setup")
 	// organizationURL := "https://dev.azure.com/" + f.organization
 
 	// contextLogger := log.WithFields(log.Fields{

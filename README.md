@@ -99,3 +99,15 @@ Once you find the correct version you can download the version of spawn you need
 ```bash
 wget https://github.com/elko-dev/spawn/releases/download/<VERSION>/<SPAWN_OS_NAME> -O spawn
 ```
+
+example:
+
+```bash
+wget https://github.com/elko-dev/spawn/releases/download/v0.4.3/spawn-darwin-386 -O spawn
+```
+
+finally, make spawn executable:
+
+```bash
+chmod +x spawn 
+```
