@@ -33,15 +33,19 @@ func (f AzureFunctions) Create() error {
 	coreClient := pipelines.NewClient(ctx, connection)
 
 	contextLogger.Debug("Created pipelines client")
+	folder := "c:/"
 	params := pipelines.CreatePipelineParameters{
 		Configuration: &pipelines.CreatePipelineConfigurationParameters{
 			Type: &pipelines.ConfigurationTypeValues.Yaml,
 		},
+		Folder: &folder,
+		Name:   &f.projectName,
 	}
 	args := pipelines.CreatePipelineArgs{
 		Project:         &f.projectName,
 		InputParameters: &params,
 	}
+
 	pipelineResponse, err := coreClient.CreatePipeline(ctx, args)
 	if err != nil {
 		contextLogger.Debug("Error creating pipeline")

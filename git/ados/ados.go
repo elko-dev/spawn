@@ -22,7 +22,6 @@ type Repository struct {
 // Prompt for user info
 type Prompt interface {
 	forOrganization() (string, error)
-	forGitToken() (string, error)
 }
 
 // CreateGitRepository action to create an ADOS repo
@@ -37,8 +36,6 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 
 	organizationURL := "https://dev.azure.com/" + organization
 
-	gitToken, err := ados.prompt.forGitToken()
-
 	if err != nil {
 		return err
 	}
@@ -48,7 +45,7 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 		"organizationURL": organizationURL,
 	})
 
-	connection := azuredevops.NewPatConnection(organizationURL, gitToken)
+	connection := azuredevops.NewPatConnection(organizationURL, platformToken)
 	ctx := context.Background()
 	coreClient, err := core.NewClient(ctx, connection)
 
@@ -89,7 +86,7 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 	log.WithFields(log.Fields{}).Info("Waiting for azure repo to create....")
 	time.Sleep(5 * time.Second)
 
-	return ados.Git.DuplicateRepo(templateURL, gitToken, repositoryName, adosGitRepoURL)
+	return ados.Git.DuplicateRepo(templateURL, platformToken, repositoryName, adosGitRepoURL)
 }
 
 // NewRepository init method
