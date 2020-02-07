@@ -15,8 +15,8 @@ BIN_OUTPUT="$PROJECT_DIR/release"
 github_release() {
     echo "Starting release $VERSION for $REPO $APP_NAME"
     
-    github-release release --user $REPO \
-    --repo $APP_NAME --tag $VERSION \
+    github-release release --user "$REPO" \
+    --repo "$APP_NAME" --tag "$VERSION" \
     --name "Release $VERSION" \
     --description "$GIT_COMMIT_DESC" \
     --pre-release
@@ -28,17 +28,17 @@ github_release() {
             ARTIFACT_NAME="$APP_NAME-$GOOS-$GOARCH"
             ARTIFACT_PATH="$BIN_OUTPUT/$ARTIFACT_NAME"
             echo "Releasing artifact $ARTIFACT_PATH"
-            github-release upload --user $REPO \
-                --repo $APP_NAME --tag $VERSION \
-                --name $ARTIFACT_NAME\
-                --file $ARTIFACT_PATH
+            github-release upload --user "$REPO" \
+                --repo "$APP_NAME" --tag "$VERSION" \
+                --name "$ARTIFACT_NAME" \
+                --file "$ARTIFACT_PATH"
         done
     done
 }
 
 check_to_release() {
     GIT_COMMIT_DESC=$(git log --format=oneline -n 1)
-    echo $GIT_COMMIT_DESC
+    echo "$GIT_COMMIT_DESC"
 
     if [[ $GIT_COMMIT_DESC == *"RELEASE"* ]] ; then
         echo "Releasing Spawn..."
@@ -51,7 +51,7 @@ check_to_release() {
 }
 
 create_tag() {
-    git tag $VERSION && git push --tags
+    git tag "$VERSION" && git push --tags
     echo "Created git tag"
 }
 
