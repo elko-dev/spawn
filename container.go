@@ -28,7 +28,6 @@ func CreateFactory() applicationtype.Factory {
 func CreateFunctionsTypeFactory() applicationtype.FunctionTypeFactory {
 	panic(wire.Build(
 		CreateNodeJsFactory,
-		functions.NewPrompts,
 		functions.NewFactory,
 	))
 }
