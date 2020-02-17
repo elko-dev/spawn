@@ -44,7 +44,8 @@ func (client *Client) SendRequest(request *http.Request) (response *http.Respons
 // Send http request to appcenter api
 func (client *Client) Send(ctx context.Context,
 	httpMethod string,
-	body io.Reader) (response *http.Response, err error) {
+	body io.Reader,
+	path string) (response *http.Response, err error) {
 
 	req, err := http.NewRequest(httpMethod, client.baseURL, body)
 
@@ -59,6 +60,10 @@ func (client *Client) Send(ctx context.Context,
 	}
 
 	return resp, err
+}
+
+func (client *Client) GetUrlByPath(path string) string {
+	return client.baseURL + path
 }
 
 // UnmarshalBody unmarshalls response body

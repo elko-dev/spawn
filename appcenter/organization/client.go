@@ -29,7 +29,7 @@ func (client ClientImpl) CreateOrganization(context context.Context, args *Creat
 	if marshalErr != nil {
 		return nil, marshalErr
 	}
-	resp, err := client.Client.Send(context, http.MethodPost, bytes.NewReader(body))
+	resp, err := client.Client.Send(context, http.MethodPost, bytes.NewReader(body), orgPathURL)
 	if err != nil {
 		return nil, err
 	}

@@ -31,7 +31,7 @@ func (client ClientImpl) CreateApp(context context.Context, args *CreateAppArgs,
 	if marshalErr != nil {
 		return nil, marshalErr
 	}
-	resp, err := client.Client.Send(context, http.MethodPost, bytes.NewReader(body))
+	resp, err := client.Client.Send(context, http.MethodPost, bytes.NewReader(body), createOrganizationURL(orgName))
 	if err != nil {
 		return nil, err
 	}

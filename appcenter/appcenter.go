@@ -28,6 +28,7 @@ func (platform Platform) Create() error {
 	if err != nil {
 		return err
 	}
+	// TODO: create a team and add app to team
 	// create app
 	appDescription := "Mobile application"
 	os := "Android"
