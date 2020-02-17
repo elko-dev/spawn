@@ -1,4 +1,4 @@
-package appcenter
+package api
 
 // ErrorResponse struct representing API error
 type ErrorResponse struct {
@@ -7,6 +7,6 @@ type ErrorResponse struct {
 
 // Error struct representing API error
 type Error struct {
-	code    string `json:"code,omitEmpty"`
-	message string `json:"message,omitEmpty"`
+	Code    string `json:"code,omitEmpty"`
+	Message string `json:"message,omitEmpty"`
 }

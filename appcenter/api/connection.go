@@ -1,4 +1,4 @@
-package appcenter
+package api
 
 const (
 	baseURL = "https://api.appcenter.ms/v0.1/"

@@ -1,4 +1,4 @@
-package appcenter
+package api
 
 import (
 	"testing"

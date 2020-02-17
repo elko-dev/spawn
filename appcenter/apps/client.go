@@ -1,21 +1,23 @@
-package organization
+package apps
 
 import (
 	"bytes"
 	"context"
 	"encoding/json"
 	"net/http"
+	"strings"
 
 	"github.com/elko-dev/spawn/appcenter/api"
 )
 
 const (
-	orgPathURL = "orgs"
+	orgPathURL   = "orgs/{org_name}/apps"
+	replaceParam = "{org_name}"
 )
 
 // Client interface for appcenter
 type Client interface {
-	CreateOrganization(context context.Context, args *CreateOrganizationArgs) (*Organization, error)
+	CreateApp(context context.Context, args *CreateAppArgs, orgName string) (*App, error)
 }
 
 // ClientImpl implementation of Client interface
@@ -23,8 +25,8 @@ type ClientImpl struct {
 	Client api.Client
 }
 
-// CreateOrganization creates organization
-func (client ClientImpl) CreateOrganization(context context.Context, args *CreateOrganizationArgs) (*Organization, error) {
+// CreateApp creates an application
+func (client ClientImpl) CreateApp(context context.Context, args *CreateAppArgs, orgName string) (*App, error) {
 	body, marshalErr := json.Marshal(args)
 	if marshalErr != nil {
 		return nil, marshalErr
@@ -34,14 +36,19 @@ func (client ClientImpl) CreateOrganization(context context.Context, args *Creat
 		return nil, err
 	}
 
-	var responseValue Organization
+	var responseValue App
 	err = client.Client.UnmarshalBody(resp, &responseValue)
 	return &responseValue, err
 }
 
+func createOrganizationURL(orgName string) string {
+	return strings.Replace(orgPathURL, replaceParam, orgName, 1)
+}
+
 // NewClient init
-func NewClient(connection *api.Connection) Client {
-	client := connection.GetClientByAPIURL(orgPathURL)
+func NewClient(connection *api.Connection, orgName string) Client {
+	fullURL := createOrganizationURL(orgName)
+	client := connection.GetClientByAPIURL(fullURL)
 	return &ClientImpl{
 		Client: *client,
 	}

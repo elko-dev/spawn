@@ -1,4 +1,4 @@
-package appcenter
+package api
 
 import (
 	"bytes"
@@ -32,8 +32,8 @@ func (client *Client) SendRequest(request *http.Request) (response *http.Respons
 
 		log.WithFields(log.Fields{
 			"responseCode": resp.StatusCode,
-			"errorCode":    unwrappedError.Error.code,
-			"message":      unwrappedError.Error.message,
+			"errorCode":    unwrappedError.Error.Code,
+			"message":      unwrappedError.Error.Message,
 		}).Error("Sending request to App Center")
 
 		return resp, errors.New("Error received when calling AppCenter API")
