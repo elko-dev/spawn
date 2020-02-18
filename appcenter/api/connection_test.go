@@ -25,14 +25,13 @@ func TestAuthorizationIsSetWhenNewConnectionIsCreated(t *testing.T) {
 		t.Fail()
 	}
 }
-func TestGetClientByAPIURLReturnsClientWithFullURL(t *testing.T) {
+func TestGetClientByReturnsClientWithBaseURL(t *testing.T) {
 	accessToken := "TOKEN"
-	orgURL := "org"
-	fullURL := "https://api.appcenter.ms/v0.1/" + orgURL
+	baseURL := "https://api.appcenter.ms/v0.1/"
 	connection := NewConnection(accessToken)
-	actual := connection.GetClientByAPIURL(orgURL).baseURL
-	if actual != fullURL {
-		t.Log("Got baseUrl "+actual, " expected "+fullURL)
+	actual := connection.GetClient().baseURL
+	if actual != baseURL {
+		t.Log("Got baseUrl "+actual, " expected "+baseURL)
 		t.Fail()
 	}
 }

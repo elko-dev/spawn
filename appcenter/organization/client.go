@@ -41,7 +41,7 @@ func (client ClientImpl) CreateOrganization(context context.Context, args *Creat
 
 // NewClient init
 func NewClient(connection *api.Connection) Client {
-	client := connection.GetClientByAPIURL(orgPathURL)
+	client := connection.GetClient()
 	return &ClientImpl{
 		Client: *client,
 	}

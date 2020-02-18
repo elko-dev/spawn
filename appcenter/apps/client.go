@@ -46,9 +46,8 @@ func createOrganizationURL(orgName string) string {
 }
 
 // NewClient init
-func NewClient(connection *api.Connection, orgName string) Client {
-	fullURL := createOrganizationURL(orgName)
-	client := connection.GetClientByAPIURL(fullURL)
+func NewClient(connection *api.Connection) Client {
+	client := connection.GetClient()
 	return &ClientImpl{
 		Client: *client,
 	}

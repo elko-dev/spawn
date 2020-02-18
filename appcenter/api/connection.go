@@ -10,9 +10,9 @@ type Connection struct {
 	BaseUrl            string
 }
 
-// GetClientByAPIURL function to create client
-func (connection *Connection) GetClientByAPIURL(pathURL string) *Client {
-	url := connection.BaseUrl + pathURL
+// GetClient function to create client
+func (connection *Connection) GetClient() *Client {
+	url := connection.BaseUrl
 	return NewClient(connection, url)
 }
 

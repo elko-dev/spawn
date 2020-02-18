@@ -47,11 +47,12 @@ func (client *Client) Send(ctx context.Context,
 	body io.Reader,
 	path string) (response *http.Response, err error) {
 
-	req, err := http.NewRequest(httpMethod, client.baseURL, body)
+	url := client.GetURLByPath(path)
+	req, err := http.NewRequest(httpMethod, url, body)
 
 	log.WithFields(log.Fields{
 		"httpMethod": httpMethod,
-		"url":        client.baseURL,
+		"url":        url,
 	}).Debug("Sending request to App Center")
 
 	resp, err := client.SendRequest(req)
@@ -62,7 +63,8 @@ func (client *Client) Send(ctx context.Context,
 	return resp, err
 }
 
-func (client *Client) GetUrlByPath(path string) string {
+// GetURLByPath creates full URL based on input path
+func (client *Client) GetURLByPath(path string) string {
 	return client.baseURL + path
 }
 
