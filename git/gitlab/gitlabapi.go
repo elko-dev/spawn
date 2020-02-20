@@ -50,7 +50,7 @@ func (rest GitlabHTTP) AddEnvironmentVariables(deployToken string, projectID str
 		return nil
 	}
 
-	if resp.StatusCode == 401 {
+	if isUnauthorized(resp.StatusCode) {
 		fmt.Println("Received unauthorized from Gitlab")
 		return errors.New("Unauthorized")
 	}
@@ -97,7 +97,7 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, gitToken string)
 }
 
 func createProjectRequest(respositoryName string, group string) []byte {
-	return []byte(`{"path":"` + respositoryName + `", "namespace_id": ` + group + `}`)
+	return []byte(`{"path":"` + respositoryName + `",` + `"visibility":"public",` + ` "namespace_id": ` + group + `}`)
 }
 
 func createPostRequest(gitToken string, url string, request []byte) (*http.Request, error) {

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -27,6 +28,8 @@ type ClientImpl struct {
 
 // CreateApp creates an application
 func (client ClientImpl) CreateApp(context context.Context, args *CreateAppArgs, orgName string) (*App, error) {
+	fmt.Printf("%+v\n", args)
+
 	body, marshalErr := json.Marshal(args)
 	if marshalErr != nil {
 		return nil, marshalErr

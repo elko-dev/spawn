@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/file"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/config"
@@ -18,7 +19,7 @@ type Local struct {
 
 // Git to interact with git
 type Git interface {
-	DuplicateRepo(url string, gitToken string, name string, repoURL string) error
+	DuplicateRepo(url string, gitToken string, name string, repoURL string) (applications.GitResult, error)
 }
 
 // Template interface to replace templated values
@@ -27,7 +28,7 @@ type Template interface {
 }
 
 // DuplicateRepo contains logic to duplicate a repository
-func (local Local) DuplicateRepo(url string, gitToken string, name string, repoURL string) error {
+func (local Local) DuplicateRepo(url string, gitToken string, name string, repoURL string) (applications.GitResult, error) {
 
 	r, err := git.PlainClone(name, false, &git.CloneOptions{
 		URL:               url,
@@ -35,20 +36,20 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Clone failed")
-		return err
+		return applications.GitResult{}, err
 	}
 
 	template := file.TemplateFile{Name: strings.ToLower(name)}
 	err = template.Replace()
 	if err != nil {
 		println("Template replacement failed")
-		return err
+		return applications.GitResult{}, err
 	}
 
 	err = r.DeleteRemote("origin")
 	if err != nil {
 		println("Delete failed")
-		return err
+		return applications.GitResult{}, err
 	}
 
 	_, err = r.CreateRemote(&config.RemoteConfig{
@@ -57,7 +58,7 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Create remote failed")
-		return err
+		return applications.GitResult{}, err
 	}
 
 	// Adds the new file to the staging area.
@@ -65,10 +66,10 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	_, err = w.Add(".")
 	if err != nil {
 		println("Add failed")
-		return err
+		return applications.GitResult{}, err
 	}
 
-	_, err = w.Commit(name+" configuration", &git.CommitOptions{
+	commit, err := w.Commit(name+" configuration", &git.CommitOptions{
 		Author: &object.Signature{
 			Name:  "Spawn",
 			Email: "spawn@elko.dev",
@@ -85,10 +86,10 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Push failed")
-		return err
+		return applications.GitResult{}, err
 	}
 
-	return nil
+	return applications.GitResult{RepoURL: repoURL, LatestGitCommit: commit.String()}, err
 }
 
 // NewLocal init method

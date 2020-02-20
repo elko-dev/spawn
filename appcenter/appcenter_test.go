@@ -19,13 +19,13 @@ func TestPlatformCreation(t *testing.T) {
 	// Only log the warning severity or above.
 	log.SetLevel(log.DebugLevel)
 	connection := api.NewConnection(os.Getenv("APPCENTER_TOKEN"))
-	orgName := "ElkoTestOrganization"
+	orgName := "ElkoTestOrganization1"
 	orgClient := organization.NewClient(connection)
 	appClient := apps.NewClient(connection)
 	buildClient := builds.NewClient(connection)
-	platform := NewPlatform(orgClient, appClient, buildClient, orgName, "testprojectName", "https://github.com/elko-dev/react-native-template.git", "7ba6e41ab3a0f3b3ffc6f65d443f0f02d30ab31f")
+	platform := NewPlatform(orgClient, appClient, buildClient, orgName, "testprojectName1")
 
-	err := platform.Create()
+	err := platform.Create("https://github.com/elko-dev/react-native-template.git", "7ba6e41ab3a0f3b3ffc6f65d443f0f02d30ab31f")
 
 	if err != nil {
 		t.Log("got error, expected none", err)

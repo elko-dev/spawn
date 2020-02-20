@@ -1,4 +1,4 @@
-package react
+package reactnative
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation"
@@ -25,7 +25,7 @@ func selectProjectName() (string, error) {
 		}
 
 	projectPrompt := promptui.Prompt{
-		Label:    "React Project Name",
+		Label:    "React Native Project Name",
 		Validate: projectValidate,
 	}
 

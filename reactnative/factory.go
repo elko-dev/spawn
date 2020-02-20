@@ -1,4 +1,4 @@
-package react
+package reactnative
 
 import (
 	"github.com/elko-dev/spawn/applications"
@@ -12,9 +12,9 @@ type Prompt interface {
 
 // Factory to construct React App
 type Factory struct {
-	gitFactory      applications.GitFactory
-	platformFactory applications.PlatformFactory
-	prompt          Prompt
+	gitFactory applications.GitFactory
+	ciFactory  applications.CIFactory
+	prompt     Prompt
 }
 
 // Create method to construct a Project
@@ -28,16 +28,16 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		return nil, err
 	}
 
-	platform, err := factory.platformFactory.Create(projectName, applicationType)
+	platform, err := factory.ciFactory.Create(projectName)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return NewReact(git, platform, projectName), nil
+	return NewReactNative(git, platform, projectName), nil
 }
 
 // NewFactory init func
-func NewFactory(gitFactory applications.GitFactory, platformFactory applications.PlatformFactory, prompt Prompt) web.ClientAppFactory {
+func NewFactory(gitFactory applications.GitFactory, platformFactory applications.CIFactory, prompt Prompt) web.ClientAppFactory {
 	return Factory{gitFactory, platformFactory, prompt}
 }

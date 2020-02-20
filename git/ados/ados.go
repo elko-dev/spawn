@@ -6,6 +6,7 @@ import (
 
 	// "github.com/google/uuid"
 
+	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/git/local"
 	log "github.com/sirupsen/logrus"
 
@@ -25,19 +26,19 @@ type Prompt interface {
 }
 
 // CreateGitRepository action to create an ADOS repo
-func (ados Repository) CreateGitRepository(repositoryName string, templateURL string, platformToken string) error {
+func (ados Repository) CreateGitRepository(repositoryName string, templateURL string, platformToken string) (applications.GitResult, error) {
 
 	organization, err := ados.prompt.forOrganization()
 
 	if err != nil {
 		log.Debug("Error creating organization")
-		return err
+		return applications.GitResult{}, err
 	}
 
 	organizationURL := "https://dev.azure.com/" + organization
 
 	if err != nil {
-		return err
+		return applications.GitResult{}, err
 	}
 	contextLogger := log.WithFields(log.Fields{
 		"repositoryName":  repositoryName,
@@ -50,7 +51,7 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 	coreClient, err := core.NewClient(ctx, connection)
 
 	if err != nil {
-		return err
+		return applications.GitResult{}, err
 	}
 
 	contextLogger.Debug("created ados context")
@@ -74,7 +75,7 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 	response, err := coreClient.QueueCreateProject(ctx, projectArgs)
 	if err != nil {
 		contextLogger.Debug("failed to create ados project")
-		return err
+		return applications.GitResult{}, err
 	}
 	contextLogger.Debug(
 		"ados project queued with response ",
