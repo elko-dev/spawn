@@ -3,6 +3,7 @@ package appcenter
 import (
 	"context"
 
+	"github.com/elko-dev/spawn/appcenter/accounts"
 	"github.com/elko-dev/spawn/appcenter/apps"
 	"github.com/elko-dev/spawn/appcenter/builds"
 	"github.com/elko-dev/spawn/appcenter/organization"
@@ -12,11 +13,13 @@ import (
 
 // Platform struct to create AppCenter
 type Platform struct {
-	orgClient        organization.Client
-	appClient        apps.Client
-	buildClient      builds.Client
-	organizationName string
-	projectName      string
+	orgClient           organization.Client
+	appClient           apps.Client
+	buildClient         builds.Client
+	accountsClient      accounts.Client
+	organizationName    string
+	projectName         string
+	distributionMembers []string
 }
 
 // Create AppCenter config
@@ -30,6 +33,7 @@ func (platform Platform) Create(repoURL string, latestGitConfig string) error {
 		"repoURL":          repoURL,
 		"latestGitConfig":  latestGitConfig,
 	}).Debug("Creating appcenter organization")
+
 	_, err := platform.orgClient.CreateOrganization(ctx, &organization.CreateOrganizationArgs{
 		DisplayName: &platform.organizationName,
 		Name:        &platform.organizationName,
@@ -38,19 +42,58 @@ func (platform Platform) Create(repoURL string, latestGitConfig string) error {
 	if err != nil {
 		return err
 	}
-	// TODO: create a team and add app to team
-	// create app
-	err = createAndroidApp(ctx, &platform, &repoURL, &latestGitConfig)
+
+	_, err = platform.accountsClient.CreateDistributionGroup(ctx, &accounts.DistributionGroupArg{
+		DisplayName: platform.organizationName,
+		Name:        platform.organizationName,
+	}, &platform.organizationName)
+
 	if err != nil {
 		return err
 	}
 
-	return createIOSApp(ctx, &platform, &repoURL, &latestGitConfig)
+	// TODO: create a team and add app to team
+	// create app
+	androidName, err := createAndroidApp(ctx, &platform, &repoURL, &latestGitConfig)
+	if err != nil {
+		return err
+	}
+
+	iosName, err := createIOSApp(ctx, &platform, &repoURL, &latestGitConfig)
+
+	if err != nil {
+		return err
+	}
+
+	apps := make([]accounts.Apps, 0)
+	apps = append(apps, accounts.Apps{Name: androidName})
+	apps = append(apps, accounts.Apps{Name: iosName})
+
+	err = platform.accountsClient.CreateAppsDistributionGroup(ctx, &accounts.AppsForDistributionArg{
+		Apps: apps,
+	}, &platform.organizationName, &platform.organizationName)
+
+	if err != nil {
+		return err
+	}
+
+	return platform.accountsClient.AddMemberToDistribution(ctx, &accounts.AddMemberArgs{
+		UserEmails: platform.distributionMembers,
+	}, &platform.organizationName, &platform.organizationName)
+
 }
 
 // CreateApp for app center
-func (platform Platform) CreateApp(ctx context.Context, description *string, os *string, platformType *string, releaseType *string, repoURL *string, latestGitConfig *string) error {
+func (platform Platform) CreateApp(ctx context.Context,
+	description *string,
+	os *string,
+	platformType *string,
+	releaseType *string,
+	repoURL *string,
+	latestGitConfig *string) (string, error) {
+
 	projectName := normalizeProjectName(platform.projectName, *os)
+
 	_, err := platform.appClient.CreateApp(ctx, &apps.CreateAppArgs{
 		DisplayName: &projectName,
 		Name:        &projectName,
@@ -72,7 +115,7 @@ func (platform Platform) CreateApp(ctx context.Context, description *string, os 
 
 	if err != nil {
 		logContext.Info("Error creating appcenter app")
-		return err
+		return "", err
 	}
 	_, err = platform.buildClient.ConfigureRepo(ctx, &builds.RepoConfigArgs{
 		RepoURL: *repoURL,
@@ -80,13 +123,13 @@ func (platform Platform) CreateApp(ctx context.Context, description *string, os 
 
 	if err != nil {
 		logContext.Info("Error configuring appcenter app")
-		return err
+		return "", err
 	}
 	_, err = platform.buildClient.ConfigureBuild(ctx, builds.CreateConfigArgs(), platform.organizationName, projectName)
 
 	if err != nil {
 		logContext.Info("Error creating appcenter build")
-		return err
+		return "", err
 	}
 
 	_, err = platform.buildClient.Build(ctx, &builds.BuildArgs{
@@ -94,10 +137,10 @@ func (platform Platform) CreateApp(ctx context.Context, description *string, os 
 		Debug:         true,
 	}, platform.organizationName, projectName)
 
-	return err
+	return projectName, err
 }
 
-func createAndroidApp(ctx context.Context, platform *Platform, repoURL *string, latestGitConfig *string) error {
+func createAndroidApp(ctx context.Context, platform *Platform, repoURL *string, latestGitConfig *string) (string, error) {
 	description := "Mobile application"
 	os := "Android"
 	platformType := "React-Native"
@@ -105,7 +148,7 @@ func createAndroidApp(ctx context.Context, platform *Platform, repoURL *string, 
 	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig)
 }
 
-func createIOSApp(ctx context.Context, platform *Platform, repoURL *string, latestGitConfig *string) error {
+func createIOSApp(ctx context.Context, platform *Platform, repoURL *string, latestGitConfig *string) (string, error) {
 	description := "Mobile application"
 	os := "iOS"
 	platformType := "React-Native"
@@ -121,7 +164,9 @@ func normalizeProjectName(projectName string, os string) string {
 func NewPlatform(orgClient organization.Client,
 	appClient apps.Client,
 	buildClient builds.Client,
+	accountsClient accounts.Client,
 	organizationName string,
-	projectName string) Platform {
-	return Platform{orgClient, appClient, buildClient, organizationName, projectName}
+	projectName string,
+	members []string) Platform {
+	return Platform{orgClient, appClient, buildClient, accountsClient, organizationName, projectName, members}
 }

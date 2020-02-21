@@ -1,6 +1,7 @@
 package appcenter
 
 import (
+	"github.com/elko-dev/spawn/appcenter/accounts"
 	"github.com/elko-dev/spawn/appcenter/api"
 	"github.com/elko-dev/spawn/appcenter/apps"
 	"github.com/elko-dev/spawn/appcenter/builds"
@@ -17,6 +18,7 @@ type Factory struct {
 type Prompt interface {
 	forOrganization() (string, error)
 	forToken() (string, error)
+	forMembers() ([]string, error)
 }
 
 // Create appcenter factory
@@ -28,12 +30,23 @@ func (factory Factory) Create(projectName string) (applications.CIPlatform, erro
 
 	orgName, err := factory.prompt.forOrganization()
 
+	if err != nil {
+		return nil, err
+	}
+
+	members, err := factory.prompt.forMembers()
+
+	if err != nil {
+		return nil, err
+	}
+
 	connection := api.NewConnection(token)
 	orgClient := organization.NewClient(connection)
 	appClient := apps.NewClient(connection)
 	buildClient := builds.NewClient(connection)
+	accountClient := accounts.NewClient(connection)
 
-	platform := NewPlatform(orgClient, appClient, buildClient, orgName, projectName)
+	platform := NewPlatform(orgClient, appClient, buildClient, accountClient, orgName, projectName, members)
 
 	return platform, nil
 }

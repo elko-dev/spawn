@@ -1,6 +1,8 @@
 package appcenter
 
 import (
+	"strings"
+
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/manifoldco/promptui"
 )
@@ -53,6 +55,30 @@ func appcenterToken() (string, error) {
 		Label:    "AppCenter Access Token",
 		Validate: accessTokenValidate,
 		Mask:     '*',
+	}
+
+	return accessTokenPrompt.Run()
+}
+
+func (prompt Prompts) forMembers() ([]string, error) {
+	memberString, err := members()
+
+	if err != nil {
+		return make([]string, 0), err
+	}
+	return strings.Split(memberString, ","), nil
+}
+func members() (string, error) {
+	accessTokenValidate :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	accessTokenPrompt := promptui.Prompt{
+		Label:    "Distribution member emails (comma separated list)",
+		Validate: accessTokenValidate,
 	}
 
 	return accessTokenPrompt.Run()

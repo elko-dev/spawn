@@ -16,7 +16,7 @@ func (prompt Prompts) forGitRepository() (string, error) {
 func selectGitRepository() (int, string, error) {
 	prompt := promptui.Select{
 		Label: "Select Version Control",
-		Items: []string{constants.Gitlab, constants.ADOS},
+		Items: []string{constants.Gitlab, constants.ADOS, constants.Github},
 	}
 
 	return prompt.Run()

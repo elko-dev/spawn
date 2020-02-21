@@ -44,6 +44,11 @@ func (rest GitlabHTTP) AddEnvironmentVariables(deployToken string, projectID str
 	}
 	client := &http.Client{}
 	resp, err := client.Do(req)
+
+	if err != nil {
+		return err
+	}
+
 	defer resp.Body.Close()
 
 	if isSuccessStatusCode(resp.StatusCode) {
@@ -74,26 +79,33 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, gitToken string)
 	client := &http.Client{}
 	resp, err := client.Do(req)
 
-	response := GitRepository{}
-
 	if err != nil {
 		println("Error creating Gitlab Repository; aborting...")
-		return response, err
+		return GitRepository{}, err
 	}
 	defer resp.Body.Close()
 
 	if isSuccessStatusCode(resp.StatusCode) {
+		response := GitRepository{}
 		parseGitlabResponse(resp, &response)
 		return response, nil
 	}
 
 	if isUnauthorized(resp.StatusCode) {
 		fmt.Println("Received unauthorized from Gitlab")
-		return response, errors.New("Unauthorized")
+		return GitRepository{}, errors.New("Unauthorized")
 	}
+
 	println("Failed to create gitlab repository")
 	println(resp.StatusCode)
-	return response, errors.New("Error creating gitlab repo")
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+	bodyString := string(bodyBytes)
+	fmt.Println(bodyString)
+
+	return GitRepository{}, errors.New("Error creating gitlab repo")
 }
 
 func createProjectRequest(respositoryName string, group string) []byte {
@@ -124,13 +136,7 @@ func parseGitlabResponse(response *http.Response, target interface{}) error {
 	return json.Unmarshal(bodyBytes, target)
 }
 
-// // NewGitlabHTTP init function
-// func NewGitlabHTTP() git.HTTP {
-// 	client := &http.Client{}
-
-// 	return GitlabHTTP{client: client}
-// }
-
+// NewGitlabHTTP init
 func NewGitlabHTTP(prompt Prompt) GitlabHTTP {
 	return GitlabHTTP{prompt}
 }

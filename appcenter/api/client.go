@@ -34,7 +34,7 @@ func (client *Client) SendRequest(request *http.Request) (response *http.Respons
 			"responseCode": resp.StatusCode,
 			"errorCode":    unwrappedError.Error.Code,
 			"message":      unwrappedError.Error.Message,
-		}).Error("Sending request to App Center")
+		}).Error("Error sending request to App Center")
 
 		return resp, errors.New("Error received when calling AppCenter API")
 	}

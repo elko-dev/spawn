@@ -8,6 +8,8 @@ require (
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/golang/mock v1.4.0
+	github.com/google/go-github v17.0.0+incompatible
+	github.com/google/go-github/v29 v29.0.3 // indirect
 	github.com/google/uuid v1.1.1
 	github.com/google/wire v0.4.0
 	github.com/heroku/heroku-go/v5 v5.1.0
@@ -19,8 +21,9 @@ require (
 	github.com/tomnomnom/linkheader v0.0.0-20180905144013-02ca5825eb80 // indirect
 	github.com/urfave/cli v1.22.1
 	github.com/voxelbrain/goptions v0.0.0-20180630082107-58cddc247ea2 // indirect
-	golang.org/x/crypto v0.0.0-20200219234226-1ad67e1f0ef4 // indirect
+	golang.org/x/crypto v0.0.0-20200220183623-bac4c82f6975 // indirect
 	golang.org/x/net v0.0.0-20200219183655-46282727080f // indirect
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
 	golang.org/x/sys v0.0.0-20200219091948-cb0a6d8edb6c // indirect
 	gopkg.in/src-d/go-git.v4 v4.13.1
 )
