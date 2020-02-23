@@ -15,23 +15,35 @@ type Factory struct {
 
 // Create Mobile type
 func (factory Factory) Create(applicationType string) (applicationtype.ApplicationType, error) {
-
 	clientApplicationType, _ := factory.webCommand.ForClientType(applicationType)
+	includeBackend, err := factory.webCommand.IncludeBackend()
+
+	client, _ := factory.clientFactory.Create(clientApplicationType)
+
+	if !includeBackend {
+
+		log.WithFields(log.Fields{
+			"applicationType":       applicationType,
+			"clientApplicationType": clientApplicationType,
+		}).Debug("Constructing client application...")
+		return NewMobileType(client, nil, includeBackend), nil
+	}
+
 	serverApplicationType, _ := factory.webCommand.ForServerType()
 
-	contextLogger := log.WithFields(log.Fields{
+	log.WithFields(log.Fields{
 		"applicationType":       applicationType,
 		"clientApplicationType": clientApplicationType,
 		"serverApplicationType": serverApplicationType,
-	})
+	}).Debug("Constructing server application...")
 
-	contextLogger.Debug("Constructing server application...")
-	client, _ := factory.serverFactory.Create(serverApplicationType)
+	server, _ := factory.serverFactory.Create(serverApplicationType)
 
-	contextLogger.Debug("Constructing client application...")
-	server, _ := factory.clientFactory.Create(clientApplicationType)
+	if err != nil {
+		return nil, nil
+	}
 
-	return NewMobileType(client, server), nil
+	return NewMobileType(client, server, includeBackend), nil
 }
 
 // NewFactory init function

@@ -1,5 +1,9 @@
 package builds
 
+const (
+	androidKeyStoreKey = "ANDROID_KEYSTORE_KEY"
+)
+
 // RepoConfigArgs to set repository config
 type RepoConfigArgs struct {
 	RepoURL string `json:"repo_url"`
@@ -32,17 +36,29 @@ type BuildResponse struct {
 
 // ConfigArgs configuration for application
 type ConfigArgs struct {
-	Toolsets             Toolsets           `json:"toolsets"`
-	EnvironmentVariables []interface{}      `json:"environmentVariables"`
-	Trigger              string             `json:"trigger"`
-	ArtifactVersioning   ArtifactVersioning `json:"artifactVersioning"`
-	BadgeIsEnabled       bool               `json:"badgeIsEnabled"`
+	Toolsets             Toolsets               `json:"toolsets"`
+	EnvironmentVariables []EnvironmentVariables `json:"environmentVariables"`
+	Trigger              string                 `json:"trigger"`
+	ArtifactVersioning   ArtifactVersioning     `json:"artifactVersioning"`
+	BadgeIsEnabled       bool                   `json:"badgeIsEnabled"`
+	Signed               bool                   `json:"signed"`
+}
+
+type EnvironmentVariables struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
 }
 
 type Toolsets struct {
-	Android    Android    `json:"android"`
-	Javascript Javascript `json:"javascript"`
-	Testcloud  Testcloud  `json:"testcloud"`
+	Android      Android      `json:"android"`
+	Javascript   Javascript   `json:"javascript"`
+	Testcloud    Testcloud    `json:"testcloud"`
+	Distribution Distribution `json:"distribution"`
+}
+type Distribution struct {
+	DestinationType string   `json:"destinationType"`
+	Destinations    []string `json:"destinations"`
+	IsSilent        bool     `json:"isSilent"`
 }
 
 type ArtifactVersioning struct {
@@ -63,6 +79,11 @@ type Android struct {
 	BuildVariant      string `json:"buildVariant"`
 	RunTests          bool   `json:"runTests"`
 	RunLint           bool   `json:"runLint"`
+	KeystorePassword  string `json:"keystorePassword"`
+	KeyAlias          string `json:"keyAlias"`
+	KeyPassword       string `json:"keyPassword"`
+	KeystoreFilename  string `json:"keystoreFilename"`
+	AutomaticSigning  bool   `json:"automaticSigning"`
 }
 
 type Testcloud struct {
@@ -173,8 +194,15 @@ type BuildConfigResponse struct {
 	} `json:"additionalProp3"`
 }
 
+type Keystore struct {
+	KeystorePassword string
+	KeyAlias         string
+	KeyPassword      string
+	KeystoreFilename string
+}
+
 // CreateConfigArgs default configuration
-func CreateConfigArgs() *ConfigArgs {
+func CreateConfigArgs(distributionGroupID *string, encryptToken *string, keyStore *Keystore) *ConfigArgs {
 	testCloud := Testcloud{DeviceSelection: "top_3_devices", FrameworkType: "Generated"}
 	android := Android{
 		GradleWrapperPath: "android/gradlew",
@@ -183,6 +211,11 @@ func CreateConfigArgs() *ConfigArgs {
 		BuildVariant:      "release",
 		RunTests:          false,
 		RunLint:           true,
+		AutomaticSigning:  true,
+		KeyAlias:          keyStore.KeyAlias,
+		KeyPassword:       keyStore.KeyPassword,
+		KeystoreFilename:  keyStore.KeystoreFilename,
+		KeystorePassword:  keyStore.KeyPassword,
 	}
 	javascript := Javascript{
 		PackageJSONPath:    "package.json",
@@ -190,21 +223,35 @@ func CreateConfigArgs() *ConfigArgs {
 		ReactNativeVersion: "0.61.4",
 		NodeVersion:        "10.x",
 	}
+
+	distribution := Distribution{
+		DestinationType: "groups",
+		Destinations:    []string{*distributionGroupID},
+		IsSilent:        false,
+	}
+
 	toolSets := Toolsets{
-		Testcloud:  testCloud,
-		Android:    android,
-		Javascript: javascript,
+		Testcloud:    testCloud,
+		Android:      android,
+		Javascript:   javascript,
+		Distribution: distribution,
 	}
 
 	artifactVersioning := ArtifactVersioning{
 		BuildNumberFormat: "buildId",
 	}
 
+	environmentVariables := []EnvironmentVariables{
+		EnvironmentVariables{
+			Name:  androidKeyStoreKey,
+			Value: *encryptToken,
+		}}
 	return &ConfigArgs{
 		Toolsets:             toolSets,
-		EnvironmentVariables: make([]interface{}, 0),
+		EnvironmentVariables: environmentVariables,
 		Trigger:              "continuous",
 		ArtifactVersioning:   artifactVersioning,
 		BadgeIsEnabled:       false,
+		Signed:               true,
 	}
 }

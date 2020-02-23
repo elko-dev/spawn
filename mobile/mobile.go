@@ -7,8 +7,9 @@ import (
 
 // MobileType struct to create a mobile application type
 type MobileType struct {
-	Client applications.Project
-	Server applications.Project
+	Client         applications.Project
+	Server         applications.Project
+	includeBackend bool
 }
 
 // Create sets up a new application
@@ -21,12 +22,15 @@ func (mobile MobileType) Create() error {
 		return err
 	}
 
-	log.WithFields(log.Fields{}).Debug("Creating client app")
+	if mobile.includeBackend {
+		log.WithFields(log.Fields{}).Debug("Creating client app")
+		err = mobile.Server.Create()
+	}
 
-	return mobile.Server.Create()
+	return err
 }
 
 // NewMobileType init constructor
-func NewMobileType(client applications.Project, server applications.Project) MobileType {
-	return MobileType{client, server}
+func NewMobileType(client applications.Project, server applications.Project, includeBackend bool) MobileType {
+	return MobileType{client, server, includeBackend}
 }

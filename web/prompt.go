@@ -1,12 +1,38 @@
 package web
 
 import (
+	"strings"
+
 	"github.com/elko-dev/spawn/constants"
 	"github.com/manifoldco/promptui"
 )
 
 // Prompts struct to
 type Prompts struct {
+}
+
+// IncludeBackend determine if backend required
+func (prompts Prompts) IncludeBackend() (bool, error) {
+	prompt := promptui.Prompt{
+		Label:     "Include Backend",
+		IsConfirm: true,
+	}
+
+	confirmation, err := prompt.Run()
+
+	if err != nil {
+		return false, err
+	}
+
+	return isTrueOrFalse(confirmation), nil
+}
+
+func isTrueOrFalse(confirmation string) bool {
+	if strings.ToLower(confirmation) == "y" {
+		return true
+	}
+
+	return false
 }
 
 // ForServerType prompts user for server type

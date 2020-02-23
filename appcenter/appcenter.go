@@ -43,7 +43,7 @@ func (platform Platform) Create(repoURL string, latestGitConfig string) error {
 		return err
 	}
 
-	_, err = platform.accountsClient.CreateDistributionGroup(ctx, &accounts.DistributionGroupArg{
+	distributionResponse, err := platform.accountsClient.CreateDistributionGroup(ctx, &accounts.DistributionGroupArg{
 		DisplayName: platform.organizationName,
 		Name:        platform.organizationName,
 	}, &platform.organizationName)
@@ -54,12 +54,12 @@ func (platform Platform) Create(repoURL string, latestGitConfig string) error {
 
 	// TODO: create a team and add app to team
 	// create app
-	androidName, err := createAndroidApp(ctx, &platform, &repoURL, &latestGitConfig)
+	androidName, err := createAndroidApp(ctx, &platform, &repoURL, &latestGitConfig, &distributionResponse.ID)
 	if err != nil {
 		return err
 	}
 
-	iosName, err := createIOSApp(ctx, &platform, &repoURL, &latestGitConfig)
+	iosName, err := createIOSApp(ctx, &platform, &repoURL, &latestGitConfig, &distributionResponse.ID)
 
 	if err != nil {
 		return err
@@ -90,7 +90,8 @@ func (platform Platform) CreateApp(ctx context.Context,
 	platformType *string,
 	releaseType *string,
 	repoURL *string,
-	latestGitConfig *string) (string, error) {
+	latestGitConfig *string,
+	distributionID *string) (string, error) {
 
 	projectName := normalizeProjectName(platform.projectName, *os)
 
@@ -125,7 +126,18 @@ func (platform Platform) CreateApp(ctx context.Context,
 		logContext.Info("Error configuring appcenter app")
 		return "", err
 	}
-	_, err = platform.buildClient.ConfigureBuild(ctx, builds.CreateConfigArgs(), platform.organizationName, projectName)
+
+	token := "123"
+	args := builds.CreateConfigArgs(distributionID, &token, &builds.Keystore{
+		KeyAlias:         "app",
+		KeyPassword:      "abcdef12",
+		KeystoreFilename: "my.keystore",
+		KeystorePassword: "abcdef12",
+	})
+	_, err = platform.buildClient.ConfigureBuild(ctx,
+		args,
+		platform.organizationName,
+		projectName)
 
 	if err != nil {
 		logContext.Info("Error creating appcenter build")
@@ -140,20 +152,28 @@ func (platform Platform) CreateApp(ctx context.Context,
 	return projectName, err
 }
 
-func createAndroidApp(ctx context.Context, platform *Platform, repoURL *string, latestGitConfig *string) (string, error) {
+func createAndroidApp(ctx context.Context,
+	platform *Platform,
+	repoURL *string,
+	latestGitConfig *string,
+	distributionID *string) (string, error) {
 	description := "Mobile application"
 	os := "Android"
 	platformType := "React-Native"
 	releastType := "Production"
-	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig)
+	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID)
 }
 
-func createIOSApp(ctx context.Context, platform *Platform, repoURL *string, latestGitConfig *string) (string, error) {
+func createIOSApp(ctx context.Context,
+	platform *Platform,
+	repoURL *string,
+	latestGitConfig *string,
+	distributionID *string) (string, error) {
 	description := "Mobile application"
 	os := "iOS"
 	platformType := "React-Native"
 	releastType := "Production"
-	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig)
+	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID)
 }
 
 func normalizeProjectName(projectName string, os string) string {

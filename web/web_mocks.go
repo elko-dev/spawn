@@ -138,3 +138,18 @@ func (mr *MockPromptMockRecorder) ForServerType() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ForServerType", reflect.TypeOf((*MockPrompt)(nil).ForServerType))
 }
+
+// IncludeBackend mocks base method
+func (m *MockPrompt) IncludeBackend() (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IncludeBackend")
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// IncludeBackend indicates an expected call of IncludeBackend
+func (mr *MockPromptMockRecorder) IncludeBackend() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IncludeBackend", reflect.TypeOf((*MockPrompt)(nil).IncludeBackend))
+}
