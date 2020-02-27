@@ -108,11 +108,12 @@ func (m *MockGitRepo) EXPECT() *MockGitRepoMockRecorder {
 }
 
 // CreateGitRepository mocks base method
-func (m *MockGitRepo) CreateGitRepository(repositoryName, templateURL, platformToken string) error {
+func (m *MockGitRepo) CreateGitRepository(repositoryName, templateURL, platformToken string) (GitResult, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateGitRepository", repositoryName, templateURL, platformToken)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(GitResult)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CreateGitRepository indicates an expected call of CreateGitRepository
@@ -260,4 +261,79 @@ func (m *MockGitFactory) Create(projectName string) (GitRepo, error) {
 func (mr *MockGitFactoryMockRecorder) Create(projectName interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockGitFactory)(nil).Create), projectName)
+}
+
+// MockCIFactory is a mock of CIFactory interface
+type MockCIFactory struct {
+	ctrl     *gomock.Controller
+	recorder *MockCIFactoryMockRecorder
+}
+
+// MockCIFactoryMockRecorder is the mock recorder for MockCIFactory
+type MockCIFactoryMockRecorder struct {
+	mock *MockCIFactory
+}
+
+// NewMockCIFactory creates a new mock instance
+func NewMockCIFactory(ctrl *gomock.Controller) *MockCIFactory {
+	mock := &MockCIFactory{ctrl: ctrl}
+	mock.recorder = &MockCIFactoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockCIFactory) EXPECT() *MockCIFactoryMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockCIFactory) Create(projectName string) (CIPlatform, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", projectName)
+	ret0, _ := ret[0].(CIPlatform)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockCIFactoryMockRecorder) Create(projectName interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCIFactory)(nil).Create), projectName)
+}
+
+// MockCIPlatform is a mock of CIPlatform interface
+type MockCIPlatform struct {
+	ctrl     *gomock.Controller
+	recorder *MockCIPlatformMockRecorder
+}
+
+// MockCIPlatformMockRecorder is the mock recorder for MockCIPlatform
+type MockCIPlatformMockRecorder struct {
+	mock *MockCIPlatform
+}
+
+// NewMockCIPlatform creates a new mock instance
+func NewMockCIPlatform(ctrl *gomock.Controller) *MockCIPlatform {
+	mock := &MockCIPlatform{ctrl: ctrl}
+	mock.recorder = &MockCIPlatformMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockCIPlatform) EXPECT() *MockCIPlatformMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockCIPlatform) Create(repoURL, latestGitConfig string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", repoURL, latestGitConfig)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Create indicates an expected call of Create
+func (mr *MockCIPlatformMockRecorder) Create(repoURL, latestGitConfig interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCIPlatform)(nil).Create), repoURL, latestGitConfig)
 }

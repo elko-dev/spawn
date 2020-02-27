@@ -1,9 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/elko-dev/spawn/clip"
 	log "github.com/sirupsen/logrus"
-	"os"
 )
 
 func main() {
@@ -15,8 +16,8 @@ func main() {
 	log.SetOutput(os.Stdout)
 
 	// Only log the warning severity or above.
-	log.SetLevel(log.InfoLevel)
-	applicationFactory := CreateFactory()
+	log.SetLevel(log.DebugLevel)
+	applicationFactory := CreateApplicationTypeFacotry()
 	app := clip.Init(applicationFactory)
 	app.Run(os.Args)
 }

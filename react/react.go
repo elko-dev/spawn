@@ -18,7 +18,8 @@ func (react React) Create() error {
 	if err != nil {
 		return err
 	}
-	return react.repo.CreateGitRepository(react.projectName, templateURL, react.platform.GetToken())
+	_, err = react.repo.CreateGitRepository(react.projectName, templateURL, react.platform.GetToken())
+	return err
 }
 
 // NewReact init function

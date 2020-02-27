@@ -27,6 +27,7 @@ type ServerAppFactory interface {
 type Prompt interface {
 	ForClientType(applicationType string) (string, error)
 	ForServerType() (string, error)
+	IncludeBackend() (bool, error)
 }
 
 // Create Web type

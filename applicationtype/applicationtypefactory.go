@@ -18,15 +18,19 @@ type ApplicationType interface {
 type WebTypeFactory interface {
 	Create(applicationType string) (ApplicationType, error)
 }
+type MobileTypeFactory interface {
+	Create(applicationType string) (ApplicationType, error)
+}
 type FunctionTypeFactory interface {
 	Create(applicationType string) (ApplicationType, error)
 }
 
 // Factory to create an application type
 type Factory struct {
-	prompt          Prompt
-	webFactory      WebTypeFactory
-	functionFactory FunctionTypeFactory
+	prompt            Prompt
+	webFactory        WebTypeFactory
+	functionFactory   FunctionTypeFactory
+	mobileTypeFactory MobileTypeFactory
 }
 
 // CreateApplicationType creates app type
@@ -44,10 +48,14 @@ func (factory Factory) CreateApplicationType() ApplicationType {
 		applicationType, _ = factory.functionFactory.Create(appType)
 	}
 
+	if appType == constants.MobileApplicationType {
+		applicationType, _ = factory.mobileTypeFactory.Create(appType)
+	}
+
 	return applicationType
 }
 
 // NewFactory creates an ApplicationType factory
-func NewFactory(prompt Prompts, webFactory WebTypeFactory, functionsFactory FunctionTypeFactory) Factory {
-	return Factory{prompt, webFactory, functionsFactory}
+func NewFactory(prompt Prompts, webFactory WebTypeFactory, functionsFactory FunctionTypeFactory, mobileTypeFactory MobileTypeFactory) Factory {
+	return Factory{prompt, webFactory, functionsFactory, mobileTypeFactory}
 }

@@ -10,4 +10,5 @@ const (
 	Functions               = "Functions"
 	ADOS                    = "Azure DevOps"
 	Gitlab                  = "Gitlab"
+	Github                  = "Github"
 )

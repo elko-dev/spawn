@@ -23,7 +23,7 @@ func TestFunctionsTemplateIsProvidedWhenPlatformIsFunctions(t *testing.T) {
 	mockPlatform.EXPECT().Create().Return(nil)
 	mockPlatform.EXPECT().GetToken().Return(token)
 	mockPlatform.EXPECT().GetPlatformType().Return(constants.AzureFunctions)
-	mockGitRepo.EXPECT().CreateGitRepository(projectName, functionsTemplateURL, token).Return(nil)
+	mockGitRepo.EXPECT().CreateGitRepository(projectName, functionsTemplateURL, token).Return(applications.GitResult{}, nil)
 
 	node := NewNode(mockGitRepo, mockPlatform, projectName)
 
@@ -47,7 +47,7 @@ func TestHerokuTemplateIsProvidedWhenPlatformIsHeroku(t *testing.T) {
 	mockPlatform.EXPECT().Create().Return(nil)
 	mockPlatform.EXPECT().GetToken().Return(token)
 	mockPlatform.EXPECT().GetPlatformType().Return(constants.HerokuPlatform)
-	mockGitRepo.EXPECT().CreateGitRepository(projectName, herokuTemplateURL, token).Return(nil)
+	mockGitRepo.EXPECT().CreateGitRepository(projectName, herokuTemplateURL, token).Return(applications.GitResult{}, nil)
 
 	node := NewNode(mockGitRepo, mockPlatform, projectName)
 

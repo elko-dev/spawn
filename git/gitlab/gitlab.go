@@ -1,6 +1,9 @@
 package gitlab
 
-import "github.com/elko-dev/spawn/git/local"
+import (
+	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/git/local"
+)
 
 type GitlabRepo struct {
 	HTTP   HTTP
@@ -20,28 +23,22 @@ type HTTP interface {
 }
 
 // CreateGitRepository creates gitlab instance
-func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string) error {
+func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string) (applications.GitResult, error) {
 
 	gitToken, err := git.prompt.forGitToken()
 	repository, err := git.HTTP.PostGitRepository(repositoryName, gitToken)
 
 	if err != nil {
-		return err
+		return applications.GitResult{}, err
 	}
 
 	err = git.HTTP.AddEnvironmentVariables(platformToken, repository.ID.String(), gitToken)
 	if err != nil {
 		println("Failed to add environment variables to Gitlab repo...")
-		return err
+		return applications.GitResult{}, err
 	}
 
-	err = git.Git.DuplicateRepo(templateURL, gitToken, repository.Name, repository.URL)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return git.Git.DuplicateRepo(templateURL, gitToken, repository.Name, repository.URL)
 
 }
 

@@ -4,6 +4,7 @@ import (
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/git/ados"
+	"github.com/elko-dev/spawn/git/github"
 	"github.com/elko-dev/spawn/git/gitlab"
 )
 
@@ -18,6 +19,7 @@ type Prompt interface {
 }
 
 // Create git repo
+//TODO: Update to pass in applicationtype to determine options
 func (factory Factory) Create(projectName string) (applications.GitRepo, error) {
 
 	//select repo
@@ -29,6 +31,9 @@ func (factory Factory) Create(projectName string) (applications.GitRepo, error) 
 
 	if repoType == constants.ADOS {
 		return ados.NewRepository(ados.NewPrompts()), nil
+	}
+	if repoType == constants.Github {
+		return github.NewGithubRepo(github.NewPrompts()), nil
 	}
 
 	//construct

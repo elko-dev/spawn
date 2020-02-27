@@ -28,7 +28,7 @@ func (node Node) Create() error {
 		"templateURL": templateURL,
 	}).Debug("Creating NodeJS Git repository")
 
-	err := node.repo.CreateGitRepository(node.projectName, templateURL, node.platform.GetToken())
+	_, err := node.repo.CreateGitRepository(node.projectName, templateURL, node.platform.GetToken())
 	if err != nil {
 		return err
 	}

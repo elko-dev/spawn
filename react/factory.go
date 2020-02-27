@@ -8,8 +8,6 @@ import (
 // Prompt for React specific configuration
 type Prompt interface {
 	forAppName() (string, error)
-	forPlatform() (string, error)
-	forVersionControl() (string, error)
 }
 
 // Factory to construct React App
