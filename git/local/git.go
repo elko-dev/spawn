@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/directory"
 	"github.com/elko-dev/spawn/file"
 	"gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/config"
@@ -42,13 +43,31 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	template := file.TemplateFile{Name: strings.ToLower(name)}
 	err = template.Replace()
 	if err != nil {
-		println("Template replacement failed")
+		println("Template file replacement failed")
+		return applications.GitResult{}, err
+	}
+
+	dirTemplate := directory.TemplateDirectory{Name: strings.ToLower(name)}
+	err = dirTemplate.Replace()
+	if err != nil {
+		println("Template directory replacement failed")
 		return applications.GitResult{}, err
 	}
 
 	err = r.DeleteRemote("origin")
 	if err != nil {
 		println("Delete failed")
+		return applications.GitResult{}, err
+	}
+
+	// Adds the new file to the staging area.
+	w, err := r.Worktree()
+	//this is a temp hack as changing file names messes up the git tree
+	os.Remove(name + "/.git/index")
+	err = w.Reset(&git.ResetOptions{Mode: git.SoftReset})
+
+	if err != nil {
+		println("Reset failed ", err)
 		return applications.GitResult{}, err
 	}
 
@@ -61,8 +80,6 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 		return applications.GitResult{}, err
 	}
 
-	// Adds the new file to the staging area.
-	w, err := r.Worktree()
 	_, err = w.Add(".")
 	if err != nil {
 		println("Add failed")

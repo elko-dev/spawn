@@ -33,7 +33,6 @@ func (template TemplateFile) replace(path string, fi os.FileInfo, err error) err
 	matched, err := filepath.Match("*", fi.Name())
 
 	if err != nil {
-		panic(err)
 		return err
 	}
 

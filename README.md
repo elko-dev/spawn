@@ -103,7 +103,7 @@ wget https://github.com/elko-dev/spawn/releases/download/<VERSION>/<SPAWN_OS_NAM
 example:
 
 ```bash
-wget https://github.com/elko-dev/spawn/releases/download/v0.4.3/spawn-darwin-386 -O spawn
+wget https://github.com/elko-dev/spawn/releases/download/v0.5.0/spawn-darwin-386 -O spawn
 ```
 
 finally, make spawn executable:
