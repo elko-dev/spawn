@@ -13,7 +13,7 @@ APP_NAME=spawn
 REPO=elko-dev
 MAJOR_VERSION=0
 MINOR_VERSION=5
-PATCH_VERSION=0
+PATCH_VERSION=1
 
 default: make_start clean dependencies test build make_stop
 
@@ -48,6 +48,9 @@ build: spawn
 
 spawn: $(GOFILES)	
 	./scripts/build.sh $(APP_NAME) $(SRC_LOCATION) $(BIN_OUTPUT)
+
+download:
+	./scripts/download.sh
 
 publish-release:
 	@go get github.com/aktau/github-release
