@@ -109,7 +109,7 @@ func (rest GitlabHTTP) PostGitRepository(repositoryName string, gitToken string)
 }
 
 func createProjectRequest(respositoryName string, group string) []byte {
-	return []byte(`{"path":"` + respositoryName + `",` + `"visibility":"public",` + ` "namespace_id": ` + group + `}`)
+	return []byte(`{"path":"` + respositoryName + `",` + `"visibility":"private",` + ` "namespace_id": ` + group + `}`)
 }
 
 func createPostRequest(gitToken string, url string, request []byte) (*http.Request, error) {

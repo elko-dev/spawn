@@ -3,8 +3,9 @@ package herokuplatform
 import (
 	"context"
 	"errors"
-	log "github.com/sirupsen/logrus"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/elko-dev/spawn/constants"
 	heroku "github.com/heroku/heroku-go/v5"
@@ -12,8 +13,6 @@ import (
 
 const (
 	nodeBuildPack  = "heroku/nodejs"
-	nodeTemplate   = "https://github.com/elko-dev/nodejs-graphql-typescript-template.git"
-	reactTemplate  = "https://github.com/elko-dev/react-template.git"
 	reactBuildPack = "mars/create-react-app"
 )
 

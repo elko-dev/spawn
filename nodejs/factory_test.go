@@ -4,12 +4,14 @@ import (
 	"testing"
 
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/constants"
 	gomock "github.com/golang/mock/gomock"
 )
 
 const (
 	platformName    = "somename"
 	applicationType = "type"
+	framework       = constants.GraphQLHerokuPlatform
 )
 
 func TestRetrievesProjectNameAndCreatesPlatformWithName(t *testing.T) {
@@ -23,7 +25,7 @@ func TestRetrievesProjectNameAndCreatesPlatformWithName(t *testing.T) {
 	gitFactoryMock.EXPECT().Create(platformName).Return(nil, nil)
 	platformFactoryMock.EXPECT().Create(platformName, applicationType).Return(nil, nil)
 	platformMock.EXPECT().forAppName().Return(platformName, nil)
-
+	platformMock.EXPECT().forFramework().Return(framework, nil)
 	factory := NewFactory(gitFactoryMock, platformFactoryMock, platformMock)
 
 	project, _ := factory.Create(applicationType)

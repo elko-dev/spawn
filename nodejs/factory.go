@@ -8,8 +8,8 @@ import (
 // Prompt for Node specific configuration
 type Prompt interface {
 	forAppName() (string, error)
-	forPlatform() (string, error)
 	forVersionControl() (string, error)
+	forFramework() (string, error)
 }
 
 // Factory to construct Node App
@@ -36,7 +36,12 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		return nil, err
 	}
 
-	return NewNode(git, platform, projectName), nil
+	framework, err := factory.prompt.forFramework()
+	if err != nil {
+		return nil, err
+	}
+
+	return NewNode(git, platform, projectName, framework), nil
 }
 
 // NewFactory init func

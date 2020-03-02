@@ -47,21 +47,6 @@ func (mr *MockPromptMockRecorder) forAppName() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "forAppName", reflect.TypeOf((*MockPrompt)(nil).forAppName))
 }
 
-// forPlatform mocks base method
-func (m *MockPrompt) forPlatform() (string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "forPlatform")
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// forPlatform indicates an expected call of forPlatform
-func (mr *MockPromptMockRecorder) forPlatform() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "forPlatform", reflect.TypeOf((*MockPrompt)(nil).forPlatform))
-}
-
 // forVersionControl mocks base method
 func (m *MockPrompt) forVersionControl() (string, error) {
 	m.ctrl.T.Helper()
@@ -75,4 +60,19 @@ func (m *MockPrompt) forVersionControl() (string, error) {
 func (mr *MockPromptMockRecorder) forVersionControl() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "forVersionControl", reflect.TypeOf((*MockPrompt)(nil).forVersionControl))
+}
+
+// forFramework mocks base method
+func (m *MockPrompt) forFramework() (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "forFramework")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// forFramework indicates an expected call of forFramework
+func (mr *MockPromptMockRecorder) forFramework() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "forFramework", reflect.TypeOf((*MockPrompt)(nil).forFramework))
 }

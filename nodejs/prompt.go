@@ -16,8 +16,8 @@ func (prompts Prompts) forAppName() (string, error) {
 	return selection, err
 }
 
-func (prompts Prompts) forPlatform() (string, error) {
-	_, selection, err := selectPlatform()
+func (prompts Prompts) forFramework() (string, error) {
+	_, selection, err := selectFramework()
 	return selection, err
 }
 
@@ -26,20 +26,19 @@ func (prompts Prompts) forVersionControl() (string, error) {
 	return versionControl, err
 }
 
-func selectVersionControl() (int, string, error) {
+func selectFramework() (int, string, error) {
 	prompt := promptui.Select{
-		Label: "Select Version Control",
-		Items: []string{constants.Gitlab, constants.ADOS},
+		Label: "Select NodeJS Framework",
+		Items: []string{constants.AzureFunctions, constants.ExpressHerokuPlatform, constants.GraphQLHerokuPlatform},
 	}
 
 	return prompt.Run()
 }
 
-//TODO: Remove this
-func selectPlatform() (int, string, error) {
+func selectVersionControl() (int, string, error) {
 	prompt := promptui.Select{
-		Label: "Select Platform",
-		Items: []string{constants.HerokuPlatform, constants.AzureFunctions},
+		Label: "Select Version Control",
+		Items: []string{constants.Gitlab, constants.ADOS},
 	}
 
 	return prompt.Run()

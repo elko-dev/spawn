@@ -16,7 +16,9 @@ func (prompt Prompts) forPlatformType() (string, error) {
 func selectPlatform() (int, string, error) {
 	prompt := promptui.Select{
 		Label: "Select Platform",
-		Items: []string{constants.HerokuPlatform, constants.AzureFunctions},
+		Items: []string{constants.ExpressHerokuPlatform,
+			constants.GraphQLHerokuPlatform,
+			constants.AzureFunctions},
 	}
 
 	return prompt.Run()

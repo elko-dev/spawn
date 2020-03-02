@@ -3,6 +3,7 @@
 package main //The above newline is required by wire https://github.com/google/wire/issues/117
 
 import (
+	"github.com/elko-dev/spawn/api"
 	"github.com/elko-dev/spawn/appcenter"
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/applicationtype"
@@ -25,8 +26,18 @@ func CreateApplicationTypeFacotry() applicationtype.Factory {
 		CreateWebFactory,
 		CreateFunctionsTypeFactory,
 		CreateMobileTypeFactory,
+		CreateAPITypeFactory,
 		applicationtype.NewFactory,
 	))
+}
+
+func CreateAPITypeFactory() applicationtype.APITypeFactory {
+	panic(wire.Build(
+		CreateNodeJsFactory,
+		web.NewPrompts,
+		api.NewFactory,
+	))
+
 }
 func CreateMobileTypeFactory() applicationtype.MobileTypeFactory {
 	panic(wire.Build(
