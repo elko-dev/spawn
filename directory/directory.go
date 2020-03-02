@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	templateString = "my-app"
+	templateString = "myapp"
 	gitPath        = ".git"
 )
 

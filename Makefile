@@ -14,6 +14,7 @@ REPO=elko-dev
 MAJOR_VERSION=0
 MINOR_VERSION=5
 PATCH_VERSION=1
+CURRENT_VERSION=v$(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
 
 default: make_start clean dependencies test build make_stop
 
@@ -50,7 +51,7 @@ spawn: $(GOFILES)
 	./scripts/build.sh $(APP_NAME) $(SRC_LOCATION) $(BIN_OUTPUT)
 
 download:
-	./scripts/download.sh
+	./scripts/download.sh $(CURRENT_VERSION)
 
 publish-release:
 	@go get github.com/aktau/github-release

@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	templateString = "my-app"
+	templateString = "myapp"
 )
 
 // TemplateFile struct to operate of Templated Files
