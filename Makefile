@@ -13,7 +13,7 @@ APP_NAME=spawn
 REPO=elko-dev
 MAJOR_VERSION=0
 MINOR_VERSION=5
-PATCH_VERSION=1
+PATCH_VERSION=2
 CURRENT_VERSION=v$(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
 
 default: make_start clean dependencies test build make_stop
