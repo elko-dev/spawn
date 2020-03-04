@@ -11,6 +11,11 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+const (
+	androidKeyStoreKey = "ANDROID_KEYSTORE_KEY"
+	authSecretName     = "FIREBASE_CONFIG"
+)
+
 // Platform struct to create AppCenter
 type Platform struct {
 	orgClient           organization.Client
@@ -20,6 +25,7 @@ type Platform struct {
 	organizationName    string
 	projectName         string
 	distributionMembers []string
+	authSecret          string
 }
 
 // Create AppCenter config
@@ -91,7 +97,8 @@ func (platform Platform) CreateApp(ctx context.Context,
 	releaseType *string,
 	repoURL *string,
 	latestGitConfig *string,
-	distributionID *string) (string, error) {
+	distributionID *string,
+	environmentVariables []builds.EnvironmentVariables) (string, error) {
 
 	projectName := normalizeProjectName(platform.projectName, *os)
 
@@ -127,8 +134,7 @@ func (platform Platform) CreateApp(ctx context.Context,
 		return "", err
 	}
 
-	token := "123"
-	args := builds.CreateConfigArgs(distributionID, &token, &builds.Keystore{
+	args := builds.CreateConfigArgs(distributionID, environmentVariables, &builds.Keystore{
 		KeyAlias:         "app",
 		KeyPassword:      "abcdef12",
 		KeystoreFilename: "my.keystore",
@@ -161,7 +167,18 @@ func createAndroidApp(ctx context.Context,
 	os := "Android"
 	platformType := "React-Native"
 	releastType := "Production"
-	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID)
+	//TODO: implement me
+	encryptToken := "REPLACE ME"
+	environmentVariables := []builds.EnvironmentVariables{
+		builds.EnvironmentVariables{
+			Name:  androidKeyStoreKey,
+			Value: encryptToken,
+		},
+		builds.EnvironmentVariables{
+			Name:  authSecretName,
+			Value: platform.authSecret,
+		}}
+	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID, environmentVariables)
 }
 
 func createIOSApp(ctx context.Context,
@@ -173,7 +190,13 @@ func createIOSApp(ctx context.Context,
 	os := "iOS"
 	platformType := "React-Native"
 	releastType := "Production"
-	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID)
+	environmentVariables := []builds.EnvironmentVariables{
+		builds.EnvironmentVariables{
+			Name:  authSecretName,
+			Value: platform.authSecret,
+		},
+	}
+	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID, environmentVariables)
 }
 
 func normalizeProjectName(projectName string, os string) string {
@@ -187,6 +210,7 @@ func NewPlatform(orgClient organization.Client,
 	accountsClient accounts.Client,
 	organizationName string,
 	projectName string,
-	members []string) Platform {
-	return Platform{orgClient, appClient, buildClient, accountsClient, organizationName, projectName, members}
+	members []string,
+	authSecret string) Platform {
+	return Platform{orgClient, appClient, buildClient, accountsClient, organizationName, projectName, members, authSecret}
 }

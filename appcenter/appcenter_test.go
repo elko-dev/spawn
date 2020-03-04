@@ -27,7 +27,8 @@ func TestPlatformCreation(t *testing.T) {
 	accountClient := accounts.NewClient(connection)
 
 	members := []string{"andrew.larsen@elko.dev"}
-	platform := NewPlatform(orgClient, appClient, buildClient, accountClient, orgName, "testprojectName1", members)
+	secret := "secret"
+	platform := NewPlatform(orgClient, appClient, buildClient, accountClient, orgName, "testprojectName1", members, secret)
 
 	err := platform.Create("https://github.com/elko-dev/react-native-template.git", "7ba6e41ab3a0f3b3ffc6f65d443f0f02d30ab31f")
 

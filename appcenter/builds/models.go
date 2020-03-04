@@ -1,9 +1,5 @@
 package builds
 
-const (
-	androidKeyStoreKey = "ANDROID_KEYSTORE_KEY"
-)
-
 // RepoConfigArgs to set repository config
 type RepoConfigArgs struct {
 	RepoURL string `json:"repo_url"`
@@ -202,7 +198,7 @@ type Keystore struct {
 }
 
 // CreateConfigArgs default configuration
-func CreateConfigArgs(distributionGroupID *string, encryptToken *string, keyStore *Keystore) *ConfigArgs {
+func CreateConfigArgs(distributionGroupID *string, environmentVariables []EnvironmentVariables, keyStore *Keystore) *ConfigArgs {
 	testCloud := Testcloud{DeviceSelection: "top_3_devices", FrameworkType: "Generated"}
 	android := Android{
 		GradleWrapperPath: "android/gradlew",
@@ -241,11 +237,6 @@ func CreateConfigArgs(distributionGroupID *string, encryptToken *string, keyStor
 		BuildNumberFormat: "buildId",
 	}
 
-	environmentVariables := []EnvironmentVariables{
-		EnvironmentVariables{
-			Name:  androidKeyStoreKey,
-			Value: *encryptToken,
-		}}
 	return &ConfigArgs{
 		Toolsets:             toolSets,
 		EnvironmentVariables: environmentVariables,

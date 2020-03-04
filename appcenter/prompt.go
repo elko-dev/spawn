@@ -18,6 +18,30 @@ func (prompt Prompts) forOrganization() (string, error) {
 	}
 	return organization, nil
 }
+func (prompt Prompts) forAuthSecretPath() (string, error) {
+	secretPath, err := firebaseSecretPath()
+
+	if err != nil {
+		return "", err
+	}
+	return secretPath, nil
+}
+
+func firebaseSecretPath() (string, error) {
+	accessTokenValidate :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	accessTokenPrompt := promptui.Prompt{
+		Label:    "Path to Firebase Secret file; relative to spawn (include file name).  File can be found: https://console.firebase.google.com/project/<MY_APP_ID>/settings/serviceaccounts/adminsdk Be sure to replace <MY_APP_ID> with your firebase app id",
+		Validate: accessTokenValidate,
+	}
+
+	return accessTokenPrompt.Run()
+}
 
 func appcenterOrganization() (string, error) {
 	accessTokenValidate :=
