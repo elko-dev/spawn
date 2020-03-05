@@ -1,6 +1,7 @@
 package file
 
 import (
+	b64 "encoding/base64"
 	"io/ioutil"
 )
 
@@ -8,12 +9,12 @@ import (
 type Reader struct {
 }
 
-// AsString reads file from path as a string
-func (reader Reader) AsString(fileName string) (string, error) {
+// AsBase64String reads file from path as a string and returns Base64 String
+func (reader Reader) AsBase64String(fileName string) (string, error) {
 	file, err := ioutil.ReadFile(fileName)
 	if err != nil {
 		return "", err
 	}
 
-	return string(file), nil
+	return b64.StdEncoding.EncodeToString(file), nil
 }

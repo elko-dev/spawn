@@ -36,7 +36,7 @@ func firebaseSecretPath() (string, error) {
 		}
 
 	accessTokenPrompt := promptui.Prompt{
-		Label:    "Path to Firebase Secret file; relative to spawn (include file name).  File can be found: https://console.firebase.google.com/project/<MY_APP_ID>/settings/serviceaccounts/adminsdk Be sure to replace <MY_APP_ID> with your firebase app id",
+		Label:    "Path to Firebase Secret file; relative to spawn (include file name).",
 		Validate: accessTokenValidate,
 	}
 

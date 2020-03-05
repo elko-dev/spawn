@@ -1,6 +1,8 @@
 package applicationtype
 
 import (
+	"errors"
+
 	"github.com/elko-dev/spawn/constants"
 )
 
@@ -38,28 +40,44 @@ type Factory struct {
 }
 
 // CreateApplicationType creates app type
-func (factory Factory) CreateApplicationType() ApplicationType {
+func (factory Factory) CreateApplicationType() (ApplicationType, error) {
 	// prompt user for application type
 	appType, _ := factory.prompt.ForType()
 
-	var applicationType ApplicationType
-
 	if appType == constants.WebApplicationType {
-		applicationType, _ = factory.webFactory.Create(appType)
+		applicationType, err := factory.webFactory.Create(appType)
+		if err != nil {
+			return nil, err
+		}
+		return applicationType, nil
+
 	}
 
 	if appType == constants.AzureFunctions {
-		applicationType, _ = factory.functionFactory.Create(appType)
+		applicationType, err := factory.functionFactory.Create(appType)
+		if err != nil {
+			return nil, err
+		}
+		return applicationType, nil
+
 	}
 
 	if appType == constants.MobileApplicationType {
-		applicationType, _ = factory.mobileTypeFactory.Create(appType)
+		applicationType, err := factory.mobileTypeFactory.Create(appType)
+		if err != nil {
+			return nil, err
+		}
+		return applicationType, nil
 	}
 	if appType == constants.APIApplicationType {
-		applicationType, _ = factory.apiTypeFactory.Create(appType)
+		applicationType, err := factory.apiTypeFactory.Create(appType)
+		if err != nil {
+			return nil, err
+		}
+		return applicationType, nil
 	}
 
-	return applicationType
+	return nil, errors.New("Invalid selection")
 }
 
 // NewFactory creates an ApplicationType factory

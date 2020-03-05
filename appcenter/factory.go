@@ -8,6 +8,7 @@ import (
 	"github.com/elko-dev/spawn/appcenter/organization"
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/file"
+	log "github.com/sirupsen/logrus"
 )
 
 // Factory struct to create ADOS function
@@ -26,6 +27,10 @@ type Prompt interface {
 
 // Create appcenter factory
 func (factory Factory) Create(projectName string) (applications.CIPlatform, error) {
+	log.WithFields(log.Fields{
+		"projectName": projectName,
+	}).Debug("Creating Appcenter")
+
 	token, err := factory.prompt.forToken()
 	if err != nil {
 		return nil, err
@@ -44,11 +49,16 @@ func (factory Factory) Create(projectName string) (applications.CIPlatform, erro
 	}
 
 	secretPath, err := factory.prompt.forAuthSecretPath()
-
-	authSecretFileString, err := factory.reader.AsString(secretPath)
+	log.WithFields(log.Fields{
+		"projectName": projectName,
+		"secretPath":  secretPath,
+	}).Debug("Retrieved secret path")
+	authSecretFileString, err := factory.reader.AsBase64String(secretPath)
 	if err != nil {
 		return nil, err
 	}
+
+	log.WithFields(log.Fields{}).Info(authSecretFileString)
 
 	connection := api.NewConnection(token)
 	orgClient := organization.NewClient(connection)

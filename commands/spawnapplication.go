@@ -19,14 +19,15 @@ func Run(factory applicationtype.Factory) cli.Command {
 		Usage:   "Spawns application",
 		Flags:   flags.Repository(),
 		Action: func(c *cli.Context) error {
-			err := factory.CreateApplicationType().Create()
+			appType, err := factory.CreateApplicationType()
 			if err != nil {
 				log.WithFields(log.Fields{}).Error(
 					err,
 					"\n Spawn encountered an error",
 				)
+				return err
 			}
-			return err
+			return appType.Create()
 		},
 	}
 }

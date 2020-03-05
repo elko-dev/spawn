@@ -18,29 +18,35 @@ func (factory Factory) Create(applicationType string) (applicationtype.Applicati
 	clientApplicationType, _ := factory.webCommand.ForClientType(applicationType)
 	includeBackend, err := factory.webCommand.IncludeBackend()
 
-	client, _ := factory.clientFactory.Create(clientApplicationType)
+	client, err := factory.clientFactory.Create(clientApplicationType)
+	if err != nil {
+		return nil, err
+	}
 
 	if !includeBackend {
 
 		log.WithFields(log.Fields{
 			"applicationType":       applicationType,
 			"clientApplicationType": clientApplicationType,
+			"client":                client,
 		}).Debug("Constructing client application...")
 		return NewMobileType(client, nil, includeBackend), nil
 	}
 
-	serverApplicationType, _ := factory.webCommand.ForServerType()
-
+	serverApplicationType, err := factory.webCommand.ForServerType()
+	if err != nil {
+		return nil, err
+	}
 	log.WithFields(log.Fields{
 		"applicationType":       applicationType,
 		"clientApplicationType": clientApplicationType,
 		"serverApplicationType": serverApplicationType,
 	}).Debug("Constructing server application...")
 
-	server, _ := factory.serverFactory.Create(serverApplicationType)
+	server, err := factory.serverFactory.Create(serverApplicationType)
 
 	if err != nil {
-		return nil, nil
+		return nil, err
 	}
 
 	return NewMobileType(client, server, includeBackend), nil
