@@ -14,6 +14,7 @@ import (
 const (
 	nodeBuildPack  = "heroku/nodejs"
 	reactBuildPack = "mars/create-react-app"
+	databasePlan   = "heroku-postgresql:hobby-dev"
 )
 
 // Heroku Platform
@@ -35,35 +36,46 @@ func (h Heroku) Create() error {
 		"platformTeamName": h.platformTeamName,
 	})
 	heroku.DefaultTransport.BearerToken = h.platformToken
+	ctx := context.Background()
 
 	region := "us"
 	stack := "heroku-18"
 	contextLogger.Debug("Creating platform environments")
 	for _, environment := range h.environments {
+		contextLogger.Info("Creating environment for " + environment)
+
 		herokuName := createHerokuName(h.projectName, environment)
 		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &h.platformTeamName}
 
-		app, err := h.service.TeamAppCreate(context.TODO(), createOpts)
+		app, err := h.service.TeamAppCreate(ctx, createOpts)
 
 		if err != nil {
+			contextLogger.Error("TeamAppCreateError ", err)
 			return err
 		}
 
 		buildPackOps, err := createBuildpack(h.applicationType)
 
 		if err != nil {
-			println("error creating heroku build pack")
+			contextLogger.Error("error creating heroku build pack ", err)
 			return err
 		}
-		_, err = h.service.BuildpackInstallationUpdate(context.TODO(), app.ID, buildPackOps)
+		_, err = h.service.BuildpackInstallationUpdate(ctx, app.ID, buildPackOps)
 
 		if err != nil {
-			println("error configuring build pack")
+			contextLogger.Error("error configuring build pack")
 			return err
 		}
-		println("Created Application for " + environment + " at url " + app.WebURL)
-	}
+		contextLogger.Debug("Created Application for " + environment + " at url " + app.WebURL)
+		databaseAddOn := createDatabaseAddOn(herokuName, h.platformTeamName)
+		_, err = h.service.AddOnCreate(ctx, app.ID, databaseAddOn)
+		if err != nil {
+			contextLogger.Error("Error creating addons ", err)
+			return err
+		}
+		contextLogger.Debug("Database created for heroku")
 
+	}
 	return nil
 
 }
@@ -76,6 +88,25 @@ func (h Heroku) GetToken() string {
 // GetPlatformType returns type of platform
 func (h Heroku) GetPlatformType() string {
 	return constants.HerokuPlatform
+}
+
+func createDatabaseAddOn(herokuName string, platformTeamName string) heroku.AddOnCreateOpts {
+	databaseName := herokuName + "-database"
+	herokuAddonDatabase := "DATABASE"
+
+	return heroku.AddOnCreateOpts{
+		Name: &databaseName,
+		Attachment: &struct {
+			Name *string `json:"name,omitempty" url:"name,omitempty,key"`
+		}{
+			Name: &herokuAddonDatabase,
+		},
+		Config: map[string]string{
+			"db-version": "1.2.3",
+		},
+		Confirm: &platformTeamName,
+		Plan:    databasePlan,
+	}
 }
 
 func createBuildpack(applicationType string) (heroku.BuildpackInstallationUpdateOpts, error) {

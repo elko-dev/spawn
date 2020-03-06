@@ -112,7 +112,7 @@ func Test_createPostRequest(t *testing.T) {
 }
 
 func TestCreateProjectRequest(t *testing.T) {
-	expected := `{"path":"repo-name","visibility":"public", "namespace_id": 6947500}`
+	expected := `{"path":"repo-name","visibility":"private", "namespace_id": 6947500}`
 	respositoryName := "repo-name"
 	group := "6947500"
 	actual := string(createProjectRequest(respositoryName, group))
