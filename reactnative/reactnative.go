@@ -9,6 +9,7 @@ const (
 type ReactNative struct {
 	repo        applications.GitRepo
 	ciPlatform  applications.CIPlatform
+	platform    applications.PlatformRepository
 	projectName string
 }
 
@@ -20,10 +21,17 @@ func (react ReactNative) Create() error {
 	if err != nil {
 		return err
 	}
+
+	err = react.platform.Create()
+
+	if err != nil {
+		return err
+	}
+
 	return react.ciPlatform.Create(response.RepoURL, response.LatestGitCommit)
 }
 
 // NewReactNative init function
-func NewReactNative(repo applications.GitRepo, platform applications.CIPlatform, projectName string) ReactNative {
-	return ReactNative{repo, platform, projectName}
+func NewReactNative(repo applications.GitRepo, ciPlatform applications.CIPlatform, platform applications.PlatformRepository, projectName string) ReactNative {
+	return ReactNative{repo, ciPlatform, platform, projectName}
 }

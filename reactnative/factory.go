@@ -13,16 +13,17 @@ type Prompt interface {
 
 // Factory to construct React App
 type Factory struct {
-	gitFactory applications.GitFactory
-	ciFactory  applications.CIFactory
-	prompt     Prompt
+	gitFactory      applications.GitFactory
+	ciFactory       applications.CIFactory
+	platformFactory applications.PlatformFactory
+	prompt          Prompt
 }
 
 // Create method to construct a Project
 func (factory Factory) Create(applicationType string) (applications.Project, error) {
 	log.WithFields(log.Fields{
 		"applicationType": applicationType,
-	}).Debug("Anout to construct react native application...")
+	}).Debug("About to construct react native application...")
 
 	projectName, err := factory.prompt.forAppName()
 	if err != nil {
@@ -34,7 +35,11 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		return nil, err
 	}
 
-	platform, err := factory.ciFactory.Create(projectName)
+	ciPlatform, err := factory.ciFactory.Create(projectName)
+	if err != nil {
+		return nil, err
+	}
+	platform, err := factory.platformFactory.Create(projectName, applicationType)
 	if err != nil {
 		return nil, err
 	}
@@ -45,10 +50,10 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		"git":             git,
 	}).Debug("Constructing react native application...")
 
-	return NewReactNative(git, platform, projectName), nil
+	return NewReactNative(git, ciPlatform, platform, projectName), nil
 }
 
 // NewFactory init func
-func NewFactory(gitFactory applications.GitFactory, platformFactory applications.CIFactory, prompt Prompt) web.ClientAppFactory {
-	return Factory{gitFactory, platformFactory, prompt}
+func NewFactory(gitFactory applications.GitFactory, ciPlatformFactory applications.CIFactory, platformFactory applications.PlatformFactory, prompt Prompt) web.ClientAppFactory {
+	return Factory{gitFactory, ciPlatformFactory, platformFactory, prompt}
 }

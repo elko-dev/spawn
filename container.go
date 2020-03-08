@@ -8,6 +8,7 @@ import (
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/applicationtype"
 	"github.com/elko-dev/spawn/azurefunctions"
+	"github.com/elko-dev/spawn/firebase"
 	"github.com/elko-dev/spawn/functions"
 	"github.com/elko-dev/spawn/git"
 	"github.com/elko-dev/spawn/herokuplatform"
@@ -83,6 +84,7 @@ func CreateReactNativeFactory() web.ClientAppFactory {
 	panic(wire.Build(
 		CreateGitFactory,
 		CreateAppCenterFactory,
+		firebase.NewFactory,
 		reactnative.NewPrompts,
 		reactnative.NewFactory,
 	))

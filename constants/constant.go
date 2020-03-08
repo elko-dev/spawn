@@ -9,6 +9,7 @@ const (
 	ExpressHerokuPlatform   = "Heroku - Express"
 	GraphQLHerokuPlatform   = "Heroku - GraphQL"
 	HerokuPlatform          = "Heroku"
+	FirebasePlatform        = "Firebase"
 	AzureFunctions          = "Azure Functions"
 	Functions               = "Functions"
 	ADOS                    = "Azure DevOps"
