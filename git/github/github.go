@@ -22,7 +22,7 @@ type Prompt interface {
 }
 
 // CreateGitRepository to create repo
-func (git GithubRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string) (applications.GitResult, error) {
+func (git GithubRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string, replacements map[string]string) (applications.GitResult, error) {
 	logContext := log.WithFields(log.Fields{
 		"repositoryName": repositoryName,
 		"templateURL":    templateURL,
@@ -48,7 +48,7 @@ func (git GithubRepo) CreateGitRepository(repositoryName string, templateURL str
 		return applications.GitResult{}, err
 	}
 
-	return git.Git.DuplicateRepo(templateURL, gitToken, repo.GetName(), *repo.CloneURL)
+	return git.Git.DuplicateRepo(templateURL, gitToken, repo.GetName(), *repo.CloneURL, replacements)
 }
 
 // NewGithubRepo init

@@ -20,7 +20,7 @@ type GitResult struct {
 
 // GitRepo describing the functionality to Create repositories
 type GitRepo interface {
-	CreateGitRepository(repositoryName string, templateURL string, platformToken string) (GitResult, error)
+	CreateGitRepository(repositoryName string, templateURL string, platformToken string, replacements map[string]string) (GitResult, error)
 }
 
 // PlatformRepository repository that defines creation of Platform repo
@@ -48,4 +48,32 @@ type CIFactory interface {
 // CIPlatform defined CI platform
 type CIPlatform interface {
 	Create(repoURL string, latestGitConfig string) error
+}
+
+// MobileApps struct containing ios and android app
+type MobileApps struct {
+	IOS     IOSApp
+	Android AndroidApp
+}
+
+// IOSApp information
+type IOSApp struct {
+	ID   string
+	Name string
+}
+
+// AndroidApp information
+type AndroidApp struct {
+	ID   string
+	Name string
+}
+
+// MobilePlatform repository that defines creation of mobile platforms
+type MobilePlatform interface {
+	Create() (MobileApps, error)
+}
+
+// MobilePlatformFactory interface defining mobile platform request
+type MobilePlatformFactory interface {
+	Create(projectName string, applicationType string) (MobilePlatform, error)
 }

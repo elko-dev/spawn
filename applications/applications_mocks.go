@@ -108,18 +108,18 @@ func (m *MockGitRepo) EXPECT() *MockGitRepoMockRecorder {
 }
 
 // CreateGitRepository mocks base method
-func (m *MockGitRepo) CreateGitRepository(repositoryName, templateURL, platformToken string) (GitResult, error) {
+func (m *MockGitRepo) CreateGitRepository(repositoryName, templateURL, platformToken string, replacements map[string]string) (GitResult, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateGitRepository", repositoryName, templateURL, platformToken)
+	ret := m.ctrl.Call(m, "CreateGitRepository", repositoryName, templateURL, platformToken, replacements)
 	ret0, _ := ret[0].(GitResult)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateGitRepository indicates an expected call of CreateGitRepository
-func (mr *MockGitRepoMockRecorder) CreateGitRepository(repositoryName, templateURL, platformToken interface{}) *gomock.Call {
+func (mr *MockGitRepoMockRecorder) CreateGitRepository(repositoryName, templateURL, platformToken, replacements interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGitRepository", reflect.TypeOf((*MockGitRepo)(nil).CreateGitRepository), repositoryName, templateURL, platformToken)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGitRepository", reflect.TypeOf((*MockGitRepo)(nil).CreateGitRepository), repositoryName, templateURL, platformToken, replacements)
 }
 
 // MockPlatformRepository is a mock of PlatformRepository interface
@@ -336,4 +336,80 @@ func (m *MockCIPlatform) Create(repoURL, latestGitConfig string) error {
 func (mr *MockCIPlatformMockRecorder) Create(repoURL, latestGitConfig interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCIPlatform)(nil).Create), repoURL, latestGitConfig)
+}
+
+// MockMobilePlatform is a mock of MobilePlatform interface
+type MockMobilePlatform struct {
+	ctrl     *gomock.Controller
+	recorder *MockMobilePlatformMockRecorder
+}
+
+// MockMobilePlatformMockRecorder is the mock recorder for MockMobilePlatform
+type MockMobilePlatformMockRecorder struct {
+	mock *MockMobilePlatform
+}
+
+// NewMockMobilePlatform creates a new mock instance
+func NewMockMobilePlatform(ctrl *gomock.Controller) *MockMobilePlatform {
+	mock := &MockMobilePlatform{ctrl: ctrl}
+	mock.recorder = &MockMobilePlatformMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMobilePlatform) EXPECT() *MockMobilePlatformMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockMobilePlatform) Create() (MobileApps, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create")
+	ret0, _ := ret[0].(MobileApps)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockMobilePlatformMockRecorder) Create() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockMobilePlatform)(nil).Create))
+}
+
+// MockMobilePlatformFactory is a mock of MobilePlatformFactory interface
+type MockMobilePlatformFactory struct {
+	ctrl     *gomock.Controller
+	recorder *MockMobilePlatformFactoryMockRecorder
+}
+
+// MockMobilePlatformFactoryMockRecorder is the mock recorder for MockMobilePlatformFactory
+type MockMobilePlatformFactoryMockRecorder struct {
+	mock *MockMobilePlatformFactory
+}
+
+// NewMockMobilePlatformFactory creates a new mock instance
+func NewMockMobilePlatformFactory(ctrl *gomock.Controller) *MockMobilePlatformFactory {
+	mock := &MockMobilePlatformFactory{ctrl: ctrl}
+	mock.recorder = &MockMobilePlatformFactoryMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockMobilePlatformFactory) EXPECT() *MockMobilePlatformFactoryMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockMobilePlatformFactory) Create(projectName, applicationType string) (MobilePlatform, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", projectName, applicationType)
+	ret0, _ := ret[0].(MobilePlatform)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockMobilePlatformFactoryMockRecorder) Create(projectName, applicationType interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockMobilePlatformFactory)(nil).Create), projectName, applicationType)
 }

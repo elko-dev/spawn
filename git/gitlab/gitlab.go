@@ -23,7 +23,7 @@ type HTTP interface {
 }
 
 // CreateGitRepository creates gitlab instance
-func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string) (applications.GitResult, error) {
+func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string, replacements map[string]string) (applications.GitResult, error) {
 
 	gitToken, err := git.prompt.forGitToken()
 	repository, err := git.HTTP.PostGitRepository(repositoryName, gitToken)
@@ -38,7 +38,7 @@ func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL str
 		return applications.GitResult{}, err
 	}
 
-	return git.Git.DuplicateRepo(templateURL, gitToken, repository.Name, repository.URL)
+	return git.Git.DuplicateRepo(templateURL, gitToken, repository.Name, repository.URL, replacements)
 
 }
 

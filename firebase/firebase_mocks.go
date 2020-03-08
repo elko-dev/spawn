@@ -5,6 +5,7 @@
 package firebase
 
 import (
+	applications "github.com/elko-dev/spawn/applications"
 	gcp "github.com/elko-dev/spawn/gcp"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
@@ -110,10 +111,10 @@ func (m *MockIosApp) EXPECT() *MockIosAppMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockIosApp) Create(projectID string, request IOSRequest) (IOSResponse, error) {
+func (m *MockIosApp) Create(projectID string, request IOSRequest) (applications.IOSApp, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", projectID, request)
-	ret0, _ := ret[0].(IOSResponse)
+	ret0, _ := ret[0].(applications.IOSApp)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -148,10 +149,10 @@ func (m *MockAndroidApp) EXPECT() *MockAndroidAppMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockAndroidApp) Create(projectID string, request AndroidRequest) (AndroidResponse, error) {
+func (m *MockAndroidApp) Create(projectID string, request AndroidRequest) (applications.AndroidApp, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Create", projectID, request)
-	ret0, _ := ret[0].(AndroidResponse)
+	ret0, _ := ret[0].(applications.AndroidApp)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

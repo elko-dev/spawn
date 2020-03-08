@@ -26,7 +26,7 @@ type Prompt interface {
 }
 
 // CreateGitRepository action to create an ADOS repo
-func (ados Repository) CreateGitRepository(repositoryName string, templateURL string, platformToken string) (applications.GitResult, error) {
+func (ados Repository) CreateGitRepository(repositoryName string, templateURL string, platformToken string, replacements map[string]string) (applications.GitResult, error) {
 
 	organization, err := ados.prompt.forOrganization()
 
@@ -87,7 +87,7 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 	log.WithFields(log.Fields{}).Info("Waiting for azure repo to create....")
 	time.Sleep(5 * time.Second)
 
-	return ados.Git.DuplicateRepo(templateURL, platformToken, repositoryName, adosGitRepoURL)
+	return ados.Git.DuplicateRepo(templateURL, platformToken, repositoryName, adosGitRepoURL, replacements)
 }
 
 // NewRepository init method

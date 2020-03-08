@@ -2,7 +2,6 @@ package firebase
 
 import (
 	"github.com/elko-dev/spawn/applications"
-	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/gcp"
 )
 
@@ -23,12 +22,12 @@ type FirebaseProject interface {
 
 // IosApp to create application
 type IosApp interface {
-	Create(projectID string, request IOSRequest) (IOSResponse, error)
+	Create(projectID string, request IOSRequest) (applications.IOSApp, error)
 }
 
 // AndroidApp to create application
 type AndroidApp interface {
-	Create(projectID string, request AndroidRequest) (AndroidResponse, error)
+	Create(projectID string, request AndroidRequest) (applications.AndroidApp, error)
 }
 
 // Platform for firebase
@@ -42,7 +41,7 @@ type Platform struct {
 }
 
 // Create Firebase platform
-func (platform Platform) Create() error {
+func (platform Platform) Create() (applications.MobileApps, error) {
 	gcpProjectID := "spawn" + platform.projectName
 	gcpProjectName := "spawn" + platform.projectName
 	_, err := platform.project.Create(gcp.ProjectRequest{
@@ -51,27 +50,30 @@ func (platform Platform) Create() error {
 		Name: gcpProjectName,
 	})
 	if err != nil {
-		return err
+		return applications.MobileApps{}, err
 	}
 
 	firebaseResponse, err := platform.firebase.Create(gcpProjectID)
 	if err != nil {
-		return err
+		return applications.MobileApps{}, err
 	}
 
-	_, err = platform.iosApp.Create(firebaseResponse.ID, IOSRequest{
+	iosApp, err := platform.iosApp.Create(firebaseResponse.ID, IOSRequest{
 		BundleID:    createBundleID(firebaseResponse.Name),
 		DisplayName: createIosName(firebaseResponse.Name),
 	})
 	if err != nil {
-		return err
+		return applications.MobileApps{}, err
 	}
 
-	_, err = platform.androidApp.Create(firebaseResponse.ID, AndroidRequest{
+	androidApp, err := platform.androidApp.Create(firebaseResponse.ID, AndroidRequest{
 		BundleID:    createBundleID(firebaseResponse.Name),
 		DisplayName: firebaseResponse.Name,
 	})
-	return err
+	return applications.MobileApps{
+		IOS:     iosApp,
+		Android: androidApp,
+	}, err
 }
 
 //TODO: this is hardcoded want to move this out
@@ -83,22 +85,12 @@ func createIosName(projectName string) string {
 	return projectName + "-ios"
 }
 
-// GetToken for firebase
-func (platform Platform) GetToken() string {
-	return ""
-}
-
-// GetPlatformType return type of platform (Firebase)
-func (platform Platform) GetPlatformType() string {
-	return constants.FirebasePlatform
-}
-
 // NewPlatform init
 func NewPlatform(projectName string,
 	applicationType string,
 	project Project,
 	firebase FirebaseProject,
 	iosApp IosApp,
-	androidApp AndroidApp) applications.PlatformRepository {
+	androidApp AndroidApp) applications.MobilePlatform {
 	return Platform{projectName, applicationType, project, firebase, iosApp, androidApp}
 }

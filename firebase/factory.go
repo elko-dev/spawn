@@ -10,7 +10,7 @@ type Factory struct {
 }
 
 // Create Firebase factory
-func (factory Factory) Create(projectName string, applicationType string) (applications.PlatformRepository, error) {
+func (factory Factory) Create(projectName string, applicationType string) (applications.MobilePlatform, error) {
 	project := gcp.NewProjectClient()
 	firebaseProject := NewProjectClient()
 
@@ -20,6 +20,6 @@ func (factory Factory) Create(projectName string, applicationType string) (appli
 }
 
 // NewFactory init
-func NewFactory() applications.PlatformFactory {
+func NewFactory() applications.MobilePlatformFactory {
 	return Factory{}
 }

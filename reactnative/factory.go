@@ -15,7 +15,7 @@ type Prompt interface {
 type Factory struct {
 	gitFactory      applications.GitFactory
 	ciFactory       applications.CIFactory
-	platformFactory applications.PlatformFactory
+	platformFactory applications.MobilePlatformFactory
 	prompt          Prompt
 }
 
@@ -54,6 +54,9 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 }
 
 // NewFactory init func
-func NewFactory(gitFactory applications.GitFactory, ciPlatformFactory applications.CIFactory, platformFactory applications.PlatformFactory, prompt Prompt) web.ClientAppFactory {
+func NewFactory(gitFactory applications.GitFactory,
+	ciPlatformFactory applications.CIFactory,
+	platformFactory applications.MobilePlatformFactory,
+	prompt Prompt) web.ClientAppFactory {
 	return Factory{gitFactory, ciPlatformFactory, platformFactory, prompt}
 }

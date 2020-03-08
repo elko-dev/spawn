@@ -2,8 +2,11 @@ package spawnhttp
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"net/http"
 	"reflect"
+	"strings"
 	"testing"
 )
 
@@ -86,11 +89,39 @@ func Test_createRequest_containsbody(t *testing.T) {
 
 	err = json.Unmarshal(body, &requestTestRequest)
 
+	//TODO: why does this fail here but pass when executing?
 	if reflect.DeepEqual(requestTestRequest, testRequest) {
+		t.Log(formatRequest(req))
 		t.Log("expected ", testRequest, " got ", requestTestRequest)
 		t.Fail()
 		return
 	}
+}
+
+func formatRequest(r *http.Request) string {
+	// Create return string
+	var request []string
+	// Add the request string
+	url := fmt.Sprintf("%v %v %v", r.Method, r.URL, r.Proto)
+	request = append(request, url)
+	// Add the host
+	request = append(request, fmt.Sprintf("Host: %v", r.Host))
+	// Loop through headers
+	for name, headers := range r.Header {
+		name = strings.ToLower(name)
+		for _, h := range headers {
+			request = append(request, fmt.Sprintf("%v: %v", name, h))
+		}
+	}
+
+	// If this is a POST, add post data
+	if r.Method == "POST" {
+		r.ParseForm()
+		request = append(request, "\n")
+		request = append(request, r.Form.Encode())
+	}
+	// Return the request as a string
+	return strings.Join(request, "\n")
 }
 
 func Test_createRequest_handlesnilbody(t *testing.T) {
@@ -102,4 +133,24 @@ func Test_createRequest_handlesnilbody(t *testing.T) {
 		t.Fail()
 		return
 	}
+}
+
+func TestMarshalResponse(t *testing.T) {
+	response := http.Response{}
+	requestBody := strings.NewReader(`{"id":"1"}`)
+	requestReaderClosed := ioutil.NopCloser(requestBody)
+	response.Body = requestReaderClosed
+	res := Response{}
+	expected := Response{ID: "1"}
+	MarshalResponse(&response, &res)
+
+	if !reflect.DeepEqual(res, expected) {
+		t.Log("expected", expected, "got ", res)
+		t.Fail()
+		return
+	}
+}
+
+type Response struct {
+	ID string `json:"id"`
 }

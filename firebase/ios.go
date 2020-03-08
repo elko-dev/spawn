@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/spawnhttp"
 	log "github.com/sirupsen/logrus"
 )
@@ -32,17 +33,17 @@ type IOSClient struct {
 }
 
 // Create ios app in Firebase
-func (client IOSClient) Create(firebaseProjectID string, request IOSRequest) (IOSResponse, error) {
+func (client IOSClient) Create(firebaseProjectID string, request IOSRequest) (applications.IOSApp, error) {
 
 	req, err := createIOSRequest(firebaseProjectID, request)
 	if err != nil {
-		return IOSResponse{}, err
+		return applications.IOSApp{}, err
 	}
 
 	resp, err := client.http.Do(req)
 
 	if err != nil {
-		return IOSResponse{}, err
+		return applications.IOSApp{}, err
 	}
 
 	if !spawnhttp.IsSuccessStatusCode(resp.StatusCode) {
@@ -51,22 +52,26 @@ func (client IOSClient) Create(firebaseProjectID string, request IOSRequest) (IO
 			"firebaseProjectID": firebaseProjectID,
 		}).Error("Error creating IOS App")
 
-		return IOSResponse{}, errors.New("Received error creating ios project with status ")
+		return applications.IOSApp{}, errors.New("Received error creating ios project with status ")
 	}
 
 	iosResponse := IOSResponse{}
-	err = spawnhttp.MarshalResponse(resp, iosResponse)
+	err = spawnhttp.MarshalResponse(resp, &iosResponse)
 
 	if err != nil {
-		return IOSResponse{}, err
+		return applications.IOSApp{}, err
 	}
 
+	response := applications.IOSApp{
+		ID:   iosResponse.ID,
+		Name: iosResponse.Name,
+	}
 	log.WithFields(log.Fields{
 		"rawResponse": resp,
-		"iosResponse": resp,
+		"iosResponse": response,
 	}).Debug("Successfully created IOS Project")
 
-	return iosResponse, nil
+	return response, nil
 }
 
 func createIOSRequest(firebaseProjectID string, request IOSRequest) (*http.Request, error) {

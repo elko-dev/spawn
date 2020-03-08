@@ -12,6 +12,7 @@ const (
 	graphQLHerokuTemplateURL = "https://github.com/elko-dev/nodejs-graphql-typescript-template.git"
 	expressHerokuTemplateURL = "https://github.com/elko-dev/express-typescript-template.git"
 	functionsTemplateURL     = "https://github.com/elko-dev/nodejs-azure-functions-template.git"
+	templateNameReplacement  = "myapp"
 )
 
 // Node struct to create node Project
@@ -34,13 +35,19 @@ func (node Node) Create() error {
 		"templateURL": templateURL,
 	}).Debug("Creating NodeJS Git repository")
 
-	_, err = node.repo.CreateGitRepository(node.projectName, templateURL, node.platform.GetToken())
+	_, err = node.repo.CreateGitRepository(node.projectName, templateURL, node.platform.GetToken(), createReplacements(node.projectName))
 	if err != nil {
 		return err
 	}
 	log.WithFields(log.Fields{}).Debug("Creating NodeJS platform")
 
 	return node.platform.Create()
+}
+
+func createReplacements(projectName string) map[string]string {
+	replacements := make(map[string]string)
+	replacements[templateNameReplacement] = projectName
+	return replacements
 }
 
 func getTemplateURL(platformType string) (string, error) {

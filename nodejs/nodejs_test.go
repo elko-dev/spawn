@@ -16,13 +16,14 @@ const (
 func TestFunctionsTemplateIsProvidedWhenPlatformIsFunctions(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-
+	replacements := make(map[string]string)
+	replacements[templateNameReplacement] = projectName
 	mockGitRepo := applications.NewMockGitRepo(ctrl)
 	mockPlatform := applications.NewMockPlatformRepository(ctrl)
 
 	mockPlatform.EXPECT().Create().Return(nil)
 	mockPlatform.EXPECT().GetToken().Return(token)
-	mockGitRepo.EXPECT().CreateGitRepository(projectName, graphQLHerokuTemplateURL, token).Return(applications.GitResult{}, nil)
+	mockGitRepo.EXPECT().CreateGitRepository(projectName, graphQLHerokuTemplateURL, token, replacements).Return(applications.GitResult{}, nil)
 
 	node := NewNode(mockGitRepo, mockPlatform, projectName, framework)
 
@@ -58,13 +59,15 @@ func TestReturnsErrorWhenBasedFrameworkIsProvided(t *testing.T) {
 func TestHerokuTemplateIsProvidedWhenPlatformIsHeroku(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
+	replacements := make(map[string]string)
+	replacements[templateNameReplacement] = projectName
 
 	mockGitRepo := applications.NewMockGitRepo(ctrl)
 	mockPlatform := applications.NewMockPlatformRepository(ctrl)
 
 	mockPlatform.EXPECT().Create().Return(nil)
 	mockPlatform.EXPECT().GetToken().Return(token)
-	mockGitRepo.EXPECT().CreateGitRepository(projectName, graphQLHerokuTemplateURL, token).Return(applications.GitResult{}, nil)
+	mockGitRepo.EXPECT().CreateGitRepository(projectName, graphQLHerokuTemplateURL, token, replacements).Return(applications.GitResult{}, nil)
 
 	node := NewNode(mockGitRepo, mockPlatform, projectName, framework)
 

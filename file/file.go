@@ -13,7 +13,8 @@ const (
 
 // TemplateFile struct to operate of Templated Files
 type TemplateFile struct {
-	Name string
+	Name         string
+	Replacements map[string]string
 }
 
 // Replace replaces templated files for the correct value
@@ -42,7 +43,7 @@ func (template TemplateFile) replace(path string, fi os.FileInfo, err error) err
 			panic(err)
 		}
 
-		newContents := strings.Replace(string(read), templateString, template.Name, -1)
+		newContents := replaceTemplates(string(read), template.Replacements)
 
 		err = ioutil.WriteFile(path, []byte(newContents), 0)
 		if err != nil {
@@ -52,4 +53,12 @@ func (template TemplateFile) replace(path string, fi os.FileInfo, err error) err
 	}
 
 	return nil
+}
+
+func replaceTemplates(content string, replacements map[string]string) string {
+	newContent := content
+	for replace, replacement := range replacements {
+		newContent = strings.Replace(newContent, replace, replacement, -1)
+	}
+	return newContent
 }

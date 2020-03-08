@@ -7,6 +7,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/spawnhttp"
 )
 
@@ -33,16 +34,16 @@ type AndroidClient struct {
 }
 
 // Create Android app in firebase
-func (client AndroidClient) Create(firebaseProjectID string, request AndroidRequest) (AndroidResponse, error) {
+func (client AndroidClient) Create(firebaseProjectID string, request AndroidRequest) (applications.AndroidApp, error) {
 	req, err := createAndroidRequest(firebaseProjectID, request)
 	if err != nil {
-		return AndroidResponse{}, nil
+		return applications.AndroidApp{}, nil
 	}
 
 	resp, err := client.http.Do(req)
 
 	if err != nil {
-		return AndroidResponse{}, nil
+		return applications.AndroidApp{}, nil
 	}
 
 	if !spawnhttp.IsSuccessStatusCode(resp.StatusCode) {
@@ -51,21 +52,25 @@ func (client AndroidClient) Create(firebaseProjectID string, request AndroidRequ
 			"firebaseProjectID": firebaseProjectID,
 		}).Error("Error creating Android app")
 
-		return AndroidResponse{}, errors.New("Received error creating android project with status ")
+		return applications.AndroidApp{}, errors.New("Received error creating android project with status ")
 	}
 
 	androidResponse := AndroidResponse{}
-	err = spawnhttp.MarshalResponse(resp, androidResponse)
+	err = spawnhttp.MarshalResponse(resp, &androidResponse)
 
 	if err != nil {
-		return AndroidResponse{}, err
+		return applications.AndroidApp{}, err
 	}
-
+	androidApp := applications.AndroidApp{
+		ID:   androidResponse.ID,
+		Name: androidResponse.Name,
+	}
 	log.WithFields(log.Fields{
 		"rawResponse":     resp,
-		"androidResponse": resp,
+		"androidResponse": androidApp,
 	}).Debug("Successfully created Android Project")
-	return androidResponse, nil
+
+	return androidApp, nil
 }
 
 func createAndroidRequest(firebaseProjectID string, request AndroidRequest) (*http.Request, error) {

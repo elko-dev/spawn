@@ -20,7 +20,7 @@ type Local struct {
 
 // Git to interact with git
 type Git interface {
-	DuplicateRepo(url string, gitToken string, name string, repoURL string) (applications.GitResult, error)
+	DuplicateRepo(url string, gitToken string, name string, repoURL string, replacements map[string]string) (applications.GitResult, error)
 }
 
 // Template interface to replace templated values
@@ -29,7 +29,7 @@ type Template interface {
 }
 
 // DuplicateRepo contains logic to duplicate a repository
-func (local Local) DuplicateRepo(url string, gitToken string, name string, repoURL string) (applications.GitResult, error) {
+func (local Local) DuplicateRepo(url string, gitToken string, name string, repoURL string, replacements map[string]string) (applications.GitResult, error) {
 
 	r, err := git.PlainClone(name, false, &git.CloneOptions{
 		URL:               url,
@@ -40,7 +40,7 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 		return applications.GitResult{}, err
 	}
 
-	template := file.TemplateFile{Name: strings.ToLower(name)}
+	template := file.TemplateFile{Name: strings.ToLower(name), Replacements: replacements}
 	err = template.Replace()
 	if err != nil {
 		println("Template file replacement failed")
