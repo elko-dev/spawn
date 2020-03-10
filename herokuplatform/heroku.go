@@ -42,7 +42,7 @@ func (h Heroku) Create() error {
 	stack := "heroku-18"
 	contextLogger.Debug("Creating platform environments")
 	for _, environment := range h.environments {
-		contextLogger.Info("Creating environment for " + environment)
+		println("Creating environment for " + environment)
 
 		herokuName := createHerokuName(h.projectName, environment)
 		createOpts := heroku.TeamAppCreateOpts{Name: &herokuName, Region: &region, Stack: &stack, Team: &h.platformTeamName}

@@ -122,6 +122,20 @@ func (mr *MockGitRepoMockRecorder) CreateGitRepository(repositoryName, templateU
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateGitRepository", reflect.TypeOf((*MockGitRepo)(nil).CreateGitRepository), repositoryName, templateURL, platformToken, replacements)
 }
 
+// GetRepoType mocks base method
+func (m *MockGitRepo) GetRepoType() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRepoType")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// GetRepoType indicates an expected call of GetRepoType
+func (mr *MockGitRepoMockRecorder) GetRepoType() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRepoType", reflect.TypeOf((*MockGitRepo)(nil).GetRepoType))
+}
+
 // MockPlatformRepository is a mock of PlatformRepository interface
 type MockPlatformRepository struct {
 	ctrl     *gomock.Controller
@@ -325,17 +339,17 @@ func (m *MockCIPlatform) EXPECT() *MockCIPlatformMockRecorder {
 }
 
 // Create mocks base method
-func (m *MockCIPlatform) Create(repoURL, latestGitConfig string) error {
+func (m *MockCIPlatform) Create(repoURL, repoID, latestGitConfig, gitType string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", repoURL, latestGitConfig)
+	ret := m.ctrl.Call(m, "Create", repoURL, repoID, latestGitConfig, gitType)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Create indicates an expected call of Create
-func (mr *MockCIPlatformMockRecorder) Create(repoURL, latestGitConfig interface{}) *gomock.Call {
+func (mr *MockCIPlatformMockRecorder) Create(repoURL, repoID, latestGitConfig, gitType interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCIPlatform)(nil).Create), repoURL, latestGitConfig)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockCIPlatform)(nil).Create), repoURL, repoID, latestGitConfig, gitType)
 }
 
 // MockMobilePlatform is a mock of MobilePlatform interface

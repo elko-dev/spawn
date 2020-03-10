@@ -16,7 +16,7 @@ func main() {
 	log.SetOutput(os.Stdout)
 
 	// Only log the warning severity or above.
-	log.SetLevel(log.DebugLevel)
+	log.SetLevel(log.InfoLevel)
 	applicationFactory := CreateApplicationTypeFacotry()
 	app := clip.Init(applicationFactory)
 	app.Run(os.Args)

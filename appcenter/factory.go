@@ -23,6 +23,7 @@ type Prompt interface {
 	forToken() (string, error)
 	forMembers() ([]string, error)
 	forAuthSecretPath() (string, error)
+	forExternalUserID() (string, error)
 }
 
 // Create appcenter factory
@@ -48,6 +49,11 @@ func (factory Factory) Create(projectName string) (applications.CIPlatform, erro
 		return nil, err
 	}
 
+	gitUserID, err := factory.prompt.forExternalUserID()
+	if err != nil {
+		return nil, err
+	}
+
 	secretPath, err := factory.prompt.forAuthSecretPath()
 	log.WithFields(log.Fields{
 		"projectName": projectName,
@@ -58,15 +64,21 @@ func (factory Factory) Create(projectName string) (applications.CIPlatform, erro
 		return nil, err
 	}
 
-	log.WithFields(log.Fields{}).Info(authSecretFileString)
-
 	connection := api.NewConnection(token)
 	orgClient := organization.NewClient(connection)
 	appClient := apps.NewClient(connection)
 	buildClient := builds.NewClient(connection)
 	accountClient := accounts.NewClient(connection)
 
-	platform := NewPlatform(orgClient, appClient, buildClient, accountClient, orgName, projectName, members, authSecretFileString)
+	platform := NewPlatform(orgClient,
+		appClient,
+		buildClient,
+		accountClient,
+		orgName,
+		projectName,
+		members,
+		authSecretFileString,
+		gitUserID)
 
 	return platform, nil
 }

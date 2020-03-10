@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/directory"
 	"github.com/elko-dev/spawn/file"
 	"gopkg.in/src-d/go-git.v4"
@@ -18,9 +17,15 @@ import (
 type Local struct {
 }
 
+// GitConfig represents local git configuration
+type GitConfig struct {
+	RepoURL         string
+	LatestGitCommit string
+}
+
 // Git to interact with git
 type Git interface {
-	DuplicateRepo(url string, gitToken string, name string, repoURL string, replacements map[string]string) (applications.GitResult, error)
+	DuplicateRepo(url string, gitToken string, name string, repoURL string, replacements map[string]string) (GitConfig, error)
 }
 
 // Template interface to replace templated values
@@ -29,7 +34,7 @@ type Template interface {
 }
 
 // DuplicateRepo contains logic to duplicate a repository
-func (local Local) DuplicateRepo(url string, gitToken string, name string, repoURL string, replacements map[string]string) (applications.GitResult, error) {
+func (local Local) DuplicateRepo(url string, gitToken string, name string, repoURL string, replacements map[string]string) (GitConfig, error) {
 
 	r, err := git.PlainClone(name, false, &git.CloneOptions{
 		URL:               url,
@@ -37,27 +42,27 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Clone failed")
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
 	template := file.TemplateFile{Name: strings.ToLower(name), Replacements: replacements}
 	err = template.Replace()
 	if err != nil {
 		println("Template file replacement failed")
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
 	dirTemplate := directory.TemplateDirectory{Name: strings.ToLower(name)}
 	err = dirTemplate.Replace()
 	if err != nil {
 		println("Template directory replacement failed")
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
 	err = r.DeleteRemote("origin")
 	if err != nil {
 		println("Delete failed")
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
 	// Adds the new file to the staging area.
@@ -68,7 +73,7 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 
 	if err != nil {
 		println("Reset failed ", err)
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
 	_, err = r.CreateRemote(&config.RemoteConfig{
@@ -77,13 +82,13 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Create remote failed")
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
 	_, err = w.Add(".")
 	if err != nil {
 		println("Add failed")
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
 	commit, err := w.Commit(name+" configuration", &git.CommitOptions{
@@ -103,10 +108,10 @@ func (local Local) DuplicateRepo(url string, gitToken string, name string, repoU
 	})
 	if err != nil {
 		println("Push failed")
-		return applications.GitResult{}, err
+		return GitConfig{}, err
 	}
 
-	return applications.GitResult{RepoURL: repoURL, LatestGitCommit: commit.String()}, err
+	return GitConfig{RepoURL: repoURL, LatestGitCommit: commit.String()}, err
 }
 
 // NewLocal init method

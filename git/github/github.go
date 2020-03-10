@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/git/local"
 	"github.com/google/go-github/github"
 
@@ -19,6 +20,10 @@ type GithubRepo struct {
 
 type Prompt interface {
 	forGitToken() (string, error)
+}
+
+func (ados GithubRepo) GetRepoType() string {
+	return constants.Github
 }
 
 // CreateGitRepository to create repo
@@ -40,15 +45,23 @@ func (git GithubRepo) CreateGitRepository(repositoryName string, templateURL str
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
 
-	private := false
+	private := true
 	r := &github.Repository{Name: &repositoryName, Private: &private, Description: &repositoryName}
+
 	repo, _, err := client.Repositories.Create(ctx, "", r)
 	if err != nil {
-		logContext.Error("Error creating Github repository")
+		logContext.Error("Error creating Github repository ", err)
 		return applications.GitResult{}, err
 	}
-
-	return git.Git.DuplicateRepo(templateURL, gitToken, repo.GetName(), *repo.CloneURL, replacements)
+	config, err := git.Git.DuplicateRepo(templateURL, gitToken, repo.GetName(), *repo.CloneURL, replacements)
+	if err != nil {
+		return applications.GitResult{}, err
+	}
+	return applications.GitResult{
+		LatestGitCommit: config.LatestGitCommit,
+		RepoURL:         config.RepoURL,
+		RepoID:          string(repo.GetID()),
+	}, nil
 }
 
 // NewGithubRepo init

@@ -10,6 +10,30 @@ import (
 type Prompts struct {
 }
 
+func (prompt Prompts) forExternalUserID() (string, error) {
+	userID, err := externalUserID()
+
+	if err != nil {
+		return "", err
+	}
+	return userID, nil
+}
+
+func externalUserID() (string, error) {
+	userID :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	accessTokenPrompt := promptui.Prompt{
+		Label:    "Gitlab User Id",
+		Validate: userID,
+	}
+
+	return accessTokenPrompt.Run()
+}
 func (prompt Prompts) forOrganization() (string, error) {
 	organization, err := appcenterOrganization()
 

@@ -2,6 +2,7 @@ package gitlab
 
 import (
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/git/local"
 )
 
@@ -22,6 +23,10 @@ type HTTP interface {
 	AddEnvironmentVariables(platformToken string, projectID string, gitToken string) error
 }
 
+func (ados GitlabRepo) GetRepoType() string {
+	return constants.Gitlab
+}
+
 // CreateGitRepository creates gitlab instance
 func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string, replacements map[string]string) (applications.GitResult, error) {
 
@@ -38,7 +43,17 @@ func (git GitlabRepo) CreateGitRepository(repositoryName string, templateURL str
 		return applications.GitResult{}, err
 	}
 
-	return git.Git.DuplicateRepo(templateURL, gitToken, repository.Name, repository.URL, replacements)
+	config, err := git.Git.DuplicateRepo(templateURL, gitToken, repository.Name, repository.URL, replacements)
+
+	if err != nil {
+		return applications.GitResult{}, err
+	}
+
+	return applications.GitResult{
+		LatestGitCommit: config.LatestGitCommit,
+		RepoURL:         config.RepoURL,
+		RepoID:          repository.ID.String(),
+	}, nil
 
 }
 

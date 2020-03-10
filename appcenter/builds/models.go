@@ -2,7 +2,9 @@ package builds
 
 // RepoConfigArgs to set repository config
 type RepoConfigArgs struct {
-	RepoURL string `json:"repo_url"`
+	RepoURL        string `json:"repo_url"`
+	RepoID         string `json:"repo_id"`
+	ExternalUserID string `json:"external_user_id"`
 }
 
 // RepoConfigResponse message

@@ -16,11 +16,13 @@ type Project interface {
 type GitResult struct {
 	RepoURL         string
 	LatestGitCommit string
+	RepoID          string
 }
 
 // GitRepo describing the functionality to Create repositories
 type GitRepo interface {
 	CreateGitRepository(repositoryName string, templateURL string, platformToken string, replacements map[string]string) (GitResult, error)
+	GetRepoType() string
 }
 
 // PlatformRepository repository that defines creation of Platform repo
@@ -47,7 +49,7 @@ type CIFactory interface {
 
 // CIPlatform defined CI platform
 type CIPlatform interface {
-	Create(repoURL string, latestGitConfig string) error
+	Create(repoURL string, repoID string, latestGitConfig string, gitType string) error
 }
 
 // MobileApps struct containing ios and android app

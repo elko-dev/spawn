@@ -36,7 +36,7 @@ func (react ReactNative) Create() error {
 		return err
 	}
 
-	return react.ciPlatform.Create(response.RepoURL, response.LatestGitCommit)
+	return react.ciPlatform.Create(response.RepoURL, response.RepoID, response.LatestGitCommit, react.repo.GetRepoType())
 }
 
 func createReplacements(projectName string, iosID string, androidID string) map[string]string {

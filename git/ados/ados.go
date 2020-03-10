@@ -7,6 +7,7 @@ import (
 	// "github.com/google/uuid"
 
 	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/constants"
 	"github.com/elko-dev/spawn/git/local"
 	log "github.com/sirupsen/logrus"
 
@@ -23,6 +24,10 @@ type Repository struct {
 // Prompt for user info
 type Prompt interface {
 	forOrganization() (string, error)
+}
+
+func (ados Repository) GetRepoType() string {
+	return constants.ADOS
 }
 
 // CreateGitRepository action to create an ADOS repo
@@ -84,10 +89,18 @@ func (ados Repository) CreateGitRepository(repositoryName string, templateURL st
 
 	adosGitRepoURL := "https://dev.azure.com/" + organization + "/" + repositoryName + "/_git/" + repositoryName
 
-	log.WithFields(log.Fields{}).Info("Waiting for azure repo to create....")
+	log.WithFields(log.Fields{}).Debug("Waiting for azure repo to create....")
 	time.Sleep(5 * time.Second)
 
-	return ados.Git.DuplicateRepo(templateURL, platformToken, repositoryName, adosGitRepoURL, replacements)
+	config, err := ados.Git.DuplicateRepo(templateURL, platformToken, repositoryName, adosGitRepoURL, replacements)
+	if err != nil {
+		return applications.GitResult{}, err
+	}
+	return applications.GitResult{
+		LatestGitCommit: config.LatestGitCommit,
+		RepoURL:         config.RepoURL,
+		RepoID:          response.Id.String(),
+	}, nil
 }
 
 // NewRepository init method

@@ -7,6 +7,7 @@ import (
 	"github.com/elko-dev/spawn/appcenter/apps"
 	"github.com/elko-dev/spawn/appcenter/builds"
 	"github.com/elko-dev/spawn/appcenter/organization"
+	"github.com/elko-dev/spawn/constants"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -26,10 +27,11 @@ type Platform struct {
 	projectName         string
 	distributionMembers []string
 	authSecret          string
+	externalUserID      string
 }
 
 // Create AppCenter config
-func (platform Platform) Create(repoURL string, latestGitConfig string) error {
+func (platform Platform) Create(repoURL string, repoID string, latestGitConfig string, gitType string) error {
 
 	// create organization
 	ctx := context.Background()
@@ -60,12 +62,12 @@ func (platform Platform) Create(repoURL string, latestGitConfig string) error {
 
 	// TODO: create a team and add app to team
 	// create app
-	androidName, err := createAndroidApp(ctx, &platform, &repoURL, &latestGitConfig, &distributionResponse.ID)
+	androidName, err := createAndroidApp(ctx, &platform, &repoURL, &latestGitConfig, &distributionResponse.ID, repoID, gitType)
 	if err != nil {
 		return err
 	}
 
-	iosName, err := createIOSApp(ctx, &platform, &repoURL, &latestGitConfig, &distributionResponse.ID)
+	iosName, err := createIOSApp(ctx, &platform, &repoURL, &latestGitConfig, &distributionResponse.ID, repoID, gitType)
 
 	if err != nil {
 		return err
@@ -98,8 +100,11 @@ func (platform Platform) CreateApp(ctx context.Context,
 	repoURL *string,
 	latestGitConfig *string,
 	distributionID *string,
-	environmentVariables []builds.EnvironmentVariables) (string, error) {
+	environmentVariables []builds.EnvironmentVariables,
+	repoID string,
+	gitType string) (string, error) {
 
+	println("Creating Firebase Project and Apps")
 	projectName := normalizeProjectName(platform.projectName, *os)
 
 	_, err := platform.appClient.CreateApp(ctx, &apps.CreateAppArgs{
@@ -125,9 +130,14 @@ func (platform Platform) CreateApp(ctx context.Context,
 		logContext.Info("Error creating appcenter app")
 		return "", err
 	}
-	_, err = platform.buildClient.ConfigureRepo(ctx, &builds.RepoConfigArgs{
+	repoConfig := builds.RepoConfigArgs{
 		RepoURL: *repoURL,
-	}, platform.organizationName, projectName)
+		RepoID:  repoID,
+	}
+	if gitType == constants.Gitlab {
+		repoConfig.ExternalUserID = platform.externalUserID
+	}
+	_, err = platform.buildClient.ConfigureRepo(ctx, &repoConfig, platform.organizationName, projectName)
 
 	if err != nil {
 		logContext.Info("Error configuring appcenter app")
@@ -162,7 +172,9 @@ func createAndroidApp(ctx context.Context,
 	platform *Platform,
 	repoURL *string,
 	latestGitConfig *string,
-	distributionID *string) (string, error) {
+	distributionID *string,
+	repoID string,
+	gitType string) (string, error) {
 	description := "Mobile application"
 	os := "Android"
 	platformType := "React-Native"
@@ -178,14 +190,16 @@ func createAndroidApp(ctx context.Context,
 			Name:  authSecretName,
 			Value: platform.authSecret,
 		}}
-	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID, environmentVariables)
+	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID, environmentVariables, repoID, gitType)
 }
 
 func createIOSApp(ctx context.Context,
 	platform *Platform,
 	repoURL *string,
 	latestGitConfig *string,
-	distributionID *string) (string, error) {
+	distributionID *string,
+	repoID string,
+	gitType string) (string, error) {
 	description := "Mobile application"
 	os := "iOS"
 	platformType := "React-Native"
@@ -196,7 +210,7 @@ func createIOSApp(ctx context.Context,
 			Value: platform.authSecret,
 		},
 	}
-	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID, environmentVariables)
+	return platform.CreateApp(ctx, &description, &os, &platformType, &releastType, repoURL, latestGitConfig, distributionID, environmentVariables, repoID, gitType)
 }
 
 func normalizeProjectName(projectName string, os string) string {
@@ -211,6 +225,17 @@ func NewPlatform(orgClient organization.Client,
 	organizationName string,
 	projectName string,
 	members []string,
-	authSecret string) Platform {
-	return Platform{orgClient, appClient, buildClient, accountsClient, organizationName, projectName, members, authSecret}
+	authSecret string,
+	externalUserID string) Platform {
+	return Platform{
+		orgClient,
+		appClient,
+		buildClient,
+		accountsClient,
+		organizationName,
+		projectName,
+		members,
+		authSecret,
+		externalUserID,
+	}
 }

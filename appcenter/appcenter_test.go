@@ -21,6 +21,8 @@ func TestPlatformCreation(t *testing.T) {
 	log.SetLevel(log.DebugLevel)
 	connection := api.NewConnection(os.Getenv("APPCENTER_TOKEN"))
 	orgName := "ElkoTestOrganization1"
+	repoID := "someid"
+	externalUserID := "someuserid"
 	orgClient := organization.NewClient(connection)
 	appClient := apps.NewClient(connection)
 	buildClient := builds.NewClient(connection)
@@ -28,9 +30,9 @@ func TestPlatformCreation(t *testing.T) {
 
 	members := []string{"andrew.larsen@elko.dev"}
 	secret := "secret"
-	platform := NewPlatform(orgClient, appClient, buildClient, accountClient, orgName, "testprojectName1", members, secret)
+	platform := NewPlatform(orgClient, appClient, buildClient, accountClient, orgName, "testprojectName1", members, secret, externalUserID)
 
-	err := platform.Create("https://github.com/elko-dev/react-native-template.git", "7ba6e41ab3a0f3b3ffc6f65d443f0f02d30ab31f")
+	err := platform.Create("https://github.com/elko-dev/react-native-template.git", repoID, "7ba6e41ab3a0f3b3ffc6f65d443f0f02d30ab31f", "gitType")
 
 	if err != nil {
 		t.Log("got error, expected none", err)
