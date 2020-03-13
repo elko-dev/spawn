@@ -56,12 +56,21 @@ type CIPlatform interface {
 type MobileApps struct {
 	IOS     IOSApp
 	Android AndroidApp
+	Web     WebApp
 }
 
 // IOSApp information
 type IOSApp struct {
 	ID   string
 	Name string
+}
+
+// WebApp information
+type WebApp struct {
+	AppID       string
+	ProjectID   string
+	Name        string
+	DisplayName string
 }
 
 // AndroidApp information

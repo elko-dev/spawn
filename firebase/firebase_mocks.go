@@ -125,6 +125,44 @@ func (mr *MockIosAppMockRecorder) Create(projectID, request interface{}) *gomock
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockIosApp)(nil).Create), projectID, request)
 }
 
+// MockWebApp is a mock of WebApp interface
+type MockWebApp struct {
+	ctrl     *gomock.Controller
+	recorder *MockWebAppMockRecorder
+}
+
+// MockWebAppMockRecorder is the mock recorder for MockWebApp
+type MockWebAppMockRecorder struct {
+	mock *MockWebApp
+}
+
+// NewMockWebApp creates a new mock instance
+func NewMockWebApp(ctrl *gomock.Controller) *MockWebApp {
+	mock := &MockWebApp{ctrl: ctrl}
+	mock.recorder = &MockWebAppMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockWebApp) EXPECT() *MockWebAppMockRecorder {
+	return m.recorder
+}
+
+// Create mocks base method
+func (m *MockWebApp) Create(projectID string, request WebRequest) (applications.WebApp, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Create", projectID, request)
+	ret0, _ := ret[0].(applications.WebApp)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Create indicates an expected call of Create
+func (mr *MockWebAppMockRecorder) Create(projectID, request interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockWebApp)(nil).Create), projectID, request)
+}
+
 // MockAndroidApp is a mock of AndroidApp interface
 type MockAndroidApp struct {
 	ctrl     *gomock.Controller

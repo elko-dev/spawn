@@ -16,7 +16,8 @@ func (factory Factory) Create(projectName string, applicationType string) (appli
 
 	iosApp := NewIOSClient()
 	androidApp := NewAndroidClient()
-	return NewPlatform(projectName, applicationType, project, firebaseProject, iosApp, androidApp), nil
+	webApp := NewWebClient()
+	return NewPlatform(projectName, applicationType, project, firebaseProject, iosApp, androidApp, webApp), nil
 }
 
 // NewFactory init
