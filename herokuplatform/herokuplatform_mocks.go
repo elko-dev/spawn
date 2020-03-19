@@ -76,3 +76,18 @@ func (mr *MockPromptMockRecorder) forPlatformToken() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "forPlatformToken", reflect.TypeOf((*MockPrompt)(nil).forPlatformToken))
 }
+
+// forAuthSecretPath mocks base method
+func (m *MockPrompt) forAuthSecretPath() (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "forAuthSecretPath")
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// forAuthSecretPath indicates an expected call of forAuthSecretPath
+func (mr *MockPromptMockRecorder) forAuthSecretPath() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "forAuthSecretPath", reflect.TypeOf((*MockPrompt)(nil).forAuthSecretPath))
+}

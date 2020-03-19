@@ -25,6 +25,7 @@ type Heroku struct {
 	projectName      string
 	platformTeamName string
 	applicationType  string
+	configVars       map[string]*string
 }
 
 // Create Heroku Platform
@@ -66,6 +67,14 @@ func (h Heroku) Create() error {
 			contextLogger.Error("error configuring build pack")
 			return err
 		}
+
+		_, err = h.service.ConfigVarUpdate(ctx, app.ID, h.configVars)
+
+		if err != nil {
+			contextLogger.Error("error creating config vars")
+			return err
+		}
+
 		contextLogger.Debug("Created Application for " + environment + " at url " + app.WebURL)
 		databaseAddOn := createDatabaseAddOn(herokuName, h.platformTeamName)
 		_, err = h.service.AddOnCreate(ctx, app.ID, databaseAddOn)
@@ -148,7 +157,12 @@ func createHerokuName(applicationName string, environment string) string {
 }
 
 // NewHeroku init function
-func NewHeroku(platformToken string, environments []string, projectName string, platformTeamName string, applicationType string) Heroku {
+func NewHeroku(platformToken string,
+	environments []string,
+	projectName string,
+	platformTeamName string,
+	applicationType string,
+	configVars map[string]*string) Heroku {
 	s := heroku.NewService(heroku.DefaultClient)
 	h := Heroku{}
 	h.platformToken = platformToken
@@ -157,5 +171,6 @@ func NewHeroku(platformToken string, environments []string, projectName string, 
 	h.platformTeamName = platformTeamName
 	h.applicationType = applicationType
 	h.service = s
+	h.configVars = configVars
 	return h
 }

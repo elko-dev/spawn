@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/elko-dev/spawn/platform"
 	gomock "github.com/golang/mock/gomock"
 )
 
@@ -19,12 +20,14 @@ func TestWhenEnvironmentsAreReturnedHerokuContainsEnvironments(t *testing.T) {
 	defer ctrl.Finish()
 	expected := []string{"dev", "stage"}
 	mockPrompt := NewMockPrompt(ctrl)
+	mockReader := platform.NewMockSecrets(ctrl)
 
 	mockPrompt.EXPECT().forEnvironments().Return(expected, nil)
 	mockPrompt.EXPECT().forHerokuTeamName().Return(herokuTeamName, nil)
 	mockPrompt.EXPECT().forPlatformToken().Return(token, nil)
-
-	factory := NewFactory(mockPrompt)
+	mockPrompt.EXPECT().forAuthSecretPath().Return("path", nil)
+	mockReader.EXPECT().AsBase64String("path").Return("Secret", nil)
+	factory := NewFactory(mockPrompt, mockReader)
 
 	platform, _ := factory.Create(projectName, applicationType)
 	heroku := platform.(Heroku)
@@ -43,12 +46,14 @@ func TestWhenHerokuTeamNameAreSelectedHerokuContainsTeamName(t *testing.T) {
 	envs := []string{"dev", "stage"}
 
 	mockPrompt := NewMockPrompt(ctrl)
+	mockReader := platform.NewMockSecrets(ctrl)
 
 	mockPrompt.EXPECT().forEnvironments().Return(envs, nil)
 	mockPrompt.EXPECT().forHerokuTeamName().Return(expected, nil)
 	mockPrompt.EXPECT().forPlatformToken().Return(token, nil)
-
-	factory := NewFactory(mockPrompt)
+	mockPrompt.EXPECT().forAuthSecretPath().Return("path", nil)
+	mockReader.EXPECT().AsBase64String("path").Return("Secret", nil)
+	factory := NewFactory(mockPrompt, mockReader)
 
 	platform, _ := factory.Create(projectName, applicationType)
 	heroku := platform.(Heroku)
@@ -67,12 +72,14 @@ func TestWhenTokenIsSelectedHerokuContainsToken(t *testing.T) {
 	envs := []string{"dev", "stage"}
 
 	mockPrompt := NewMockPrompt(ctrl)
+	mockReader := platform.NewMockSecrets(ctrl)
 
 	mockPrompt.EXPECT().forEnvironments().Return(envs, nil)
 	mockPrompt.EXPECT().forHerokuTeamName().Return(herokuTeamName, nil)
 	mockPrompt.EXPECT().forPlatformToken().Return(expected, nil)
-
-	factory := NewFactory(mockPrompt)
+	mockPrompt.EXPECT().forAuthSecretPath().Return("path", nil)
+	mockReader.EXPECT().AsBase64String("path").Return("Secret", nil)
+	factory := NewFactory(mockPrompt, mockReader)
 
 	platform, _ := factory.Create(projectName, applicationType)
 	heroku := platform.(Heroku)

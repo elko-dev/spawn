@@ -3,6 +3,8 @@ package file
 import (
 	b64 "encoding/base64"
 	"io/ioutil"
+
+	"github.com/elko-dev/spawn/platform"
 )
 
 // Reader to read files from file system
@@ -17,4 +19,9 @@ func (reader Reader) AsBase64String(fileName string) (string, error) {
 	}
 
 	return b64.StdEncoding.EncodeToString(file), nil
+}
+
+// NewReader init
+func NewReader() platform.Secrets {
+	return Reader{}
 }

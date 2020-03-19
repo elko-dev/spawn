@@ -10,6 +10,44 @@ import (
 	reflect "reflect"
 )
 
+// MockSecrets is a mock of Secrets interface
+type MockSecrets struct {
+	ctrl     *gomock.Controller
+	recorder *MockSecretsMockRecorder
+}
+
+// MockSecretsMockRecorder is the mock recorder for MockSecrets
+type MockSecretsMockRecorder struct {
+	mock *MockSecrets
+}
+
+// NewMockSecrets creates a new mock instance
+func NewMockSecrets(ctrl *gomock.Controller) *MockSecrets {
+	mock := &MockSecrets{ctrl: ctrl}
+	mock.recorder = &MockSecretsMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use
+func (m *MockSecrets) EXPECT() *MockSecretsMockRecorder {
+	return m.recorder
+}
+
+// AsBase64String mocks base method
+func (m *MockSecrets) AsBase64String(fileName string) (string, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AsBase64String", fileName)
+	ret0, _ := ret[0].(string)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// AsBase64String indicates an expected call of AsBase64String
+func (mr *MockSecretsMockRecorder) AsBase64String(fileName interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AsBase64String", reflect.TypeOf((*MockSecrets)(nil).AsBase64String), fileName)
+}
+
 // MockPrompt is a mock of Prompt interface
 type MockPrompt struct {
 	ctrl     *gomock.Controller

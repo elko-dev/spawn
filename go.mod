@@ -8,7 +8,7 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a // indirect
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
-	github.com/golang/mock v1.4.1
+	github.com/golang/mock v1.4.3
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/go-github/v29 v29.0.3 // indirect
 	github.com/google/uuid v1.1.1
@@ -25,7 +25,7 @@ require (
 	golang.org/x/crypto v0.0.0-20200311171314-f7b00557c8c4 // indirect
 	golang.org/x/net v0.0.0-20200301022130-244492dfa37a // indirect
 	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
-	golang.org/x/sys v0.0.0-20200302150141-5c8b2ff67527 // indirect
+	golang.org/x/sys v0.0.0-20200316202146-9a0dfc3c5568 // indirect
 	google.golang.org/api v0.20.0 // indirect
 	gopkg.in/src-d/go-git.v4 v4.13.1
 )

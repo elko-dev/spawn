@@ -1,15 +1,20 @@
 package platform
 
-import "github.com/elko-dev/spawn/applications"
-import log "github.com/sirupsen/logrus"
-
-import "github.com/elko-dev/spawn/constants"
+import (
+	"github.com/elko-dev/spawn/applications"
+	"github.com/elko-dev/spawn/constants"
+	log "github.com/sirupsen/logrus"
+)
 
 // Factory to create platform
 type Factory struct {
 	prompt           Prompt
 	herokuFactory    HerokuPlatformFactory
 	functionsFactory FunctionsPlatformFactory
+}
+
+type Secrets interface {
+	AsBase64String(fileName string) (string, error)
 }
 
 // Prompt for platform details

@@ -80,6 +80,7 @@ func (platform Platform) Create() (applications.MobileApps, error) {
 	webApp, err := platform.webApp.Create(firebaseResponse.ID, WebRequest{
 		DisplayName: createWebName(firebaseResponse.Name),
 	})
+
 	return applications.MobileApps{
 		IOS:     iosApp,
 		Android: androidApp,

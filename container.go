@@ -8,6 +8,7 @@ import (
 	"github.com/elko-dev/spawn/applications"
 	"github.com/elko-dev/spawn/applicationtype"
 	"github.com/elko-dev/spawn/azurefunctions"
+	"github.com/elko-dev/spawn/file"
 	"github.com/elko-dev/spawn/firebase"
 	"github.com/elko-dev/spawn/functions"
 	"github.com/elko-dev/spawn/git"
@@ -122,6 +123,7 @@ func CreateAzureFunctionsFactory() platform.FunctionsPlatformFactory {
 func CreateHerokuFactory() platform.HerokuPlatformFactory {
 	panic(wire.Build(
 		herokuplatform.NewPrompts,
+		file.NewReader,
 		herokuplatform.NewFactory,
 	))
 }

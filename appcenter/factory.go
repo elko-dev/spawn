@@ -59,6 +59,7 @@ func (factory Factory) Create(projectName string) (applications.CIPlatform, erro
 		"projectName": projectName,
 		"secretPath":  secretPath,
 	}).Debug("Retrieved secret path")
+
 	authSecretFileString, err := factory.reader.AsBase64String(secretPath)
 	if err != nil {
 		return nil, err
