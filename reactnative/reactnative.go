@@ -7,22 +7,29 @@ const (
 	templateNameReplacement      = "myapp"
 	templateIOSIDReplacement     = "1:157175452340:ios:41629cc9b57c97d5f9bde1"
 	templateAndroidIDReplacement = "1:157175452340:android:6202e96dce8ed954f9bde1"
+	templateWebIDReplacement     = "1:157175452340:web:3edce90d5e1b6696f9bde1"
 )
 
 type ReactNative struct {
-	repo           applications.GitRepo
-	ciPlatform     applications.CIPlatform
-	mobilePlatform applications.MobilePlatform
-	projectName    string
+	repo            applications.GitRepo
+	ciPlatform      applications.CIPlatform
+	mobilePlatform  applications.MobilePlatform
+	projectName     string
+	includePlatform bool
 }
 
 // Create ReactNative Project
 func (react ReactNative) Create() error {
 
-	mobileApps, err := react.mobilePlatform.Create()
+	//yes this is a hack to not always include CI
+	var mobileApps applications.MobileApps
+	var err error
 
-	if err != nil {
-		return err
+	if react.includePlatform {
+		mobileApps, err = react.mobilePlatform.Create()
+		if err != nil {
+			return err
+		}
 	}
 
 	// TODO: this fails the interface segregration principle.  Need to refactor
@@ -30,7 +37,7 @@ func (react ReactNative) Create() error {
 		react.projectName,
 		templateURL,
 		"",
-		createReplacements(react.projectName, mobileApps.IOS.ID, mobileApps.Android.ID))
+		createReplacements(react.projectName, mobileApps.IOS.ID, mobileApps.Android.ID, mobileApps.Web.AppID, react.includePlatform))
 
 	if err != nil {
 		return err
@@ -39,15 +46,23 @@ func (react ReactNative) Create() error {
 	return react.ciPlatform.Create(response.RepoURL, response.RepoID, response.LatestGitCommit, react.repo.GetRepoType())
 }
 
-func createReplacements(projectName string, iosID string, androidID string) map[string]string {
+func createReplacements(projectName string, iosID string, androidID string, webID string, includePlatform bool) map[string]string {
 	replacements := make(map[string]string)
 	replacements[templateNameReplacement] = projectName
-	replacements[templateIOSIDReplacement] = iosID
-	replacements[templateAndroidIDReplacement] = androidID
+
+	if includePlatform {
+		replacements[templateIOSIDReplacement] = iosID
+		replacements[templateAndroidIDReplacement] = androidID
+		replacements[templateWebIDReplacement] = webID
+	}
 	return replacements
 }
 
 // NewReactNative init function
-func NewReactNative(repo applications.GitRepo, ciPlatform applications.CIPlatform, mobilePlatform applications.MobilePlatform, projectName string) ReactNative {
-	return ReactNative{repo, ciPlatform, mobilePlatform, projectName}
+func NewReactNative(repo applications.GitRepo,
+	ciPlatform applications.CIPlatform,
+	mobilePlatform applications.MobilePlatform,
+	projectName string,
+	includePlatform bool) ReactNative {
+	return ReactNative{repo, ciPlatform, mobilePlatform, projectName, includePlatform}
 }

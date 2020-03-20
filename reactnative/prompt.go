@@ -1,6 +1,8 @@
 package reactnative
 
 import (
+	"strings"
+
 	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/manifoldco/promptui"
@@ -8,6 +10,25 @@ import (
 
 // Prompts stuct to prompt user for projectName
 type Prompts struct {
+}
+
+func (prompts Prompts) forIncludingPlatform() (bool, error) {
+	prompt := promptui.Prompt{
+		Label:     "Include Firebase Platform?",
+		IsConfirm: true,
+	}
+
+	confirmation, _ := prompt.Run()
+
+	return isTrueOrFalse(confirmation), nil
+}
+
+func isTrueOrFalse(confirmation string) bool {
+	if strings.ToLower(confirmation) == "y" {
+		return true
+	}
+
+	return false
 }
 
 func (prompts Prompts) forAppName() (string, error) {

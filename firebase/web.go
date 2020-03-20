@@ -49,7 +49,7 @@ func (client WebClient) Create(firebaseProjectID string, request WebRequest) (ap
 		log.WithFields(log.Fields{
 			"response":          resp,
 			"firebaseProjectID": firebaseProjectID,
-		}).Error("Error creating IOS App")
+		}).Error("Error creating Web App")
 
 		return applications.WebApp{}, errors.New("Received error creating web project with status ")
 	}
@@ -70,14 +70,14 @@ func (client WebClient) Create(firebaseProjectID string, request WebRequest) (ap
 	log.WithFields(log.Fields{
 		"rawResponse": resp,
 		"webResponse": response,
-	}).Debug("Successfully created IOS Project")
+	}).Debug("Successfully created Web Project")
 
 	return response, nil
 
 }
 
 func createWebRequest(firebaseProjectID string, request WebRequest) (*http.Request, error) {
-	requestURL := strings.Replace(iosURL, ":id", firebaseProjectID, 1)
+	requestURL := strings.Replace(webURL, ":id", firebaseProjectID, 1)
 	return spawnhttp.CreateRequest(requestURL, request)
 }
 

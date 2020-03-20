@@ -9,6 +9,7 @@ import (
 // Prompt for React specific configuration
 type Prompt interface {
 	forAppName() (string, error)
+	forIncludingPlatform() (bool, error)
 }
 
 // Factory to construct React App
@@ -30,6 +31,11 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		return nil, err
 	}
 
+	log.WithFields(log.Fields{
+		"applicationType": applicationType,
+		"projectName":     projectName,
+	}).Debug("Selected project name ", projectName)
+
 	git, err := factory.gitFactory.Create(projectName)
 	if err != nil {
 		return nil, err
@@ -39,9 +45,28 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 	if err != nil {
 		return nil, err
 	}
-	platform, err := factory.platformFactory.Create(projectName, applicationType)
+
+	includePlatform, err := factory.prompt.forIncludingPlatform()
 	if err != nil {
+		log.WithFields(log.Fields{
+			"applicationType": applicationType,
+			"projectName":     projectName,
+		}).Error("Error selecting Platform ", err)
 		return nil, err
+	}
+	log.WithFields(log.Fields{
+		"applicationType": applicationType,
+		"projectName":     projectName,
+		"includePlatform": includePlatform,
+	}).Debug("Including Platform ", includePlatform)
+
+	var platform applications.MobilePlatform
+
+	if includePlatform {
+		platform, err = factory.platformFactory.Create(projectName, applicationType)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	log.WithFields(log.Fields{
@@ -50,7 +75,7 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		"git":             git,
 	}).Debug("Constructing react native application...")
 
-	return NewReactNative(git, ciPlatform, platform, projectName), nil
+	return NewReactNative(git, ciPlatform, platform, projectName, includePlatform), nil
 }
 
 // NewFactory init func
