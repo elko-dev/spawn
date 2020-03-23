@@ -56,9 +56,13 @@ func (factory Factory) Create(projectName string, applicationType string) (appli
 }
 
 func createConfigVars(credentials string, authSecretFileString string) map[string]*string {
+	typeORMLogging := "true"
+	typeORMSynchronize := "true"
 	configVars := make(map[string]*string)
 	configVars["GOOGLE_APPLICATION_CREDENTIALS"] = &credentials
 	configVars["AUTH_CONFIG"] = &authSecretFileString
+	configVars["TYPEORM_SYNCHRONIZE"] = &typeORMSynchronize
+	configVars["TYPEORM_LOGGING"] = &typeORMLogging
 
 	return configVars
 }
