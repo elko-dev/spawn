@@ -7,7 +7,7 @@ const (
 	templateNameReplacement      = "myapp"
 	templateIOSIDReplacement     = "1:157175452340:ios:41629cc9b57c97d5f9bde1"
 	templateAndroidIDReplacement = "1:157175452340:android:6202e96dce8ed954f9bde1"
-	templateWebIDReplacement     = "1:157175452340:web:3edce90d5e1b6696f9bde1"
+	templateWebIDReplacement     = "1:1095344010247:web:6e16064718094a3b8a66a2"
 )
 
 type ReactNative struct {
