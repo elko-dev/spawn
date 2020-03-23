@@ -14,7 +14,7 @@ import (
 
 const (
 	androidKeyStoreKey = "ANDROID_KEYSTORE_KEY"
-	authSecretName     = "FIREBASE_CONFIG"
+	authSecretName     = "AUTH_CONFIG"
 )
 
 // Platform struct to create AppCenter

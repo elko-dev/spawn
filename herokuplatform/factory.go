@@ -58,7 +58,7 @@ func (factory Factory) Create(projectName string, applicationType string) (appli
 func createConfigVars(credentials string, authSecretFileString string) map[string]*string {
 	configVars := make(map[string]*string)
 	configVars["GOOGLE_APPLICATION_CREDENTIALS"] = &credentials
-	configVars["FIREBASE_CONFIG"] = &authSecretFileString
+	configVars["AUTH_CONFIG"] = &authSecretFileString
 
 	return configVars
 }
