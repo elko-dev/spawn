@@ -48,8 +48,8 @@ type Platform struct {
 
 // Create Firebase platform
 func (platform Platform) Create() (applications.MobileApps, error) {
-	gcpProjectID := "spawn" + platform.projectName
-	gcpProjectName := "spawn" + platform.projectName
+	gcpProjectID := platform.projectName
+	gcpProjectName := platform.projectName
 	_, err := platform.project.Create(gcp.ProjectRequest{
 		//TODO - Add Spawn to project ID to help ensure uniqueness
 		ID:   gcpProjectID,
