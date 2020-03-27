@@ -42,6 +42,7 @@ func selectProjectName() (string, error) {
 			return validation.Validate(input,
 				validation.Required, // not empty
 				is.Alphanumeric,
+				is.LowerCase,
 			)
 		}
 
