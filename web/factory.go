@@ -32,9 +32,19 @@ type Prompt interface {
 
 // Create Web type
 func (factory Factory) Create(applicationType string) (applicationtype.ApplicationType, error) {
+	includeBackend, _ := factory.webCommand.IncludeBackend()
 
-	clientApplicationType, _ := factory.webCommand.ForClientType(applicationType)
-	serverApplicationType, _ := factory.webCommand.ForServerType()
+	var clientApplicationType string
+	var serverApplicationType string
+	var server applications.Project
+
+	clientApplicationType, _ = factory.webCommand.ForClientType(applicationType)
+	client, _ := factory.clientFactory.Create(clientApplicationType)
+
+	if includeBackend {
+		serverApplicationType, _ = factory.webCommand.ForServerType()
+		server, _ = factory.serverFactory.Create(serverApplicationType)
+	}
 
 	contextLogger := log.WithFields(log.Fields{
 		"applicationType":       applicationType,
@@ -42,13 +52,9 @@ func (factory Factory) Create(applicationType string) (applicationtype.Applicati
 		"serverApplicationType": serverApplicationType,
 	})
 
-	contextLogger.Debug("Constructing server application...")
-	client, _ := factory.serverFactory.Create(clientApplicationType)
+	contextLogger.Debug("Constructing application...")
 
-	contextLogger.Debug("Constructing client application...")
-	server, _ := factory.clientFactory.Create(serverApplicationType)
-
-	return NewWebType(client, server), nil
+	return NewWebType(client, server, includeBackend), nil
 }
 
 // NewWebFactory init function

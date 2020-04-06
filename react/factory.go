@@ -8,6 +8,7 @@ import (
 // Prompt for React specific configuration
 type Prompt interface {
 	forAppName() (string, error)
+	forWebId() (string, error)
 }
 
 // Factory to construct React App
@@ -34,7 +35,9 @@ func (factory Factory) Create(applicationType string) (applications.Project, err
 		return nil, err
 	}
 
-	return NewReact(git, platform, projectName), nil
+	webConfigID, err := factory.prompt.forWebId()
+
+	return NewReact(git, platform, projectName, webConfigID), nil
 }
 
 // NewFactory init func

@@ -27,7 +27,11 @@ func (ados GithubRepo) GetRepoType() string {
 }
 
 // CreateGitRepository to create repo
-func (git GithubRepo) CreateGitRepository(repositoryName string, templateURL string, platformToken string, replacements map[string]string) (applications.GitResult, error) {
+func (git GithubRepo) CreateGitRepository(repositoryName string,
+	templateURL string,
+	platformToken string,
+	replacements map[string]string) (applications.GitResult, error) {
+
 	logContext := log.WithFields(log.Fields{
 		"repositoryName": repositoryName,
 		"templateURL":    templateURL,

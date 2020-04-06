@@ -10,6 +10,27 @@ import (
 type Prompts struct {
 }
 
+func (prompts Prompts) forWebId() (string, error) {
+	selection, err := selectWebId()
+	return selection, err
+}
+
+func selectWebId() (string, error) {
+	projectValidate :=
+		func(input string) error {
+			return validation.Validate(input,
+				validation.Required, // not empty
+			)
+		}
+
+	projectPrompt := promptui.Prompt{
+		Label:    "Firebase WebId (this can be found in firebase)",
+		Validate: projectValidate,
+	}
+
+	return projectPrompt.Run()
+}
+
 func (prompts Prompts) forAppName() (string, error) {
 	selection, err := selectProjectName()
 	return selection, err

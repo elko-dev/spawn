@@ -7,8 +7,9 @@ import (
 
 // WebType struct to create an application type
 type WebType struct {
-	Client applications.Project
-	Server applications.Project
+	Client         applications.Project
+	Server         applications.Project
+	includeBackend bool
 }
 
 // Create sets up a new application
@@ -20,13 +21,15 @@ func (webType WebType) Create() error {
 	if err != nil {
 		return err
 	}
-
-	log.WithFields(log.Fields{}).Debug("Creating client app")
+	if !webType.includeBackend {
+		return nil
+	}
+	log.WithFields(log.Fields{}).Debug("Creating backend app")
 
 	return webType.Server.Create()
 }
 
 // NewWebType init constructor
-func NewWebType(client applications.Project, server applications.Project) WebType {
-	return WebType{client, server}
+func NewWebType(client applications.Project, server applications.Project, includeBackend bool) WebType {
+	return WebType{client, server, includeBackend}
 }

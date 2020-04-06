@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	validation "github.com/go-ozzo/ozzo-validation"
-	"github.com/go-ozzo/ozzo-validation/is"
 	"github.com/manifoldco/promptui"
 )
 
@@ -74,7 +73,6 @@ func selectHerokuTeamName() (string, error) {
 		func(input string) error {
 			return validation.Validate(input,
 				validation.Required, // not empty
-				is.Alphanumeric,
 			)
 		}
 

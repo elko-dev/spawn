@@ -18,7 +18,8 @@ func selectPlatform() (int, string, error) {
 		Label: "Select Platform",
 		Items: []string{constants.ExpressHerokuPlatform,
 			constants.GraphQLHerokuPlatform,
-			constants.AzureFunctions},
+			constants.AzureFunctions,
+			constants.ReactClientLanguageType},
 	}
 
 	return prompt.Run()
